@@ -20,7 +20,6 @@
             --nav-bg: rgba(15, 23, 42, 0.95);
         }
 
-        /* Light Theme Variables */
         [data-theme="light"] {
             --bg-dark: #f0fdf4;
             --card-bg: #ffffff;
@@ -49,7 +48,7 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 1.2rem 8%;
+            padding: 1rem 8%;
             background: var(--nav-bg);
             backdrop-filter: blur(10px);
             position: fixed;
@@ -60,10 +59,22 @@
         }
 
         .logo {
-            font-size: 1.8rem;
+            font-size: 1.5rem;
             font-weight: 900;
             letter-spacing: 2px;
             color: var(--text-light);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .logo img {
+            width: 45px;
+            height: 45px;
+            object-fit: contain;
+            border-radius: 50%;
+            background: #fff;
+            padding: 2px;
         }
 
         .logo span {
@@ -204,7 +215,7 @@
             border: 3px solid var(--bg-dark);
         }
 
-        /* Birthday Countdown Styling */
+        /* Countdown Container */
         .countdown-container {
             background: linear-gradient(135deg, var(--card-bg), rgba(56, 239, 125, 0.1));
             border: 1px solid var(--primary);
@@ -247,7 +258,7 @@
             text-transform: uppercase;
         }
 
-        /* Pro EA FC Card Styling */
+        /* EA FC Card Styling */
         .fifa-card-container {
             display: flex;
             justify-content: center;
@@ -298,7 +309,6 @@
             font-weight: 900;
             line-height: 0.9;
             font-family: 'Montserrat', sans-serif;
-            text-shadow: 1px 1px 2px rgba(255,255,255,0.6);
         }
 
         .card-pos {
@@ -310,10 +320,18 @@
         .card-flag {
             width: 26px;
             height: 18px;
-            margin-top: 6px;
+            margin-top: 5px;
             border-radius: 2px;
             box-shadow: 0 2px 5px rgba(0,0,0,0.3);
             object-fit: cover;
+        }
+
+        .card-club-logo {
+            width: 28px;
+            height: 28px;
+            margin-top: 5px;
+            object-fit: contain;
+            filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3));
         }
 
         .card-img-wrapper {
@@ -390,6 +408,39 @@
             background: var(--primary);
             margin: 10px auto 0;
             border-radius: 2px;
+        }
+
+        /* Photo Gallery Section */
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .gallery-card {
+            background: var(--card-bg);
+            border-radius: 15px;
+            overflow: hidden;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            transition: 0.3s;
+        }
+
+        .gallery-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--primary);
+        }
+
+        .gallery-card img {
+            width: 100%;
+            height: 250px;
+            object-fit: cover;
+        }
+
+        .gallery-card .info {
+            padding: 1rem;
+            text-align: center;
+            font-weight: 700;
         }
 
         /* Bio Quick Cards */
@@ -536,11 +587,15 @@
 
     <!-- Navigation Bar -->
     <nav>
-        <div class="logo">ROKSAN<span>.28</span></div>
+        <div class="logo">
+            <img src="logo.jpg" alt="Jajniki Grudziądz Logo">
+            ROKSAN<span>.28</span>
+        </div>
         <div class="nav-right">
             <ul class="nav-links">
                 <li><a href="#home" data-key="nav-home">Home</a></li>
                 <li><a href="#card" data-key="nav-card">Card</a></li>
+                <li><a href="#gallery" data-key="nav-gallery">Gallery</a></li>
                 <li><a href="#players" data-key="nav-players">Favorites</a></li>
                 <li><a href="#stats" data-key="nav-stats">Stats</a></li>
                 <li><a href="#highlights" data-key="nav-highlights">Goal</a></li>
@@ -565,7 +620,7 @@
             <a href="#highlights" class="btn"><span data-key="hero-btn">Watch Goal</span> <i class="fas fa-play-circle"></i></a>
         </div>
         <div class="hero-image">
-            <img src="roksi 1.jpeg" alt="Roksan #28" onerror="this.src='roksi 1.jpg'">
+            <img src="roksi cup.jpeg" alt="Roksi #28">
             <div class="badge-number">#28</div>
         </div>
     </section>
@@ -591,9 +646,10 @@
                         <div class="card-rating">94</div>
                         <div class="card-pos">RW</div>
                         <img src="https://flagcdn.com/w40/pl.png" alt="Poland" class="card-flag">
+                        <img src="logo.jpg" alt="Team Logo" class="card-club-logo">
                     </div>
                     <div class="card-img-wrapper">
-                        <img src="roksi 1.jpeg" alt="Roksi" class="card-player-img" onerror="this.src='roksi 1.jpg'">
+                        <img src="roksi cup.jpeg" alt="Roksi" class="card-player-img">
                     </div>
                     <div class="card-name">ROKSI</div>
                     <div class="card-stats">
@@ -605,6 +661,25 @@
                         <div class="stat-item"><span>85</span> PHY</div>
                     </div>
                 </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Photo Gallery Section -->
+    <section id="gallery">
+        <h2 class="section-title" data-key="gallery-title">Team & Highlights Gallery</h2>
+        <div class="gallery-grid">
+            <div class="gallery-card">
+                <img src="team 11.jpeg" alt="Team Squad">
+                <div class="info" data-key="gal-team-squad">Team Championship Squad</div>
+            </div>
+            <div class="gallery-card">
+                <img src="team 6.jpeg" alt="Match Preparation">
+                <div class="info" data-key="gal-match-prep">Match Strategy & Rest</div>
+            </div>
+            <div class="gallery-card">
+                <img src="cup.jpeg" alt="Trophy">
+                <div class="info" data-key="gal-trophy">2nd Place Trophy - Grudziądz</div>
             </div>
         </div>
     </section>
@@ -693,12 +768,17 @@
         // Language System
         const translations = {
             en: {
-                "nav-home": "Home", "nav-card": "Card", "nav-players": "Favorites", "nav-stats": "Stats", "nav-highlights": "Goal",
+                "nav-home": "Home", "nav-card": "Card", "nav-gallery": "Gallery", "nav-players": "Favorites", "nav-stats": "Stats", "nav-highlights": "Goal",
                 "hero-nationality": "Polish Football Player",
                 "hero-desc": "Passion, speed, and determination on the pitch. Pushing limits and striving for greatness in women's football.",
                 "hero-btn": "Watch Goal", "countdown-title": "🎉 Countdown to Roksi's Birthday (Feb 20)",
                 "cnt-days": "Days", "cnt-hours": "Hours", "cnt-min": "Mins", "cnt-sec": "Secs",
-                "card-title": "Ultimate Player Card", "bio-height-title": "Height", "bio-dob-title": "Date of Birth",
+                "card-title": "Ultimate Player Card", 
+                "gallery-title": "Team & Highlights Gallery",
+                "gal-team-squad": "Team Championship Squad",
+                "gal-match-prep": "Match Strategy & Rest",
+                "gal-trophy": "2nd Place Trophy - Grudziądz",
+                "bio-height-title": "Height", "bio-dob-title": "Date of Birth",
                 "bio-colors-title": "Favorite Colors", "bio-colors-val": "Green & Light Blue",
                 "players-title": "Favorite Footballers", "pets-title": "Pets & Companions",
                 "pet-dog": "Dog", "pet-cat": "Cat", "pet-rabbit": "Rabbit",
@@ -706,12 +786,17 @@
                 "stat-trophies": "Trophies & Awards", "stat-matches": "Matches Played", "highlight-title": "Featured Goal"
             },
             pl: {
-                "nav-home": "Strona Główna", "nav-card": "Karta", "nav-players": "Ulubieni", "nav-stats": "Statystyki", "nav-highlights": "Bramka",
+                "nav-home": "Strona Główna", "nav-card": "Karta", "nav-gallery": "Galeria", "nav-players": "Ulubieni", "nav-stats": "Statystyki", "nav-highlights": "Bramka",
                 "hero-nationality": "Polska Piłkarka",
                 "hero-desc": "Pasja, szybkość i determinacja na boisku. Przekraczanie granic i dążenie do doskonałości w kobiecej piłce nożnej.",
                 "hero-btn": "Obejrzyj Gol", "countdown-title": "🎉 Odliczanie do urodzin Roksi (20 Lutego)",
                 "cnt-days": "Dni", "cnt-hours": "Godz", "cnt-min": "Min", "cnt-sec": "Sek",
-                "card-title": "Karta Zawodniczki EA FC", "bio-height-title": "Wzrost", "bio-dob-title": "Data Urodzenia",
+                "card-title": "Karta Zawodniczki EA FC", 
+                "gallery-title": "Galeria Drużyny i Osiągnięć",
+                "gal-team-squad": "Skład Drużyny",
+                "gal-match-prep": "Strategia i Mecz",
+                "gal-trophy": "Puchar II Miejsce - Grudziądz",
+                "bio-height-title": "Wzrost", "bio-dob-title": "Data Urodzenia",
                 "bio-colors-title": "Ulubione Kolory", "bio-colors-val": "Zielony i Jasnoniebieski",
                 "players-title": "Ulubieni Piłkarze", "pets-title": "Zwierzęta Domowe",
                 "pet-dog": "Pies", "pet-cat": "Kot", "pet-rabbit": "Królik",
@@ -747,10 +832,10 @@
         function updateCountdown() {
             const now = new Date();
             let currentYear = now.getFullYear();
-            let birthday = new Date(currentYear, 1, 20); // Feb 20
+            let birthday = new Date(currentYear, 1, 20, 23, 59, 59);
 
             if (now > birthday) {
-                birthday = new Date(currentYear + 1, 1, 20);
+                birthday = new Date(currentYear + 1, 1, 20, 23, 59, 59);
             }
 
             const diff = birthday - now;
@@ -769,22 +854,38 @@
         setInterval(updateCountdown, 1000);
         updateCountdown();
 
-        // Counters Logic
+        // Smooth Counter Animation
         const counters = document.querySelectorAll('.counter');
-        counters.forEach(counter => {
-            const updateCount = () => {
-                const target = +counter.getAttribute('data-target');
-                const count = +counter.innerText;
-                const inc = target / 200;
-                if (count < target) {
-                    counter.innerText = Math.ceil(count + inc);
-                    setTimeout(updateCount, 20);
+        const animateCounter = (counter) => {
+            const target = +counter.getAttribute('data-target');
+            const duration = 1500;
+            const startTime = performance.now();
+
+            const step = (currentTime) => {
+                const elapsed = currentTime - startTime;
+                const progress = Math.min(elapsed / duration, 1);
+                counter.innerText = Math.floor(progress * target);
+
+                if (progress < 1) {
+                    requestAnimationFrame(step);
                 } else {
                     counter.innerText = target;
                 }
             };
-            updateCount();
-        });
+
+            requestAnimationFrame(step);
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    animateCounter(entry.target);
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.5 });
+
+        counters.forEach(counter => observer.observe(counter));
     </script>
 </body>
 </html>
