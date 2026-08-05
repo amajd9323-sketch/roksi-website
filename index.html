@@ -254,13 +254,13 @@
             font-weight: 600;
         }
 
-        /* Video Showcase Section */
+        /* Video Showcase Section (Optimized for Vertical Video) */
         .video-container {
-            max-width: 800px;
+            max-width: 420px;
             margin: 0 auto;
             border-radius: 20px;
             overflow: hidden;
-            box-shadow: 0 15px 35px rgba(233, 30, 99, 0.25);
+            box-shadow: 0 15px 35px rgba(233, 30, 99, 0.3);
             border: 2px solid var(--primary);
             background: #000;
         }
@@ -268,9 +268,9 @@
         .video-container video {
             width: 100%;
             height: auto;
-            max-height: 500px;
             display: block;
             outline: none;
+            border-radius: 18px;
         }
 
         /* Timeline / Journey */
@@ -385,7 +385,7 @@
             <a href="#highlights" class="btn"><span data-key="hero-btn">Watch Goal</span> <i class="fas fa-play-circle"></i></a>
         </div>
         <div class="hero-image">
-            <img src="roksi 1.jpg" alt="Roksan #28" onerror="this.src='roksi 1.jpeg'">
+            <img src="roksi 1.jpeg" alt="Roksan #28" onerror="this.src='roksi 1.jpg'">
             <div class="badge-number">#28</div>
         </div>
     </section>
@@ -417,12 +417,15 @@
         </div>
     </section>
 
- <!-- Goal Video Section -->
+    <!-- Goal Video Section -->
     <section id="highlights">
         <h2 class="section-title" data-key="highlight-title">Featured Goal</h2>
         <div class="video-container">
             <video controls playsinline preload="auto" poster="roksi 1.jpeg">
+                <!-- تجربة المسارات المتعددة بحسب اسم الملف المستضيف على GitHub -->
                 <source src="goal.mp4" type="video/mp4">
+                <source src="ROKSI GOAL.mp4" type="video/mp4">
+                <source src="ROKSI GOAL .mp4" type="video/mp4">
                 Your browser does not support the video tag.
             </video>
         </div>
