@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ROKSAN #28 | ROKSI</title>
+    <title>ROKSAN #17 | ROKSI</title>
     <!-- Google Fonts & Font Awesome Icons -->
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;800;900&family=Montserrat:wght@700;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -532,22 +532,49 @@
             color: var(--text-light);
         }
 
-        /* Video Container */
-        .video-container {
-            position: relative;
-            width: 100%;
-            max-width: 800px;
-            margin: 0 auto;
-            padding-bottom: 56.25%;
-            height: 0;
-            overflow: hidden;
-            border-radius: 20px;
-            border: 2px solid var(--primary);
+        /* Videos Grid & Cards Styling */
+        .video-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
         }
 
-        .video-container iframe {
-            position: absolute;
-            top: 0; left: 0; width: 100%; height: 100%; border: 0;
+        .video-card {
+            background: var(--card-bg);
+            border-radius: 15px;
+            padding: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            transition: 0.3s;
+        }
+
+        .video-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--primary);
+        }
+
+        .video-card iframe {
+            width: 100%;
+            height: 210px;
+            border: 0;
+            border-radius: 10px;
+        }
+
+        /* Shorts Card Styling (Vertical) */
+        .video-card.short-card iframe {
+            height: 450px;
+            max-width: 270px;
+        }
+
+        .video-card p {
+            margin-top: 12px;
+            font-weight: 700;
+            color: var(--text-light);
+            text-align: center;
+            font-size: 0.95rem;
         }
 
         /* Footer */
@@ -589,7 +616,7 @@
     <nav>
         <div class="logo">
             <img src="logo.jpg" alt="Jajniki Grudziądz Logo">
-            ROKSAN<span>.28</span>
+            ROKSAN<span>.17</span>
         </div>
         <div class="nav-right">
             <ul class="nav-links">
@@ -598,7 +625,7 @@
                 <li><a href="#gallery" data-key="nav-gallery">Gallery</a></li>
                 <li><a href="#players" data-key="nav-players">Favorites</a></li>
                 <li><a href="#stats" data-key="nav-stats">Stats</a></li>
-                <li><a href="#highlights" data-key="nav-highlights">Goal</a></li>
+                <li><a href="#highlights" data-key="nav-highlights">Videos</a></li>
             </ul>
             <button class="theme-btn" onclick="toggleTheme()" id="theme-btn">
                 <i class="fas fa-moon"></i>
@@ -617,11 +644,11 @@
             </div>
             <h1>ROKSANA <br><span style="color: var(--primary);">"ROKSI"</span></h1>
             <p data-key="hero-desc">Passion, speed, and determination on the pitch. Pushing limits and striving for greatness in women's football.</p>
-            <a href="#highlights" class="btn"><span data-key="hero-btn">Watch Goal</span> <i class="fas fa-play-circle"></i></a>
+            <a href="#highlights" class="btn"><span data-key="hero-btn">Watch Highlights</span> <i class="fas fa-play-circle"></i></a>
         </div>
         <div class="hero-image">
-            <img src="roksi cup.jpeg" alt="Roksi #28">
-            <div class="badge-number">#28</div>
+            <img src="roksi cup.jpeg" alt="Roksi #17">
+            <div class="badge-number">#17</div>
         </div>
     </section>
 
@@ -745,11 +772,45 @@
         </div>
     </section>
 
-    <!-- Goal Video Section -->
+    <!-- Videos & Highlights Section -->
     <section id="highlights">
-        <h2 class="section-title" data-key="highlight-title">Featured Goal</h2>
-        <div class="video-container">
-            <iframe src="https://www.youtube.com/embed/N_hw0xxr8jI" title="ROKSI GOAL" allowfullscreen></iframe>
+        <h2 class="section-title" data-key="highlight-title">Match Highlights & Videos</h2>
+        <div class="video-grid">
+            <!-- Roksana Goal -->
+            <div class="video-card">
+                <iframe src="https://www.youtube.com/embed/razI9ugKlgo" title="Roksana Goal" allowfullscreen></iframe>
+                <p data-key="vid-goal">⚽ Roksana's Goal (#17)</p>
+            </div>
+
+            <!-- Trophy Ceremony -->
+            <div class="video-card">
+                <iframe src="https://www.youtube.com/embed/L2QnDvzwls8" title="Trophy Ceremony" allowfullscreen></iframe>
+                <p data-key="vid-trophy">🥇 Trophy & Medal Ceremony</p>
+            </div>
+
+            <!-- Team Photo Video -->
+            <div class="video-card">
+                <iframe src="https://www.youtube.com/embed/N_hw0xxr8jI" title="Team Photo" allowfullscreen></iframe>
+                <p data-key="vid-team">📸 Team Photo Session</p>
+            </div>
+
+            <!-- Locker Room Celebration 1 (Short) -->
+            <div class="video-card short-card">
+                <iframe src="https://www.youtube.com/embed/tDH-hr9-Fr8" title="Celebration 1" allowfullscreen></iframe>
+                <p data-key="vid-celeb1">🎉 Locker Room Celebration (1)</p>
+            </div>
+
+            <!-- Locker Room Celebration 2 (Short) -->
+            <div class="video-card short-card">
+                <iframe src="https://www.youtube.com/embed/ReOuHt60QZ0" title="Celebration 2" allowfullscreen></iframe>
+                <p data-key="vid-celeb2">🔥 Locker Room Celebration (2)</p>
+            </div>
+
+            <!-- Circle of Support (Short) -->
+            <div class="video-card short-card">
+                <iframe src="https://www.youtube.com/embed/t-Ms9r0nXsY" title="Circle of Support" allowfullscreen></iframe>
+                <p data-key="vid-circle">🙌 Team Support Circle</p>
+            </div>
         </div>
     </section>
 
@@ -760,7 +821,7 @@
             <a href="#"><i class="fab fa-tiktok"></i></a>
             <a href="#"><i class="fab fa-youtube"></i></a>
         </div>
-        <p style="margin-top: 10px;">Crafted with ❤️ for <strong>ROKSAN "Roksi" #28</strong></p>
+        <p style="margin-top: 10px;">Crafted with ❤️ for <strong>ROKSAN "Roksi" #17</strong></p>
     </footer>
 
     <!-- JavaScript logic -->
@@ -768,10 +829,10 @@
         // Language System
         const translations = {
             en: {
-                "nav-home": "Home", "nav-card": "Card", "nav-gallery": "Gallery", "nav-players": "Favorites", "nav-stats": "Stats", "nav-highlights": "Goal",
+                "nav-home": "Home", "nav-card": "Card", "nav-gallery": "Gallery", "nav-players": "Favorites", "nav-stats": "Stats", "nav-highlights": "Videos",
                 "hero-nationality": "Polish Football Player",
                 "hero-desc": "Passion, speed, and determination on the pitch. Pushing limits and striving for greatness in women's football.",
-                "hero-btn": "Watch Goal", "countdown-title": "🎉 Countdown to Roksi's Birthday (Feb 20)",
+                "hero-btn": "Watch Highlights", "countdown-title": "🎉 Countdown to Roksi's Birthday (Feb 20)",
                 "cnt-days": "Days", "cnt-hours": "Hours", "cnt-min": "Mins", "cnt-sec": "Secs",
                 "card-title": "Ultimate Player Card", 
                 "gallery-title": "Team & Highlights Gallery",
@@ -783,13 +844,20 @@
                 "players-title": "Favorite Footballers", "pets-title": "Pets & Companions",
                 "pet-dog": "Dog", "pet-cat": "Cat", "pet-rabbit": "Rabbit",
                 "stats-title": "Career Statistics", "stat-goals": "Goals Scored", "stat-assists": "Assists",
-                "stat-trophies": "Trophies & Awards", "stat-matches": "Matches Played", "highlight-title": "Featured Goal"
+                "stat-trophies": "Trophies & Awards", "stat-matches": "Matches Played", 
+                "highlight-title": "Match Highlights & Videos",
+                "vid-goal": "⚽ Roksana's Goal (#17)",
+                "vid-trophy": "🥇 Trophy & Medal Ceremony",
+                "vid-team": "📸 Team Photo Session",
+                "vid-celeb1": "🎉 Locker Room Celebration (1)",
+                "vid-celeb2": "🔥 Locker Room Celebration (2)",
+                "vid-circle": "🙌 Team Support Circle"
             },
             pl: {
-                "nav-home": "Strona Główna", "nav-card": "Karta", "nav-gallery": "Galeria", "nav-players": "Ulubieni", "nav-stats": "Statystyki", "nav-highlights": "Bramka",
+                "nav-home": "Strona Główna", "nav-card": "Karta", "nav-gallery": "Galeria", "nav-players": "Ulubieni", "nav-stats": "Statystyki", "nav-highlights": "Filmy",
                 "hero-nationality": "Polska Piłkarka",
                 "hero-desc": "Pasja, szybkość i determinacja na boisku. Przekraczanie granic i dążenie do doskonałości w kobiecej piłce nożnej.",
-                "hero-btn": "Obejrzyj Gol", "countdown-title": "🎉 Odliczanie do urodzin Roksi (20 Lutego)",
+                "hero-btn": "Obejrzyj Skróty", "countdown-title": "🎉 Odliczanie do urodzin Roksi (20 Lutego)",
                 "cnt-days": "Dni", "cnt-hours": "Godz", "cnt-min": "Min", "cnt-sec": "Sek",
                 "card-title": "Karta Zawodniczki EA FC", 
                 "gallery-title": "Galeria Drużyny i Osiągnięć",
@@ -801,7 +869,14 @@
                 "players-title": "Ulubieni Piłkarze", "pets-title": "Zwierzęta Domowe",
                 "pet-dog": "Pies", "pet-cat": "Kot", "pet-rabbit": "Królik",
                 "stats-title": "Statystyki Kariery", "stat-goals": "Strzelone Bramki", "stat-assists": "Asysty",
-                "stat-trophies": "Trofea i Wyróżnienia", "stat-matches": "Rozegrane Mecze", "highlight-title": "Wyróżniona Bramka"
+                "stat-trophies": "Trofea i Wyróżnienia", "stat-matches": "Rozegrane Mecze", 
+                "highlight-title": "Skróty Meczów i Filmy",
+                "vid-goal": "⚽ Gol Roksany (#17)",
+                "vid-trophy": "🥇 Ceremonia Wręczenia Pucharów",
+                "vid-team": "📸 Sesja Zdjęciowa Drużyny",
+                "vid-celeb1": "🎉 Świętowanie w Szatni (1)",
+                "vid-celeb2": "🔥 Świętowanie w Szatni (2)",
+                "vid-circle": "🙌 Koło Wsparcia Drużyny"
             }
         };
 
