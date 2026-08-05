@@ -9,7 +9,6 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
     <style>
-        /* CSS Variables & Styling Reset */
         :root {
             --primary: #e91e63;
             --primary-dark: #c2185b;
@@ -83,7 +82,6 @@
             color: var(--primary);
         }
 
-        /* Language Toggle Button */
         .lang-btn {
             background: rgba(255, 255, 255, 0.1);
             border: 1px solid var(--primary);
@@ -254,23 +252,27 @@
             font-weight: 600;
         }
 
-        /* Video Showcase Section (Optimized for Vertical Video) */
+        /* YouTube Video Embed Responsive Container */
         .video-container {
-            max-width: 420px;
+            position: relative;
+            width: 100%;
+            max-width: 800px;
             margin: 0 auto;
-            border-radius: 20px;
+            padding-bottom: 56.25%; /* 16:9 Aspect Ratio */
+            height: 0;
             overflow: hidden;
+            border-radius: 20px;
             box-shadow: 0 15px 35px rgba(233, 30, 99, 0.3);
             border: 2px solid var(--primary);
-            background: #000;
         }
 
-        .video-container video {
+        .video-container iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
             width: 100%;
-            height: auto;
-            display: block;
-            outline: none;
-            border-radius: 18px;
+            height: 100%;
+            border: 0;
         }
 
         /* Timeline / Journey */
@@ -417,17 +419,16 @@
         </div>
     </section>
 
-    <!-- Goal Video Section -->
+    <!-- Goal Video Section (YouTube Embed) -->
     <section id="highlights">
         <h2 class="section-title" data-key="highlight-title">Featured Goal</h2>
         <div class="video-container">
-            <video controls playsinline preload="auto" poster="roksi 1.jpeg">
-                <!-- تجربة المسارات المتعددة بحسب اسم الملف المستضيف على GitHub -->
-                <source src="goal.mp4" type="video/mp4">
-                <source src="ROKSI GOAL.mp4" type="video/mp4">
-                <source src="ROKSI GOAL .mp4" type="video/mp4">
-                Your browser does not support the video tag.
-            </video>
+            <iframe 
+                src="https://www.youtube.com/embed/N_hw0xxr8jI" 
+                title="ROKSI GOAL" 
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                allowfullscreen>
+            </iframe>
         </div>
     </section>
 
@@ -471,7 +472,6 @@
 
     <!-- JavaScript For Languages & Counter -->
     <script>
-        // Dictionary for Multi-language Support (EN & PL)
         const translations = {
             en: {
                 "nav-home": "Home",
@@ -535,7 +535,6 @@
             });
         }
 
-        // Animated Stats Counters
         const counters = document.querySelectorAll('.counter');
         const speed = 200;
 
