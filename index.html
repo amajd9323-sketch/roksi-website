@@ -10,11 +10,11 @@
     
     <style>
         :root {
-            --primary: #e91e63;
-            --primary-dark: #c2185b;
-            --accent: #ffd700;
-            --bg-dark: #0f172a;
-            --card-bg: #1e293b;
+            --primary: #38ef7d;       /* Green Vibrant Accent */
+            --primary-dark: #11998e;  /* Deep Emerald */
+            --accent: #38bdf8;        /* Light Blue */
+            --bg-dark: #0f172a;       /* Dark Background */
+            --card-bg: #1e293b;       /* Card Background */
             --text-light: #f8fafc;
             --text-gray: #94a3b8;
         }
@@ -79,7 +79,7 @@
         }
 
         .nav-links a:hover {
-            color: var(--primary);
+            color: var(--accent);
         }
 
         .lang-btn {
@@ -98,6 +98,7 @@
 
         .lang-btn:hover {
             background: var(--primary);
+            color: var(--bg-dark);
         }
 
         /* Hero Section */
@@ -107,7 +108,7 @@
             align-items: center;
             justify-content: space-between;
             padding: 100px 8% 0;
-            background: radial-gradient(circle at top right, rgba(233, 30, 99, 0.15), transparent 50%);
+            background: radial-gradient(circle at top right, rgba(56, 239, 125, 0.15), transparent 50%);
         }
 
         .hero-text .nationality {
@@ -117,10 +118,10 @@
             background: rgba(255, 255, 255, 0.05);
             padding: 0.4rem 1rem;
             border-radius: 20px;
-            color: var(--primary);
+            color: var(--accent);
             font-weight: 700;
             margin-bottom: 1rem;
-            border: 1px solid rgba(233, 30, 99, 0.3);
+            border: 1px solid rgba(56, 189, 248, 0.3);
         }
 
         .hero-text h1 {
@@ -141,18 +142,18 @@
         .btn {
             display: inline-block;
             padding: 0.8rem 2.5rem;
-            background: linear-gradient(45deg, var(--primary), var(--primary-dark));
-            color: white;
+            background: linear-gradient(45deg, var(--primary-dark), var(--primary));
+            color: #0f172a;
             text-decoration: none;
             border-radius: 30px;
-            font-weight: 700;
-            box-shadow: 0 10px 20px rgba(233, 30, 99, 0.3);
+            font-weight: 800;
+            box-shadow: 0 10px 20px rgba(56, 239, 125, 0.3);
             transition: 0.3s transform, 0.3s box-shadow;
         }
 
         .btn:hover {
             transform: translateY(-3px);
-            box-shadow: 0 15px 25px rgba(233, 30, 99, 0.5);
+            box-shadow: 0 15px 25px rgba(56, 239, 125, 0.5);
         }
 
         .hero-image {
@@ -160,7 +161,7 @@
             width: 380px;
             height: 380px;
             border-radius: 50%;
-            background: linear-gradient(45deg, var(--primary), transparent);
+            background: linear-gradient(45deg, var(--primary), var(--accent));
             display: flex;
             justify-content: center;
             align-items: center;
@@ -214,6 +215,108 @@
             border-radius: 2px;
         }
 
+        /* Profile Quick Info Cards */
+        .bio-info {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            flex-wrap: wrap;
+            margin-bottom: 2rem;
+        }
+
+        .bio-card {
+            background: var(--card-bg);
+            padding: 1.2rem 2rem;
+            border-radius: 15px;
+            border-left: 4px solid var(--accent);
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .bio-card i {
+            font-size: 1.8rem;
+            color: var(--accent);
+        }
+
+        .bio-card h4 {
+            font-size: 0.9rem;
+            color: var(--text-gray);
+        }
+
+        .bio-card p {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: var(--text-light);
+        }
+
+        /* Favorite Players Cards */
+        .players-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .player-card {
+            background: var(--card-bg);
+            padding: 1.5rem;
+            border-radius: 15px;
+            text-align: center;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            transition: 0.3s;
+        }
+
+        .player-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--accent);
+            box-shadow: 0 10px 20px rgba(56, 189, 248, 0.15);
+        }
+
+        .player-card i {
+            font-size: 2rem;
+            color: var(--primary);
+            margin-bottom: 0.8rem;
+        }
+
+        .player-card h3 {
+            font-size: 1.2rem;
+            color: var(--text-light);
+        }
+
+        /* Pets Grid */
+        .pets-grid {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .pet-card {
+            background: var(--card-bg);
+            padding: 1.5rem 2.5rem;
+            border-radius: 20px;
+            text-align: center;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            transition: 0.3s;
+            min-width: 180px;
+        }
+
+        .pet-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--primary);
+        }
+
+        .pet-card i {
+            font-size: 2.2rem;
+            color: var(--accent);
+            margin-bottom: 0.5rem;
+        }
+
+        .pet-card h3 {
+            font-size: 1.1rem;
+            color: var(--text-light);
+        }
+
         /* Stats Grid */
         .stats-grid {
             display: grid;
@@ -252,17 +355,17 @@
             font-weight: 600;
         }
 
-        /* YouTube Video Embed Responsive Container */
+        /* Video Container */
         .video-container {
             position: relative;
             width: 100%;
             max-width: 800px;
             margin: 0 auto;
-            padding-bottom: 56.25%; /* 16:9 Aspect Ratio */
+            padding-bottom: 56.25%;
             height: 0;
             overflow: hidden;
             border-radius: 20px;
-            box-shadow: 0 15px 35px rgba(233, 30, 99, 0.3);
+            box-shadow: 0 15px 35px rgba(56, 239, 125, 0.2);
             border: 2px solid var(--primary);
         }
 
@@ -365,6 +468,7 @@
         <div class="nav-right">
             <ul class="nav-links">
                 <li><a href="#home" data-key="nav-home">Home</a></li>
+                <li><a href="#players" data-key="nav-players">Favorites</a></li>
                 <li><a href="#stats" data-key="nav-stats">Stats</a></li>
                 <li><a href="#highlights" data-key="nav-highlights">Goal</a></li>
                 <li><a href="#journey" data-key="nav-journey">Journey</a></li>
@@ -389,6 +493,83 @@
         <div class="hero-image">
             <img src="roksi 1.jpeg" alt="Roksan #28" onerror="this.src='roksi 1.jpg'">
             <div class="badge-number">#28</div>
+        </div>
+    </section>
+
+    <!-- Player Bio Info Section -->
+    <section style="padding-top: 2rem; padding-bottom: 2rem;">
+        <div class="bio-info">
+            <div class="bio-card">
+                <i class="fas fa-ruler-vertical"></i>
+                <div>
+                    <h4 data-key="bio-height-title">Height</h4>
+                    <p>164 cm</p>
+                </div>
+            </div>
+            <div class="bio-card">
+                <i class="fas fa-birthday-cake"></i>
+                <div>
+                    <h4 data-key="bio-dob-title">Date of Birth</h4>
+                    <p>20 Feb 2009</p>
+                </div>
+            </div>
+            <div class="bio-card">
+                <i class="fas fa-palette"></i>
+                <div>
+                    <h4 data-key="bio-colors-title">Favorite Colors</h4>
+                    <p data-key="bio-colors-val">Green & Light Blue</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Favorite Football Players Section -->
+    <section id="players" style="padding-top: 2rem;">
+        <h2 class="section-title" data-key="players-title">Favorite Footballers</h2>
+        <div class="players-grid">
+            <div class="player-card">
+                <i class="fas fa-star"></i>
+                <h3>Cristiano Ronaldo</h3>
+            </div>
+            <div class="player-card">
+                <i class="fas fa-user-shield"></i>
+                <h3>Wojciech Szczęsny</h3>
+            </div>
+            <div class="player-card">
+                <i class="fas fa-bolt"></i>
+                <h3>Kenan Yıldız</h3>
+            </div>
+            <div class="player-card">
+                <i class="fas fa-fire"></i>
+                <h3>Vinícius Jr.</h3>
+            </div>
+            <div class="player-card">
+                <i class="fas fa-magic"></i>
+                <h3>Dominik Szoboszlai</h3>
+            </div>
+            <div class="player-card">
+                <i class="fas fa-crown"></i>
+                <h3>Mohamed Salah</h3>
+            </div>
+        </div>
+    </section>
+
+    <!-- Pets Section -->
+    <section style="padding-top: 3rem;">
+        <h2 class="section-title" data-key="pets-title">Pets & Companions</h2>
+        <div class="pets-grid">
+            <div class="pet-card">
+                <i class="fas fa-dog"></i>
+                <h3 data-key="pet-dog">Dog</h3>
+            </div>
+            <div class="pet-card">
+                <i class="fas fa-cat"></i>
+                <h3 data-key="pet-cat">Cat</h3>
+            </div>
+            <div class="pet-card">
+                <i class="fas fa-carrot"></i>
+                <h3 data-key="pet-rabbit">Rabbit</h3>
+            </div>
         </div>
     </section>
 
@@ -419,7 +600,7 @@
         </div>
     </section>
 
-    <!-- Goal Video Section (YouTube Embed) -->
+    <!-- Goal Video Section -->
     <section id="highlights">
         <h2 class="section-title" data-key="highlight-title">Featured Goal</h2>
         <div class="video-container">
@@ -451,10 +632,10 @@
                 </div>
             </div>
             <div class="timeline-item">
-                <div class="timeline-date">Early Days</div>
+                <div class="timeline-date">2009</div>
                 <div class="timeline-content">
-                    <h3 data-key="journey-3-title">Polish Roots & Passion</h3>
-                    <p data-key="journey-3-desc">Relentless daily training in Poland, sharpening technical skills and tactical vision.</p>
+                    <h3 data-key="journey-3-title">Polish Roots & Early Start</h3>
+                    <p data-key="journey-3-desc">Born on February 20, 2009. Developing passion and daily technical training in Poland.</p>
                 </div>
             </div>
         </div>
@@ -475,6 +656,7 @@
         const translations = {
             en: {
                 "nav-home": "Home",
+                "nav-players": "Favorites",
                 "nav-stats": "Stats",
                 "nav-highlights": "Goal",
                 "nav-journey": "Journey",
@@ -482,6 +664,15 @@
                 "hero-nationality": "Polish Football Player",
                 "hero-desc": "Passion, speed, and determination on the pitch. Pushing limits and striving for greatness in women's football.",
                 "hero-btn": "Watch Goal",
+                "bio-height-title": "Height",
+                "bio-dob-title": "Date of Birth",
+                "bio-colors-title": "Favorite Colors",
+                "bio-colors-val": "Green & Light Blue",
+                "players-title": "Favorite Footballers",
+                "pets-title": "Pets & Companions",
+                "pet-dog": "Dog",
+                "pet-cat": "Cat",
+                "pet-rabbit": "Rabbit",
                 "stats-title": "Career Statistics",
                 "stat-goals": "Goals Scored",
                 "stat-assists": "Assists",
@@ -493,11 +684,12 @@
                 "journey-1-desc": "Leading team attacks, creating key chances, and dominating the pitch with shirt #28.",
                 "journey-2-title": "Pro League Breakthrough",
                 "journey-2-desc": "Debuted in top-tier women's league and earned young player of the season recognition.",
-                "journey-3-title": "Polish Roots & Passion",
-                "journey-3-desc": "Relentless daily training in Poland, sharpening technical skills and tactical vision."
+                "journey-3-title": "Polish Roots & Early Start",
+                "journey-3-desc": "Born on February 20, 2009. Developing passion and daily technical training in Poland."
             },
             pl: {
                 "nav-home": "Strona Główna",
+                "nav-players": "Ulubieni",
                 "nav-stats": "Statystyki",
                 "nav-highlights": "Bramka",
                 "nav-journey": "Kariera",
@@ -505,6 +697,15 @@
                 "hero-nationality": "Polska Piłkarka",
                 "hero-desc": "Pasja, szybkość i determinacja na boisku. Przekraczanie granic i dążenie do doskonałości w kobiecej piłce nożnej.",
                 "hero-btn": "Obejrzyj Gol",
+                "bio-height-title": "Wzrost",
+                "bio-dob-title": "Data Urodzenia",
+                "bio-colors-title": "Ulubione Kolory",
+                "bio-colors-val": "Zielony i Jasnoniebieski",
+                "players-title": "Ulubieni Piłkarze",
+                "pets-title": "Zwierzęta Domowe",
+                "pet-dog": "Pies",
+                "pet-cat": "Kot",
+                "pet-rabbit": "Królik",
                 "stats-title": "Statystyki Kariery",
                 "stat-goals": "Strzelone Bramki",
                 "stat-assists": "Asysty",
@@ -516,8 +717,8 @@
                 "journey-1-desc": "Prowadzenie ataków zespołu, kreowanie okazji i dominacja na boisku z numerem 28.",
                 "journey-2-title": "Przełom w Lidze Zawodowej",
                 "journey-2-desc": "Debiut w najwyższej klasie rozgrywek i tytuł najlepszej młodej zawodniczki sezonu.",
-                "journey-3-title": "Polskie Korzenie i Pasja",
-                "journey-3-desc": "Niezłomne codzienne treningi w Polsce, doskonalenie umiejętności technicznych i wizji gry."
+                "journey-3-title": "Polskie Korzenie i Początki",
+                "journey-3-desc": "Urodzona 20 lutego 2009 r. Rozwijanie pasji i codzienne treningi w Polsce."
             }
         };
 
