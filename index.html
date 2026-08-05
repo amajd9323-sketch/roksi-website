@@ -1,0 +1,558 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ROKSAN #28 | ROKSI</title>
+    <!-- Google Fonts & Font Awesome Icons -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;800;900&family=Montserrat:wght@700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        /* CSS Variables & Styling Reset */
+        :root {
+            --primary: #e91e63;
+            --primary-dark: #c2185b;
+            --accent: #ffd700;
+            --bg-dark: #0f172a;
+            --card-bg: #1e293b;
+            --text-light: #f8fafc;
+            --text-gray: #94a3b8;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+            scroll-behavior: smooth;
+        }
+
+        body {
+            background-color: var(--bg-dark);
+            color: var(--text-light);
+            overflow-x: hidden;
+        }
+
+        /* Navigation Bar */
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1.2rem 8%;
+            background: rgba(15, 23, 42, 0.95);
+            backdrop-filter: blur(10px);
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 900;
+            letter-spacing: 2px;
+            color: var(--text-light);
+        }
+
+        .logo span {
+            color: var(--primary);
+        }
+
+        .nav-right {
+            display: flex;
+            align-items: center;
+            gap: 2rem;
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+        }
+
+        .nav-links a {
+            color: var(--text-light);
+            text-decoration: none;
+            font-weight: 600;
+            transition: 0.3s;
+        }
+
+        .nav-links a:hover {
+            color: var(--primary);
+        }
+
+        /* Language Toggle Button */
+        .lang-btn {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid var(--primary);
+            color: var(--text-light);
+            padding: 0.4rem 1rem;
+            border-radius: 20px;
+            cursor: pointer;
+            font-weight: 700;
+            transition: 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .lang-btn:hover {
+            background: var(--primary);
+        }
+
+        /* Hero Section */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 100px 8% 0;
+            background: radial-gradient(circle at top right, rgba(233, 30, 99, 0.15), transparent 50%);
+        }
+
+        .hero-text .nationality {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: rgba(255, 255, 255, 0.05);
+            padding: 0.4rem 1rem;
+            border-radius: 20px;
+            color: var(--primary);
+            font-weight: 700;
+            margin-bottom: 1rem;
+            border: 1px solid rgba(233, 30, 99, 0.3);
+        }
+
+        .hero-text h1 {
+            font-size: 4rem;
+            font-weight: 900;
+            line-height: 1.1;
+            margin-bottom: 1rem;
+            font-family: 'Montserrat', sans-serif;
+        }
+
+        .hero-text p {
+            color: var(--text-gray);
+            font-size: 1.2rem;
+            max-width: 500px;
+            margin-bottom: 2rem;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 0.8rem 2.5rem;
+            background: linear-gradient(45deg, var(--primary), var(--primary-dark));
+            color: white;
+            text-decoration: none;
+            border-radius: 30px;
+            font-weight: 700;
+            box-shadow: 0 10px 20px rgba(233, 30, 99, 0.3);
+            transition: 0.3s transform, 0.3s box-shadow;
+        }
+
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 25px rgba(233, 30, 99, 0.5);
+        }
+
+        .hero-image {
+            position: relative;
+            width: 380px;
+            height: 380px;
+            border-radius: 50%;
+            background: linear-gradient(45deg, var(--primary), transparent);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .hero-image img {
+            width: 95%;
+            height: 95%;
+            object-fit: cover;
+            border-radius: 50%;
+            border: 4px solid var(--bg-dark);
+        }
+
+        .badge-number {
+            position: absolute;
+            bottom: 10px;
+            right: 10px;
+            background: var(--accent);
+            color: var(--bg-dark);
+            font-size: 2.2rem;
+            font-weight: 900;
+            width: 75px;
+            height: 75px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+            border: 3px solid var(--bg-dark);
+        }
+
+        /* Sections Common Style */
+        section {
+            padding: 5rem 8%;
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 2.5rem;
+            margin-bottom: 3rem;
+            position: relative;
+        }
+
+        .section-title::after {
+            content: '';
+            display: block;
+            width: 60px;
+            height: 4px;
+            background: var(--primary);
+            margin: 10px auto 0;
+            border-radius: 2px;
+        }
+
+        /* Stats Grid */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 2rem;
+        }
+
+        .stat-card {
+            background: var(--card-bg);
+            padding: 2.5rem 1.5rem;
+            border-radius: 15px;
+            text-align: center;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            transition: 0.3s;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-10px);
+            border-color: var(--primary);
+        }
+
+        .stat-card i {
+            font-size: 2.5rem;
+            color: var(--primary);
+            margin-bottom: 1rem;
+        }
+
+        .stat-card h2 {
+            font-size: 3rem;
+            color: var(--text-light);
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-card p {
+            color: var(--text-gray);
+            font-weight: 600;
+        }
+
+        /* Video Showcase Section */
+        .video-container {
+            max-width: 800px;
+            margin: 0 auto;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 15px 35px rgba(233, 30, 99, 0.25);
+            border: 2px solid var(--primary);
+            background: #000;
+        }
+
+        .video-container video {
+            width: 100%;
+            height: auto;
+            max-height: 500px;
+            display: block;
+            outline: none;
+        }
+
+        /* Timeline / Journey */
+        .timeline {
+            max-width: 800px;
+            margin: 0 auto;
+            position: relative;
+            border-left: 2px solid var(--primary);
+            padding-left: 2rem;
+        }
+
+        .timeline-item {
+            margin-bottom: 2.5rem;
+            position: relative;
+        }
+
+        .timeline-item::after {
+            content: '';
+            position: absolute;
+            left: -2.6rem;
+            top: 5px;
+            width: 16px;
+            height: 16px;
+            background: var(--accent);
+            border-radius: 50%;
+        }
+
+        .timeline-date {
+            color: var(--primary);
+            font-weight: 800;
+            margin-bottom: 0.3rem;
+        }
+
+        .timeline-content {
+            background: var(--card-bg);
+            padding: 1.5rem;
+            border-radius: 10px;
+        }
+
+        /* Footer */
+        footer {
+            background: #090d16;
+            text-align: center;
+            padding: 2rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .socials {
+            margin-bottom: 1rem;
+        }
+
+        .socials a {
+            color: var(--text-light);
+            font-size: 1.5rem;
+            margin: 0 10px;
+            transition: 0.3s;
+        }
+
+        .socials a:hover {
+            color: var(--primary);
+        }
+
+        /* Mobile Responsiveness */
+        @media (max-width: 768px) {
+            .hero {
+                flex-direction: column-reverse;
+                justify-content: center;
+                text-align: center;
+                gap: 2rem;
+                padding-top: 120px;
+            }
+            .hero-image {
+                width: 260px;
+                height: 260px;
+            }
+            .hero-text h1 {
+                font-size: 2.8rem;
+            }
+            .nav-links {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Navigation Bar -->
+    <nav>
+        <div class="logo">ROKSAN<span>.28</span></div>
+        <div class="nav-right">
+            <ul class="nav-links">
+                <li><a href="#home" data-key="nav-home">Home</a></li>
+                <li><a href="#stats" data-key="nav-stats">Stats</a></li>
+                <li><a href="#highlights" data-key="nav-highlights">Goal</a></li>
+                <li><a href="#journey" data-key="nav-journey">Journey</a></li>
+                <li><a href="#contact" data-key="nav-contact">Contact</a></li>
+            </ul>
+            <button class="lang-btn" onclick="toggleLanguage()">
+                <i class="fas fa-globe"></i> <span id="lang-label">PL</span>
+            </button>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero" id="home">
+        <div class="hero-text">
+            <div class="nationality">
+                <i class="fas fa-flag"></i> <span data-key="hero-nationality">Polish Football Player</span>
+            </div>
+            <h1>ROKSANA <br><span style="color: var(--primary);">"ROKSI"</span></h1>
+            <p data-key="hero-desc">Passion, speed, and determination on the pitch. Pushing limits and striving for greatness in women's football.</p>
+            <a href="#highlights" class="btn"><span data-key="hero-btn">Watch Goal</span> <i class="fas fa-play-circle"></i></a>
+        </div>
+        <div class="hero-image">
+            <img src="roksi 1.jpg" alt="Roksan #28" onerror="this.src='roksi 1.jpeg'">
+            <div class="badge-number">#28</div>
+        </div>
+    </section>
+
+    <!-- Stats Section -->
+    <section id="stats">
+        <h2 class="section-title" data-key="stats-title">Career Statistics</h2>
+        <div class="stats-grid">
+            <div class="stat-card">
+                <i class="fas fa-futbol"></i>
+                <h2 class="counter" data-target="28">0</h2>
+                <p data-key="stat-goals">Goals Scored</p>
+            </div>
+            <div class="stat-card">
+                <i class="fas fa-running"></i>
+                <h2 class="counter" data-target="19">0</h2>
+                <p data-key="stat-assists">Assists</p>
+            </div>
+            <div class="stat-card">
+                <i class="fas fa-trophy"></i>
+                <h2 class="counter" data-target="6">0</h2>
+                <p data-key="stat-trophies">Trophies & Awards</p>
+            </div>
+            <div class="stat-card">
+                <i class="fas fa-shield-alt"></i>
+                <h2 class="counter" data-target="54">0</h2>
+                <p data-key="stat-matches">Matches Played</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Goal Video Section -->
+    <section id="highlights">
+        <h2 class="section-title" data-key="highlight-title">Featured Goal</h2>
+        <div class="video-container">
+            <video controls preload="metadata" poster="roksi 1.jpg">
+                <source src="ROKSI GOAL.mp4" type="video/mp4">
+                <source src="ROKSI GOAL.MP4" type="video/mp4">
+                <source src="roksi goal.mp4" type="video/mp4">
+                Your browser does not support the video tag.
+            </video>
+        </div>
+    </section>
+
+    <!-- Journey Section -->
+    <section id="journey">
+        <h2 class="section-title" data-key="journey-title">Roksi's Journey</h2>
+        <div class="timeline">
+            <div class="timeline-item">
+                <div class="timeline-date">2026 - Present</div>
+                <div class="timeline-content">
+                    <h3 data-key="journey-1-title">Key Winger / Playmaker</h3>
+                    <p data-key="journey-1-desc">Leading team attacks, creating key chances, and dominating the pitch with shirt #28.</p>
+                </div>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-date">2024 - 2025</div>
+                <div class="timeline-content">
+                    <h3 data-key="journey-2-title">Pro League Breakthrough</h3>
+                    <p data-key="journey-2-desc">Debuted in top-tier women's league and earned young player of the season recognition.</p>
+                </div>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-date">Early Days</div>
+                <div class="timeline-content">
+                    <h3 data-key="journey-3-title">Polish Roots & Passion</h3>
+                    <p data-key="journey-3-desc">Relentless daily training in Poland, sharpening technical skills and tactical vision.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer id="contact">
+        <div class="socials">
+            <a href="#"><i class="fab fa-instagram"></i></a>
+            <a href="#"><i class="fab fa-tiktok"></i></a>
+            <a href="#"><i class="fab fa-youtube"></i></a>
+        </div>
+        <p>Crafted with ❤️ for <strong>ROKSAN "Roksi" #28</strong></p>
+    </footer>
+
+    <!-- JavaScript For Languages & Counter -->
+    <script>
+        // Dictionary for Multi-language Support (EN & PL)
+        const translations = {
+            en: {
+                "nav-home": "Home",
+                "nav-stats": "Stats",
+                "nav-highlights": "Goal",
+                "nav-journey": "Journey",
+                "nav-contact": "Contact",
+                "hero-nationality": "Polish Football Player",
+                "hero-desc": "Passion, speed, and determination on the pitch. Pushing limits and striving for greatness in women's football.",
+                "hero-btn": "Watch Goal",
+                "stats-title": "Career Statistics",
+                "stat-goals": "Goals Scored",
+                "stat-assists": "Assists",
+                "stat-trophies": "Trophies & Awards",
+                "stat-matches": "Matches Played",
+                "highlight-title": "Featured Goal",
+                "journey-title": "Roksi's Journey",
+                "journey-1-title": "Key Winger / Playmaker",
+                "journey-1-desc": "Leading team attacks, creating key chances, and dominating the pitch with shirt #28.",
+                "journey-2-title": "Pro League Breakthrough",
+                "journey-2-desc": "Debuted in top-tier women's league and earned young player of the season recognition.",
+                "journey-3-title": "Polish Roots & Passion",
+                "journey-3-desc": "Relentless daily training in Poland, sharpening technical skills and tactical vision."
+            },
+            pl: {
+                "nav-home": "Strona Główna",
+                "nav-stats": "Statystyki",
+                "nav-highlights": "Bramka",
+                "nav-journey": "Kariera",
+                "nav-contact": "Kontakt",
+                "hero-nationality": "Polska Piłkarka",
+                "hero-desc": "Pasja, szybkość i determinacja na boisku. Przekraczanie granic i dążenie do doskonałości w kobiecej piłce nożnej.",
+                "hero-btn": "Obejrzyj Gol",
+                "stats-title": "Statystyki Kariery",
+                "stat-goals": "Strzelone Bramki",
+                "stat-assists": "Asysty",
+                "stat-trophies": "Trofea i Wyróżnienia",
+                "stat-matches": "Rozegrane Mecze",
+                "highlight-title": "Wyróżniona Bramka",
+                "journey-title": "Droga Roksi",
+                "journey-1-title": "Kluczowa Skrzydłowa / Rozgrywająca",
+                "journey-1-desc": "Prowadzenie ataków zespołu, kreowanie okazji i dominacja na boisku z numerem 28.",
+                "journey-2-title": "Przełom w Lidze Zawodowej",
+                "journey-2-desc": "Debiut w najwyższej klasie rozgrywek i tytuł najlepszej młodej zawodniczki sezonu.",
+                "journey-3-title": "Polskie Korzenie i Pasja",
+                "journey-3-desc": "Niezłomne codzienne treningi w Polsce, doskonalenie umiejętności technicznych i wizji gry."
+            }
+        };
+
+        let currentLang = 'en';
+
+        function toggleLanguage() {
+            currentLang = currentLang === 'en' ? 'pl' : 'en';
+            document.getElementById('lang-label').innerText = currentLang === 'en' ? 'PL' : 'EN';
+
+            document.querySelectorAll('[data-key]').forEach(element => {
+                const key = element.getAttribute('data-key');
+                if (translations[currentLang][key]) {
+                    element.innerText = translations[currentLang][key];
+                }
+            });
+        }
+
+        // Animated Stats Counters
+        const counters = document.querySelectorAll('.counter');
+        const speed = 200;
+
+        counters.forEach(counter => {
+            const updateCount = () => {
+                const target = +counter.getAttribute('data-target');
+                const count = +counter.innerText;
+                const inc = target / speed;
+
+                if (count < target) {
+                    counter.innerText = Math.ceil(count + inc);
+                    setTimeout(updateCount, 20);
+                } else {
+                    counter.innerText = target;
+                }
+            };
+            updateCount();
+        });
+    </script>
+</body>
+</html>
