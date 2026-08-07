@@ -7,7 +7,7 @@
     <!-- Google Fonts & Font Awesome Icons -->
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;800;900&family=Montserrat:wght@700;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    
+
     <style>
         :root {
             --primary: #38ef7d;       /* Green Vibrant Accent */
@@ -18,6 +18,7 @@
             --text-light: #f8fafc;
             --text-gray: #94a3b8;
             --nav-bg: rgba(15, 23, 42, 0.95);
+            --gold: #FFD700;
         }
 
         [data-theme="light"] {
@@ -41,6 +42,54 @@
             background-color: var(--bg-dark);
             color: var(--text-light);
             overflow-x: hidden;
+        }
+
+        /* ===== Loading Screen ===== */
+        #loader {
+            position: fixed;
+            inset: 0;
+            background: var(--bg-dark);
+            z-index: 99999;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            transition: opacity 0.6s ease, visibility 0.6s ease;
+        }
+        #loader.hide {
+            opacity: 0;
+            visibility: hidden;
+        }
+        .loader-ring {
+            width: 70px;
+            height: 70px;
+            border: 5px solid rgba(56, 239, 125, 0.15);
+            border-top-color: var(--primary);
+            border-radius: 50%;
+            animation: spin 0.9s linear infinite;
+        }
+        .loader-text {
+            margin-top: 1.2rem;
+            font-weight: 800;
+            letter-spacing: 2px;
+            color: var(--primary);
+        }
+        @keyframes spin { to { transform: rotate(360deg); } }
+
+        /* ===== Confetti Canvas ===== */
+        #confetti-canvas {
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            z-index: 9998;
+        }
+
+        /* ===== Particle background (hero) ===== */
+        #particles {
+            position: absolute;
+            inset: 0;
+            z-index: 0;
+            pointer-events: none;
         }
 
         /* Navigation Bar */
@@ -104,7 +153,7 @@
             color: var(--accent);
         }
 
-        .theme-btn, .lang-btn {
+        .theme-btn, .lang-btn, .share-btn {
             background: rgba(255, 255, 255, 0.1);
             border: 1px solid var(--primary);
             color: var(--text-light);
@@ -118,9 +167,20 @@
             gap: 0.5rem;
         }
 
-        .theme-btn:hover, .lang-btn:hover {
+        .theme-btn:hover, .lang-btn:hover, .share-btn:hover {
             background: var(--primary);
             color: #0f172a;
+        }
+
+        /* Reveal on scroll */
+        .reveal {
+            opacity: 0;
+            transform: translateY(40px);
+            transition: opacity 0.8s ease, transform 0.8s ease;
+        }
+        .reveal.visible {
+            opacity: 1;
+            transform: translateY(0);
         }
 
         /* Hero Section */
@@ -131,6 +191,13 @@
             justify-content: space-between;
             padding: 120px 8% 0;
             background: radial-gradient(circle at top right, rgba(56, 239, 125, 0.15), transparent 50%);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero-text, .hero-image {
+            position: relative;
+            z-index: 2;
         }
 
         .hero-text .nationality {
@@ -171,6 +238,9 @@
             font-weight: 800;
             box-shadow: 0 10px 20px rgba(56, 239, 125, 0.3);
             transition: 0.3s transform, 0.3s box-shadow;
+            border: none;
+            cursor: pointer;
+            font-size: 1rem;
         }
 
         .btn:hover {
@@ -179,7 +249,6 @@
         }
 
         .hero-image {
-            position: relative;
             width: 350px;
             height: 350px;
             border-radius: 50%;
@@ -187,6 +256,11 @@
             display: flex;
             justify-content: center;
             align-items: center;
+            animation: floaty 5s ease-in-out infinite;
+        }
+        @keyframes floaty {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-14px); }
         }
 
         .hero-image img {
@@ -225,6 +299,8 @@
             max-width: 600px;
             margin: 2rem auto -2rem;
             box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+            position: relative;
+            z-index: 5;
         }
 
         .countdown-title {
@@ -258,29 +334,112 @@
             text-transform: uppercase;
         }
 
+        .birthday-today {
+            display: none;
+            margin-top: 1rem;
+            font-weight: 800;
+            color: var(--gold);
+            font-size: 1.2rem;
+        }
+
         /* EA FC Card Styling */
         .fifa-card-container {
             display: flex;
             justify-content: center;
             margin: 2rem 0;
+            perspective: 1200px;
         }
 
-        .fifa-card {
+        .fifa-card-flip {
+            width: 300px;
+            height: 450px;
+            position: relative;
+            transform-style: preserve-3d;
+            transition: transform 0.7s;
+            cursor: pointer;
+        }
+        .fifa-card-flip.flipped {
+            transform: rotateY(180deg);
+        }
+
+        .fifa-card, .fifa-card-back {
             width: 300px;
             height: 450px;
             background: linear-gradient(135deg, #FFE259 0%, #FFA751 50%, #FFD700 100%);
             border-radius: 20px;
             padding: 12px;
             color: #1a1a1a;
-            position: relative;
+            position: absolute;
+            top: 0;
+            left: 0;
             box-shadow: 0 15px 35px rgba(255, 215, 0, 0.3), 0 0 20px rgba(0,0,0,0.5);
             transition: transform 0.4s ease, box-shadow 0.4s ease;
             clip-path: polygon(12% 0%, 88% 0%, 100% 8%, 100% 92%, 88% 100%, 12% 100%, 0% 92%, 0% 8%);
+            backface-visibility: hidden;
+            overflow: hidden;
         }
 
-        .fifa-card:hover {
-            transform: translateY(-10px) scale(1.03);
+        .fifa-card-back {
+            transform: rotateY(180deg);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 30px 25px;
+        }
+
+        .fifa-card-back h3 {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 1.4rem;
+            margin-bottom: 15px;
+            border-bottom: 2px solid rgba(0,0,0,0.2);
+            padding-bottom: 8px;
+        }
+
+        .fifa-card-back ul {
+            list-style: none;
+            text-align: left;
+            width: 100%;
+        }
+
+        .fifa-card-back li {
+            font-weight: 700;
+            font-size: 0.95rem;
+            margin-bottom: 10px;
+            display: flex;
+            gap: 8px;
+            align-items: center;
+        }
+
+        .fifa-card-flip:hover .fifa-card,
+        .fifa-card-flip:hover .fifa-card-back {
             box-shadow: 0 25px 50px rgba(56, 239, 125, 0.4);
+        }
+
+        .flip-hint {
+            text-align: center;
+            margin-top: 1rem;
+            color: var(--text-gray);
+            font-size: 0.9rem;
+        }
+
+        /* Shine sweep effect */
+        .card-shine {
+            position: absolute;
+            top: 0;
+            left: -75%;
+            width: 50%;
+            height: 100%;
+            background: linear-gradient(120deg, transparent 0%, rgba(255,255,255,0.6) 50%, transparent 100%);
+            transform: skewX(-20deg);
+            animation: shineSweep 3.5s ease-in-out infinite;
+            pointer-events: none;
+            z-index: 5;
+        }
+        @keyframes shineSweep {
+            0% { left: -75%; }
+            30%, 100% { left: 130%; }
         }
 
         .card-inner {
@@ -532,6 +691,271 @@
             color: var(--text-light);
         }
 
+        /* ===== Timeline / Journey Section ===== */
+        .timeline {
+            position: relative;
+            max-width: 800px;
+            margin: 0 auto;
+            padding-left: 2rem;
+        }
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 8px;
+            top: 0;
+            bottom: 0;
+            width: 3px;
+            background: linear-gradient(var(--primary), var(--accent));
+            border-radius: 3px;
+        }
+        .timeline-item {
+            position: relative;
+            padding: 0 0 2.5rem 2rem;
+        }
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: -25px;
+            top: 4px;
+            width: 18px;
+            height: 18px;
+            background: var(--primary);
+            border-radius: 50%;
+            border: 3px solid var(--bg-dark);
+            box-shadow: 0 0 0 3px var(--primary);
+        }
+        .timeline-year {
+            color: var(--accent);
+            font-weight: 800;
+            font-size: 0.95rem;
+            margin-bottom: 0.3rem;
+        }
+        .timeline-item h4 {
+            font-size: 1.2rem;
+            margin-bottom: 0.3rem;
+        }
+        .timeline-item p {
+            color: var(--text-gray);
+        }
+
+        /* ===== Testimonials Section ===== */
+        .testimonial-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+        }
+        .testimonial-card {
+            background: var(--card-bg);
+            padding: 1.8rem;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            border-top: 4px solid var(--accent);
+            position: relative;
+        }
+        .testimonial-card i.quote-icon {
+            color: var(--primary);
+            font-size: 1.5rem;
+            opacity: 0.5;
+            margin-bottom: 0.8rem;
+        }
+        .testimonial-card p.quote-text {
+            font-style: italic;
+            color: var(--text-light);
+            margin-bottom: 1rem;
+            line-height: 1.5;
+        }
+        .testimonial-author {
+            display: flex;
+            align-items: center;
+            gap: 0.7rem;
+        }
+        .testimonial-author .avatar {
+            width: 38px;
+            height: 38px;
+            border-radius: 50%;
+            background: linear-gradient(45deg, var(--primary), var(--accent));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 800;
+            color: #0f172a;
+        }
+        .testimonial-author strong {
+            display: block;
+            font-size: 0.95rem;
+        }
+        .testimonial-author span {
+            font-size: 0.8rem;
+            color: var(--text-gray);
+        }
+
+        /* ===== Awards Gallery ===== */
+        .awards-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 1.5rem;
+        }
+        .award-card {
+            background: var(--card-bg);
+            border-radius: 15px;
+            padding: 2rem 1.2rem;
+            text-align: center;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            border: 1px solid rgba(255,215,0,0.15);
+            transition: 0.3s;
+        }
+        .award-card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 10px 25px rgba(255,215,0,0.25);
+        }
+        .award-card .medal {
+            width: 70px;
+            height: 70px;
+            border-radius: 50%;
+            margin: 0 auto 1rem;
+            background: linear-gradient(135deg, var(--gold), #b8860b);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.8rem;
+            color: #1a1a1a;
+            box-shadow: 0 5px 15px rgba(255,215,0,0.4);
+        }
+        .award-card h4 {
+            margin-bottom: 0.3rem;
+        }
+        .award-card span {
+            color: var(--text-gray);
+            font-size: 0.85rem;
+        }
+
+        /* ===== Social Feed Section ===== */
+        .social-feed-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 1.5rem;
+        }
+        .social-post {
+            background: var(--card-bg);
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+            transition: 0.3s;
+        }
+        .social-post:hover {
+            transform: translateY(-5px);
+        }
+        .social-post-img {
+            width: 100%;
+            height: 220px;
+            object-fit: cover;
+        }
+        .social-post-body {
+            padding: 1rem;
+        }
+        .social-post-header {
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+            margin-bottom: 0.6rem;
+            font-weight: 700;
+            font-size: 0.9rem;
+        }
+        .social-post-header i {
+            color: #E1306C;
+        }
+        .social-post-caption {
+            font-size: 0.88rem;
+            color: var(--text-gray);
+        }
+        .social-post-likes {
+            margin-top: 0.6rem;
+            font-size: 0.8rem;
+            color: var(--accent);
+            font-weight: 700;
+        }
+
+        /* ===== Music Player ===== */
+        .music-player {
+            max-width: 420px;
+            margin: 0 auto;
+            background: var(--card-bg);
+            border-radius: 20px;
+            padding: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 1.2rem;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+            border: 1px solid rgba(56, 239, 125, 0.2);
+        }
+        .music-art {
+            width: 65px;
+            height: 65px;
+            border-radius: 50%;
+            background: linear-gradient(45deg, var(--primary), var(--accent));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            color: #0f172a;
+            flex-shrink: 0;
+            animation: none;
+        }
+        .music-art.spinning {
+            animation: spin 4s linear infinite;
+        }
+        .music-info {
+            flex: 1;
+            min-width: 0;
+        }
+        .music-info h4 {
+            font-size: 1rem;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        .music-info span {
+            color: var(--text-gray);
+            font-size: 0.8rem;
+        }
+        .music-controls {
+            display: flex;
+            gap: 0.8rem;
+            align-items: center;
+        }
+        .music-controls button {
+            background: none;
+            border: none;
+            color: var(--text-light);
+            font-size: 1.3rem;
+            cursor: pointer;
+        }
+        .music-controls .play-btn {
+            width: 42px;
+            height: 42px;
+            border-radius: 50%;
+            background: var(--primary);
+            color: #0f172a;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.1rem;
+        }
+        .music-progress {
+            width: 100%;
+            height: 4px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 2px;
+            margin-top: 0.5rem;
+            overflow: hidden;
+        }
+        .music-progress-bar {
+            height: 100%;
+            width: 0%;
+            background: var(--primary);
+            transition: width 0.3s linear;
+        }
+
         /* Videos Grid & Cards Styling */
         .video-grid {
             display: grid;
@@ -591,6 +1015,28 @@
             margin: 0 10px;
         }
 
+        /* Share toast */
+        #toast {
+            position: fixed;
+            bottom: 24px;
+            left: 50%;
+            transform: translateX(-50%) translateY(20px);
+            background: var(--primary);
+            color: #0f172a;
+            font-weight: 700;
+            padding: 0.7rem 1.4rem;
+            border-radius: 30px;
+            opacity: 0;
+            pointer-events: none;
+            transition: 0.3s;
+            z-index: 5000;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+        }
+        #toast.show {
+            opacity: 1;
+            transform: translateX(-50%) translateY(0);
+        }
+
         @media (max-width: 768px) {
             .hero {
                 flex-direction: column-reverse;
@@ -607,10 +1053,25 @@
             .nav-links {
                 display: none;
             }
+            .music-player {
+                flex-wrap: wrap;
+            }
         }
     </style>
 </head>
 <body>
+
+    <!-- Loading Screen -->
+    <div id="loader">
+        <div class="loader-ring"></div>
+        <div class="loader-text">LOADING ROKSI #17...</div>
+    </div>
+
+    <!-- Confetti Canvas -->
+    <canvas id="confetti-canvas"></canvas>
+
+    <!-- Toast -->
+    <div id="toast">Link copied!</div>
 
     <!-- Navigation Bar -->
     <nav>
@@ -622,11 +1083,15 @@
             <ul class="nav-links">
                 <li><a href="#home" data-key="nav-home">Home</a></li>
                 <li><a href="#card" data-key="nav-card">Card</a></li>
+                <li><a href="#journey" data-key="nav-journey">Journey</a></li>
                 <li><a href="#gallery" data-key="nav-gallery">Gallery</a></li>
                 <li><a href="#players" data-key="nav-players">Favorites</a></li>
                 <li><a href="#stats" data-key="nav-stats">Stats</a></li>
                 <li><a href="#highlights" data-key="nav-highlights">Videos</a></li>
             </ul>
+            <button class="share-btn" onclick="shareSite()" title="Share">
+                <i class="fas fa-share-alt"></i>
+            </button>
             <button class="theme-btn" onclick="toggleTheme()" id="theme-btn">
                 <i class="fas fa-moon"></i>
             </button>
@@ -638,6 +1103,7 @@
 
     <!-- Hero Section -->
     <section class="hero" id="home">
+        <canvas id="particles"></canvas>
         <div class="hero-text">
             <div class="nationality">
                 <i class="fas fa-flag"></i> <span data-key="hero-nationality">Polish Football Player</span>
@@ -653,40 +1119,123 @@
     </section>
 
     <!-- Birthday Countdown Section -->
-    <div class="countdown-container">
+    <div class="countdown-container reveal">
         <div class="countdown-title" data-key="countdown-title">🎉 Countdown to Roksi's Birthday (Feb 20)</div>
-        <div class="countdown-timer">
+        <div class="countdown-timer" id="countdown-timer">
             <div class="time-box"><h3 id="days">00</h3><span data-key="cnt-days">Days</span></div>
             <div class="time-box"><h3 id="hours">00</h3><span data-key="cnt-hours">Hours</span></div>
             <div class="time-box"><h3 id="minutes">00</h3><span data-key="cnt-min">Mins</span></div>
             <div class="time-box"><h3 id="seconds">00</h3><span data-key="cnt-sec">Secs</span></div>
         </div>
+        <div class="birthday-today" id="birthday-today" data-key="birthday-today">🎂🎈 HAPPY BIRTHDAY ROKSI! 🎈🎂</div>
     </div>
 
     <!-- FIFA Player Card Section -->
     <section id="card">
-        <h2 class="section-title" data-key="card-title">Ultimate Player Card</h2>
-        <div class="fifa-card-container">
-            <div class="fifa-card">
-                <div class="card-inner">
-                    <div class="card-top">
-                        <div class="card-rating">94</div>
-                        <div class="card-pos">RW</div>
-                        <img src="https://flagcdn.com/w40/pl.png" alt="Poland" class="card-flag">
-                        <img src="logo.jpg" alt="Team Logo" class="card-club-logo">
+        <h2 class="section-title reveal" data-key="card-title">Ultimate Player Card</h2>
+        <div class="fifa-card-container reveal">
+            <div class="fifa-card-flip" id="fifaCard" onclick="this.classList.toggle('flipped')">
+                <div class="fifa-card">
+                    <div class="card-shine"></div>
+                    <div class="card-inner">
+                        <div class="card-top">
+                            <div class="card-rating">94</div>
+                            <div class="card-pos">RW</div>
+                            <img src="https://flagcdn.com/w40/pl.png" alt="Poland" class="card-flag">
+                            <img src="logo.jpg" alt="Team Logo" class="card-club-logo">
+                        </div>
+                        <div class="card-img-wrapper">
+                            <img src="roksi cup.jpeg" alt="Roksi" class="card-player-img">
+                        </div>
+                        <div class="card-name">ROKSI</div>
+                        <div class="card-stats">
+                            <div class="stat-item"><span>96</span> PAC</div>
+                            <div class="stat-item"><span>92</span> DRI</div>
+                            <div class="stat-item"><span>90</span> SHO</div>
+                            <div class="stat-item"><span>78</span> DEF</div>
+                            <div class="stat-item"><span>91</span> PAS</div>
+                            <div class="stat-item"><span>85</span> PHY</div>
+                        </div>
                     </div>
-                    <div class="card-img-wrapper">
-                        <img src="roksi cup.jpeg" alt="Roksi" class="card-player-img">
-                    </div>
-                    <div class="card-name">ROKSI</div>
-                    <div class="card-stats">
-                        <div class="stat-item"><span>96</span> PAC</div>
-                        <div class="stat-item"><span>92</span> DRI</div>
-                        <div class="stat-item"><span>90</span> SHO</div>
-                        <div class="stat-item"><span>78</span> DEF</div>
-                        <div class="stat-item"><span>91</span> PAS</div>
-                        <div class="stat-item"><span>85</span> PHY</div>
-                    </div>
+                </div>
+                <div class="fifa-card-back">
+                    <h3 data-key="card-back-title">Player Info</h3>
+                    <ul>
+                        <li><i class="fas fa-shirt"></i> <span data-key="card-back-club">Club: Jajniki Grudziądz</span></li>
+                        <li><i class="fas fa-hashtag"></i> <span data-key="card-back-num">Squad Number: 17</span></li>
+                        <li><i class="fas fa-shoe-prints"></i> <span data-key="card-back-foot">Preferred Foot: Right</span></li>
+                        <li><i class="fas fa-bullseye"></i> <span data-key="card-back-role">Role: Winger / Playmaker</span></li>
+                        <li><i class="fas fa-fire"></i> <span data-key="card-back-style">Style: Pace & Dribbling</span></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <p class="flip-hint reveal" data-key="flip-hint"><i class="fas fa-hand-pointer"></i> Click the card to flip it</p>
+    </section>
+
+    <!-- Timeline / Journey Section -->
+    <section id="journey">
+        <h2 class="section-title reveal" data-key="journey-title">Her Football Journey</h2>
+        <div class="timeline">
+            <div class="timeline-item reveal">
+                <div class="timeline-year">2019</div>
+                <h4 data-key="tl-1-title">First Steps on the Pitch</h4>
+                <p data-key="tl-1-desc">Roksi joined her first youth football club and fell in love with the game.</p>
+            </div>
+            <div class="timeline-item reveal">
+                <div class="timeline-year">2021</div>
+                <h4 data-key="tl-2-title">First Goal</h4>
+                <p data-key="tl-2-desc">Scored her first official goal, sparking a passion for attacking play.</p>
+            </div>
+            <div class="timeline-item reveal">
+                <div class="timeline-year">2023</div>
+                <h4 data-key="tl-3-title">Joined Jajniki Grudziądz</h4>
+                <p data-key="tl-3-desc">Signed with the club and quickly became a key player wearing #17.</p>
+            </div>
+            <div class="timeline-item reveal">
+                <div class="timeline-year">2024</div>
+                <h4 data-key="tl-4-title">First Trophy</h4>
+                <p data-key="tl-4-desc">Helped the team reach the finals and lifted her first medal.</p>
+            </div>
+            <div class="timeline-item reveal">
+                <div class="timeline-year">2025</div>
+                <h4 data-key="tl-5-title">2nd Place - Grudziądz Cup</h4>
+                <p data-key="tl-5-desc">A standout tournament performance, finishing in 2nd place with the squad.</p>
+            </div>
+            <div class="timeline-item reveal">
+                <div class="timeline-year">2026</div>
+                <h4 data-key="tl-6-title">Rising Star</h4>
+                <p data-key="tl-6-desc">Continuing to grow as one of the team's most promising talents.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonials Section -->
+    <section id="testimonials">
+        <h2 class="section-title reveal" data-key="testimonials-title">What They Say</h2>
+        <div class="testimonial-grid">
+            <div class="testimonial-card reveal">
+                <i class="fas fa-quote-left quote-icon"></i>
+                <p class="quote-text" data-key="test-1">"Roksi brings incredible energy to every training session. Her speed and work rate set the tone for the whole team."</p>
+                <div class="testimonial-author">
+                    <div class="avatar">T</div>
+                    <div><strong data-key="test-1-name">Coach</strong><span data-key="test-1-role">Head Coach</span></div>
+                </div>
+            </div>
+            <div class="testimonial-card reveal">
+                <i class="fas fa-quote-left quote-icon"></i>
+                <p class="quote-text" data-key="test-2">"Playing next to Roksi is amazing — she always finds the pass you didn't expect. True team player."</p>
+                <div class="testimonial-author">
+                    <div class="avatar">K</div>
+                    <div><strong data-key="test-2-name">Teammate</strong><span data-key="test-2-role">Midfielder</span></div>
+                </div>
+            </div>
+            <div class="testimonial-card reveal">
+                <i class="fas fa-quote-left quote-icon"></i>
+                <p class="quote-text" data-key="test-3">"So proud of how far she's come. Every match she plays with heart and determination."</p>
+                <div class="testimonial-author">
+                    <div class="avatar">F</div>
+                    <div><strong data-key="test-3-name">Family</strong><span data-key="test-3-role">Biggest Fan</span></div>
                 </div>
             </div>
         </div>
@@ -694,19 +1243,46 @@
 
     <!-- Photo Gallery Section -->
     <section id="gallery">
-        <h2 class="section-title" data-key="gallery-title">Team & Highlights Gallery</h2>
+        <h2 class="section-title reveal" data-key="gallery-title">Team & Highlights Gallery</h2>
         <div class="gallery-grid">
-            <div class="gallery-card">
+            <div class="gallery-card reveal">
                 <img src="team 11.jpeg" alt="Team Squad">
                 <div class="info" data-key="gal-team-squad">Team Championship Squad</div>
             </div>
-            <div class="gallery-card">
+            <div class="gallery-card reveal">
                 <img src="team 6.jpeg" alt="Match Preparation">
                 <div class="info" data-key="gal-match-prep">Match Strategy & Rest</div>
             </div>
-            <div class="gallery-card">
+            <div class="gallery-card reveal">
                 <img src="cup.jpeg" alt="Trophy">
                 <div class="info" data-key="gal-trophy">2nd Place Trophy - Grudziądz</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Awards Gallery -->
+    <section id="awards">
+        <h2 class="section-title reveal" data-key="awards-title">Awards & Medals</h2>
+        <div class="awards-grid">
+            <div class="award-card reveal">
+                <div class="medal"><i class="fas fa-trophy"></i></div>
+                <h4 data-key="award-1-title">2nd Place Cup</h4>
+                <span data-key="award-1-sub">Grudziądz Tournament, 2025</span>
+            </div>
+            <div class="award-card reveal">
+                <div class="medal"><i class="fas fa-medal"></i></div>
+                <h4 data-key="award-2-title">Top Scorer</h4>
+                <span data-key="award-2-sub">Youth League Season</span>
+            </div>
+            <div class="award-card reveal">
+                <div class="medal"><i class="fas fa-star"></i></div>
+                <h4 data-key="award-3-title">MVP Award</h4>
+                <span data-key="award-3-sub">Regional Championship</span>
+            </div>
+            <div class="award-card reveal">
+                <div class="medal"><i class="fas fa-award"></i></div>
+                <h4 data-key="award-4-title">Fair Play Award</h4>
+                <span data-key="award-4-sub">Club Recognition</span>
             </div>
         </div>
     </section>
@@ -714,21 +1290,21 @@
     <!-- Player Bio Info Section -->
     <section>
         <div class="bio-info">
-            <div class="bio-card">
+            <div class="bio-card reveal">
                 <i class="fas fa-ruler-vertical"></i>
                 <div>
                     <h4 data-key="bio-height-title">Height</h4>
                     <p>164 cm</p>
                 </div>
             </div>
-            <div class="bio-card">
+            <div class="bio-card reveal">
                 <i class="fas fa-birthday-cake"></i>
                 <div>
                     <h4 data-key="bio-dob-title">Date of Birth</h4>
                     <p>20 Feb 2009</p>
                 </div>
             </div>
-            <div class="bio-card">
+            <div class="bio-card reveal">
                 <i class="fas fa-palette"></i>
                 <div>
                     <h4 data-key="bio-colors-title">Favorite Colors</h4>
@@ -740,78 +1316,128 @@
 
     <!-- Favorite Football Players Section -->
     <section id="players">
-        <h2 class="section-title" data-key="players-title">Favorite Footballers</h2>
+        <h2 class="section-title reveal" data-key="players-title">Favorite Footballers</h2>
         <div class="players-grid">
-            <div class="player-card"><i class="fas fa-star"></i><h3>Cristiano Ronaldo</h3></div>
-            <div class="player-card"><i class="fas fa-user-shield"></i><h3>Wojciech Szczęsny</h3></div>
-            <div class="player-card"><i class="fas fa-bolt"></i><h3>Kenan Yıldız</h3></div>
-            <div class="player-card"><i class="fas fa-fire"></i><h3>Vinícius Jr.</h3></div>
-            <div class="player-card"><i class="fas fa-magic"></i><h3>Dominik Szoboszlai</h3></div>
-            <div class="player-card"><i class="fas fa-crown"></i><h3>Mohamed Salah</h3></div>
+            <div class="player-card reveal"><i class="fas fa-star"></i><h3>Cristiano Ronaldo</h3></div>
+            <div class="player-card reveal"><i class="fas fa-user-shield"></i><h3>Wojciech Szczęsny</h3></div>
+            <div class="player-card reveal"><i class="fas fa-bolt"></i><h3>Kenan Yıldız</h3></div>
+            <div class="player-card reveal"><i class="fas fa-fire"></i><h3>Vinícius Jr.</h3></div>
+            <div class="player-card reveal"><i class="fas fa-magic"></i><h3>Dominik Szoboszlai</h3></div>
+            <div class="player-card reveal"><i class="fas fa-crown"></i><h3>Mohamed Salah</h3></div>
         </div>
     </section>
 
     <!-- Pets Section -->
     <section>
-        <h2 class="section-title" data-key="pets-title">Pets & Companions</h2>
+        <h2 class="section-title reveal" data-key="pets-title">Pets & Companions</h2>
         <div class="pets-grid">
-            <div class="pet-card"><i class="fas fa-dog"></i><h3 data-key="pet-dog">Dog</h3></div>
-            <div class="pet-card"><i class="fas fa-cat"></i><h3 data-key="pet-cat">Cat</h3></div>
-            <div class="pet-card"><i class="fas fa-carrot"></i><h3 data-key="pet-rabbit">Rabbit</h3></div>
+            <div class="pet-card reveal"><i class="fas fa-dog"></i><h3 data-key="pet-dog">Dog</h3></div>
+            <div class="pet-card reveal"><i class="fas fa-cat"></i><h3 data-key="pet-cat">Cat</h3></div>
+            <div class="pet-card reveal"><i class="fas fa-carrot"></i><h3 data-key="pet-rabbit">Rabbit</h3></div>
         </div>
     </section>
 
     <!-- Stats Section -->
     <section id="stats">
-        <h2 class="section-title" data-key="stats-title">Career Statistics</h2>
+        <h2 class="section-title reveal" data-key="stats-title">Career Statistics</h2>
         <div class="stats-grid">
-            <div class="stat-card"><i class="fas fa-futbol"></i><h2 class="counter" data-target="28">0</h2><p data-key="stat-goals">Goals Scored</p></div>
-            <div class="stat-card"><i class="fas fa-running"></i><h2 class="counter" data-target="19">0</h2><p data-key="stat-assists">Assists</p></div>
-            <div class="stat-card"><i class="fas fa-trophy"></i><h2 class="counter" data-target="6">0</h2><p data-key="stat-trophies">Trophies & Awards</p></div>
-            <div class="stat-card"><i class="fas fa-shield-alt"></i><h2 class="counter" data-target="54">0</h2><p data-key="stat-matches">Matches Played</p></div>
+            <div class="stat-card reveal"><i class="fas fa-futbol"></i><h2 class="counter" data-target="28">0</h2><p data-key="stat-goals">Goals Scored</p></div>
+            <div class="stat-card reveal"><i class="fas fa-running"></i><h2 class="counter" data-target="19">0</h2><p data-key="stat-assists">Assists</p></div>
+            <div class="stat-card reveal"><i class="fas fa-trophy"></i><h2 class="counter" data-target="6">0</h2><p data-key="stat-trophies">Trophies & Awards</p></div>
+            <div class="stat-card reveal"><i class="fas fa-shield-alt"></i><h2 class="counter" data-target="54">0</h2><p data-key="stat-matches">Matches Played</p></div>
         </div>
+    </section>
+
+    <!-- Social Feed Section -->
+    <section id="social-feed">
+        <h2 class="section-title reveal" data-key="social-title">Latest Posts</h2>
+        <div class="social-feed-grid">
+            <div class="social-post reveal">
+                <img class="social-post-img" src="roksi cup.jpeg" alt="post1">
+                <div class="social-post-body">
+                    <div class="social-post-header"><i class="fab fa-instagram"></i> roksi.17</div>
+                    <div class="social-post-caption" data-key="post-1">Another day, another match. Let's go team! ⚽🔥</div>
+                    <div class="social-post-likes">❤️ 214 <span data-key="likes-label">likes</span></div>
+                </div>
+            </div>
+            <div class="social-post reveal">
+                <img class="social-post-img" src="cup.jpeg" alt="post2">
+                <div class="social-post-body">
+                    <div class="social-post-header"><i class="fab fa-instagram"></i> roksi.17</div>
+                    <div class="social-post-caption" data-key="post-2">So proud of this team 🏆💚</div>
+                    <div class="social-post-likes">❤️ 189 <span data-key="likes-label">likes</span></div>
+                </div>
+            </div>
+            <div class="social-post reveal">
+                <img class="social-post-img" src="team 11.jpeg" alt="post3">
+                <div class="social-post-body">
+                    <div class="social-post-header"><i class="fab fa-instagram"></i> roksi.17</div>
+                    <div class="social-post-caption" data-key="post-3">Family on and off the pitch 🙌</div>
+                    <div class="social-post-likes">❤️ 302 <span data-key="likes-label">likes</span></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Music Player Section -->
+    <section id="music">
+        <h2 class="section-title reveal" data-key="music-title">Walkout Song</h2>
+        <div class="music-player reveal">
+            <div class="music-art" id="musicArt"><i class="fas fa-music"></i></div>
+            <div class="music-info">
+                <h4 data-key="music-track">Champions Anthem</h4>
+                <span data-key="music-artist">Match Day Mix</span>
+                <div class="music-progress"><div class="music-progress-bar" id="musicProgress"></div></div>
+            </div>
+            <div class="music-controls">
+                <button class="play-btn" id="playBtn" onclick="toggleMusic()"><i class="fas fa-play" id="playIcon"></i></button>
+            </div>
+        </div>
+        <audio id="audioPlayer" loop>
+            <source src="https://cdn.pixabay.com/download/audio/2022/03/15/audio_c8b8a73467.mp3" type="audio/mpeg">
+        </audio>
+        <p class="flip-hint" data-key="music-hint" style="text-align:center; margin-top: 1rem;">🎵 Optional background vibes — tap play</p>
     </section>
 
     <!-- Videos & Highlights Section -->
     <section id="highlights">
-    <h2 class="section-title" data-key="highlight-title">Match Highlights & Videos</h2>
+    <h2 class="section-title reveal" data-key="highlight-title">Match Highlights & Videos</h2>
     <div class="video-grid">
-        
-        <!-- 1. Team Photo Video (عنوانه: Team Photo Session) -->
-        <div class="video-card">
+
+        <!-- 1. Team Photo Video -->
+        <div class="video-card reveal">
             <iframe src="https://www.youtube.com/embed/N_hw0xxr8jI" title="Team Photo" allowfullscreen></iframe>
             <p data-key="vid-team">📸 Team Photo Session</p>
         </div>
 
-        <!-- 2. Team Support Circle (عنوانه: Team Support Circle) -->
-        <div class="video-card short-card">
+        <!-- 2. Team Support Circle -->
+        <div class="video-card short-card reveal">
             <iframe src="https://www.youtube.com/embed/t-Ms9r0nXsY" title="Circle of Support" allowfullscreen></iframe>
             <p data-key="vid-circle">🙌 Team Support Circle</p>
         </div>
 
-        <!-- 3. Roksana Goal (عنوانه: Roksana's Goal) -->
-        <div class="video-card">
+        <!-- 3. Roksana Goal -->
+        <div class="video-card reveal">
             <iframe src="https://www.youtube.com/embed/razI9ugKlgo" title="Roksana Goal" allowfullscreen></iframe>
             <p data-key="vid-goal">⚽ Roksana's Goal (#17)</p>
         </div>
 
-        <!-- 4. Locker Room Celebration 1 (عنوانه: Locker Room Celebration 1) -->
-        <div class="video-card short-card">
+        <!-- 4. Locker Room Celebration 1 -->
+        <div class="video-card short-card reveal">
             <iframe src="https://www.youtube.com/embed/tDH-hr9-Fr8" title="Celebration 1" allowfullscreen></iframe>
             <p data-key="vid-celeb1">🥇 Trophy & Medal Ceremony</p>
         </div>
 
-        <!-- 5. Locker Room Celebration 2 (عنوانه: Locker Room Celebration 2) -->
-        <div class="video-card short-card">
+        <!-- 5. Locker Room Celebration 2 -->
+        <div class="video-card short-card reveal">
             <iframe src="https://www.youtube.com/embed/ReOuHt60QZ0" title="Celebration 2" allowfullscreen></iframe>
             <p data-key="vid-celeb2">🔥 Locker Room Celebration</p>
         </div>
 
-        <!-- 6. Trophy Ceremony (عنوانه: Trophy & Medal Ceremony) -->
-        <div class="video-card">
+        <!-- 6. Trophy Ceremony -->
+        <div class="video-card reveal">
             <iframe src="https://www.youtube.com/embed/L2QnDvzwls8" title="Trophy Ceremony" allowfullscreen></iframe>
-            <p data-key="vid-trophy">🥇 Arrival and initial vibes
-</p>
+            <p data-key="vid-trophy">🥇 Arrival and Initial Vibes</p>
         </div>
 
     </div>
@@ -829,25 +1455,74 @@
 
     <!-- JavaScript logic -->
     <script>
+        // ===== Loading Screen =====
+        window.addEventListener('load', () => {
+            setTimeout(() => {
+                document.getElementById('loader').classList.add('hide');
+            }, 500);
+        });
+
         // Language System
         const translations = {
             en: {
-                "nav-home": "Home", "nav-card": "Card", "nav-gallery": "Gallery", "nav-players": "Favorites", "nav-stats": "Stats", "nav-highlights": "Videos",
+                "nav-home": "Home", "nav-card": "Card", "nav-journey": "Journey", "nav-gallery": "Gallery", "nav-players": "Favorites", "nav-stats": "Stats", "nav-highlights": "Videos",
                 "hero-nationality": "Polish Football Player",
                 "hero-desc": "Passion, speed, and determination on the pitch. Pushing limits and striving for greatness in women's football.",
                 "hero-btn": "Watch Highlights", "countdown-title": "🎉 Countdown to Roksi's Birthday (Feb 20)",
                 "cnt-days": "Days", "cnt-hours": "Hours", "cnt-min": "Mins", "cnt-sec": "Secs",
-                "card-title": "Ultimate Player Card", 
+                "birthday-today": "🎂🎈 HAPPY BIRTHDAY ROKSI! 🎈🎂",
+                "card-title": "Ultimate Player Card",
+                "flip-hint": "Click the card to flip it",
+                "card-back-title": "Player Info",
+                "card-back-club": "Club: Jajniki Grudziądz",
+                "card-back-num": "Squad Number: 17",
+                "card-back-foot": "Preferred Foot: Right",
+                "card-back-role": "Role: Winger / Playmaker",
+                "card-back-style": "Style: Pace & Dribbling",
+                "journey-title": "Her Football Journey",
+                "tl-1-title": "First Steps on the Pitch",
+                "tl-1-desc": "Roksi joined her first youth football club and fell in love with the game.",
+                "tl-2-title": "First Goal",
+                "tl-2-desc": "Scored her first official goal, sparking a passion for attacking play.",
+                "tl-3-title": "Joined Jajniki Grudziądz",
+                "tl-3-desc": "Signed with the club and quickly became a key player wearing #17.",
+                "tl-4-title": "First Trophy",
+                "tl-4-desc": "Helped the team reach the finals and lifted her first medal.",
+                "tl-5-title": "2nd Place - Grudziądz Cup",
+                "tl-5-desc": "A standout tournament performance, finishing in 2nd place with the squad.",
+                "tl-6-title": "Rising Star",
+                "tl-6-desc": "Continuing to grow as one of the team's most promising talents.",
+                "testimonials-title": "What They Say",
+                "test-1": "\"Roksi brings incredible energy to every training session. Her speed and work rate set the tone for the whole team.\"",
+                "test-1-name": "Coach", "test-1-role": "Head Coach",
+                "test-2": "\"Playing next to Roksi is amazing — she always finds the pass you didn't expect. True team player.\"",
+                "test-2-name": "Teammate", "test-2-role": "Midfielder",
+                "test-3": "\"So proud of how far she's come. Every match she plays with heart and determination.\"",
+                "test-3-name": "Family", "test-3-role": "Biggest Fan",
                 "gallery-title": "Team & Highlights Gallery",
                 "gal-team-squad": "Team Championship Squad",
                 "gal-match-prep": "Match Strategy & Rest",
                 "gal-trophy": "2nd Place Trophy - Grudziądz",
+                "awards-title": "Awards & Medals",
+                "award-1-title": "2nd Place Cup", "award-1-sub": "Grudziądz Tournament, 2025",
+                "award-2-title": "Top Scorer", "award-2-sub": "Youth League Season",
+                "award-3-title": "MVP Award", "award-3-sub": "Regional Championship",
+                "award-4-title": "Fair Play Award", "award-4-sub": "Club Recognition",
                 "bio-height-title": "Height", "bio-dob-title": "Date of Birth",
                 "bio-colors-title": "Favorite Colors", "bio-colors-val": "Green & Light Blue",
                 "players-title": "Favorite Footballers", "pets-title": "Pets & Companions",
                 "pet-dog": "Dog", "pet-cat": "Cat", "pet-rabbit": "Rabbit",
                 "stats-title": "Career Statistics", "stat-goals": "Goals Scored", "stat-assists": "Assists",
-                "stat-trophies": "Trophies & Awards", "stat-matches": "Matches Played", 
+                "stat-trophies": "Trophies & Awards", "stat-matches": "Matches Played",
+                "social-title": "Latest Posts",
+                "post-1": "Another day, another match. Let's go team! ⚽🔥",
+                "post-2": "So proud of this team 🏆💚",
+                "post-3": "Family on and off the pitch 🙌",
+                "likes-label": "likes",
+                "music-title": "Walkout Song",
+                "music-track": "Champions Anthem",
+                "music-artist": "Match Day Mix",
+                "music-hint": "🎵 Optional background vibes — tap play",
                 "highlight-title": "Match Highlights & Videos",
                 "vid-goal": "⚽ Roksana's Goal (#17)",
                 "vid-trophy": "🥇 Trophy & Medal Ceremony",
@@ -857,22 +1532,64 @@
                 "vid-circle": "🙌 Team Support Circle"
             },
             pl: {
-                "nav-home": "Strona Główna", "nav-card": "Karta", "nav-gallery": "Galeria", "nav-players": "Ulubieni", "nav-stats": "Statystyki", "nav-highlights": "Filmy",
+                "nav-home": "Strona Główna", "nav-card": "Karta", "nav-journey": "Droga", "nav-gallery": "Galeria", "nav-players": "Ulubieni", "nav-stats": "Statystyki", "nav-highlights": "Filmy",
                 "hero-nationality": "Polska Piłkarka",
                 "hero-desc": "Pasja, szybkość i determinacja na boisku. Przekraczanie granic i dążenie do doskonałości w kobiecej piłce nożnej.",
                 "hero-btn": "Obejrzyj Skróty", "countdown-title": "🎉 Odliczanie do urodzin Roksi (20 Lutego)",
                 "cnt-days": "Dni", "cnt-hours": "Godz", "cnt-min": "Min", "cnt-sec": "Sek",
-                "card-title": "Karta Zawodniczki EA FC", 
+                "birthday-today": "🎂🎈 WSZYSTKIEGO NAJLEPSZEGO ROKSI! 🎈🎂",
+                "card-title": "Karta Zawodniczki EA FC",
+                "flip-hint": "Kliknij kartę, aby ją odwrócić",
+                "card-back-title": "Informacje o Zawodniczce",
+                "card-back-club": "Klub: Jajniki Grudziądz",
+                "card-back-num": "Numer: 17",
+                "card-back-foot": "Preferowana Noga: Prawa",
+                "card-back-role": "Rola: Skrzydłowa / Rozgrywająca",
+                "card-back-style": "Styl: Szybkość i Drybling",
+                "journey-title": "Jej Piłkarska Droga",
+                "tl-1-title": "Pierwsze Kroki na Boisku",
+                "tl-1-desc": "Roksi dołączyła do swojego pierwszego klubu młodzieżowego i zakochała się w grze.",
+                "tl-2-title": "Pierwszy Gol",
+                "tl-2-desc": "Strzeliła swojego pierwszego oficjalnego gola, rozpalając pasję do gry ofensywnej.",
+                "tl-3-title": "Dołączenie do Jajniki Grudziądz",
+                "tl-3-desc": "Podpisała kontrakt z klubem i szybko stała się kluczową zawodniczką z numerem 17.",
+                "tl-4-title": "Pierwsze Trofeum",
+                "tl-4-desc": "Pomogła drużynie dotrzeć do finału i zdobyła swój pierwszy medal.",
+                "tl-5-title": "2. Miejsce - Puchar Grudziądza",
+                "tl-5-desc": "Wybitny występ turniejowy, zakończony 2. miejscem z drużyną.",
+                "tl-6-title": "Wschodząca Gwiazda",
+                "tl-6-desc": "Nadal rozwija się jako jeden z najbardziej obiecujących talentów zespołu.",
+                "testimonials-title": "Co Mówią Inni",
+                "test-1": "\"Roksi wnosi niesamowitą energię do każdego treningu. Jej szybkość nadaje ton całej drużynie.\"",
+                "test-1-name": "Trener", "test-1-role": "Trener Główny",
+                "test-2": "\"Gra obok Roksi jest niesamowita — zawsze znajdzie podanie, którego się nie spodziewasz.\"",
+                "test-2-name": "Koleżanka z Drużyny", "test-2-role": "Pomocnik",
+                "test-3": "\"Jestem taka dumna z tego, jak daleko zaszła. Każdy mecz gra z sercem.\"",
+                "test-3-name": "Rodzina", "test-3-role": "Największy Fan",
                 "gallery-title": "Galeria Drużyny i Osiągnięć",
                 "gal-team-squad": "Skład Drużyny",
                 "gal-match-prep": "Strategia i Mecz",
                 "gal-trophy": "Puchar II Miejsce - Grudziądz",
+                "awards-title": "Nagrody i Medale",
+                "award-1-title": "Puchar II Miejsce", "award-1-sub": "Turniej Grudziądz, 2025",
+                "award-2-title": "Najlepszy Strzelec", "award-2-sub": "Sezon Ligi Młodzieżowej",
+                "award-3-title": "Nagroda MVP", "award-3-sub": "Mistrzostwa Regionalne",
+                "award-4-title": "Nagroda Fair Play", "award-4-sub": "Uznanie Klubu",
                 "bio-height-title": "Wzrost", "bio-dob-title": "Data Urodzenia",
                 "bio-colors-title": "Ulubione Kolory", "bio-colors-val": "Zielony i Jasnoniebieski",
                 "players-title": "Ulubieni Piłkarze", "pets-title": "Zwierzęta Domowe",
                 "pet-dog": "Pies", "pet-cat": "Kot", "pet-rabbit": "Królik",
                 "stats-title": "Statystyki Kariery", "stat-goals": "Strzelone Bramki", "stat-assists": "Asysty",
-                "stat-trophies": "Trofea i Wyróżnienia", "stat-matches": "Rozegrane Mecze", 
+                "stat-trophies": "Trofea i Wyróżnienia", "stat-matches": "Rozegrane Mecze",
+                "social-title": "Najnowsze Posty",
+                "post-1": "Kolejny dzień, kolejny mecz. Do przodu drużyno! ⚽🔥",
+                "post-2": "Taka dumna z tej drużyny 🏆💚",
+                "post-3": "Rodzina na boisku i poza nim 🙌",
+                "likes-label": "polubień",
+                "music-title": "Piosenka Wejścia",
+                "music-track": "Hymn Mistrzów",
+                "music-artist": "Mix na Mecz",
+                "music-hint": "🎵 Opcjonalny klimat w tle — kliknij play",
                 "highlight-title": "Skróty Meczów i Filmy",
                 "vid-goal": "⚽ Gol Roksany (#17)",
                 "vid-trophy": "🥇 Ceremonia Wręczenia Pucharów",
@@ -906,18 +1623,55 @@
             }
         }
 
-        // Birthday Countdown Timer Logic
+        // ===== Share Button =====
+        function shareSite() {
+            const url = window.location.href;
+            const toast = document.getElementById('toast');
+            if (navigator.share) {
+                navigator.share({
+                    title: 'ROKSAN #17 | ROKSI',
+                    text: "Check out Roksi's player profile!",
+                    url: url
+                }).catch(() => {});
+            } else if (navigator.clipboard) {
+                navigator.clipboard.writeText(url).then(() => {
+                    toast.classList.add('show');
+                    setTimeout(() => toast.classList.remove('show'), 2200);
+                });
+            }
+        }
+
+        // Birthday Countdown Timer Logic + Confetti Trigger
+        let confettiFired = false;
         function updateCountdown() {
             const now = new Date();
             let currentYear = now.getFullYear();
-            let birthday = new Date(currentYear, 1, 20, 23, 59, 59);
+            let birthdayStart = new Date(currentYear, 1, 20, 0, 0, 0);
+            let birthdayEnd = new Date(currentYear, 1, 20, 23, 59, 59);
+            const isBirthdayToday = now >= birthdayStart && now <= birthdayEnd;
 
+            const timerEl = document.getElementById('countdown-timer');
+            const todayEl = document.getElementById('birthday-today');
+
+            if (isBirthdayToday) {
+                timerEl.style.display = 'none';
+                todayEl.style.display = 'block';
+                if (!confettiFired) {
+                    confettiFired = true;
+                    launchConfetti();
+                }
+                return;
+            } else {
+                timerEl.style.display = 'flex';
+                todayEl.style.display = 'none';
+            }
+
+            let birthday = new Date(currentYear, 1, 20, 23, 59, 59);
             if (now > birthday) {
                 birthday = new Date(currentYear + 1, 1, 20, 23, 59, 59);
             }
 
             const diff = birthday - now;
-
             const d = Math.floor(diff / (1000 * 60 * 60 * 24));
             const h = Math.floor((diff / (1000 * 60 * 60)) % 24);
             const m = Math.floor((diff / 1000 / 60) % 60);
@@ -931,6 +1685,56 @@
 
         setInterval(updateCountdown, 1000);
         updateCountdown();
+
+        // ===== Confetti Effect =====
+        function launchConfetti() {
+            const canvas = document.getElementById('confetti-canvas');
+            const ctx = canvas.getContext('2d');
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+            const colors = ['#38ef7d', '#38bdf8', '#FFD700', '#ff6b6b', '#ffffff'];
+            let pieces = [];
+            for (let i = 0; i < 150; i++) {
+                pieces.push({
+                    x: Math.random() * canvas.width,
+                    y: -20 - Math.random() * canvas.height,
+                    size: 6 + Math.random() * 6,
+                    color: colors[Math.floor(Math.random() * colors.length)],
+                    speedY: 2 + Math.random() * 3,
+                    speedX: -1.5 + Math.random() * 3,
+                    rotation: Math.random() * 360,
+                    rotSpeed: -5 + Math.random() * 10
+                });
+            }
+            let frame = 0;
+            const maxFrames = 400;
+            function animate() {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                pieces.forEach(p => {
+                    p.y += p.speedY;
+                    p.x += p.speedX;
+                    p.rotation += p.rotSpeed;
+                    ctx.save();
+                    ctx.translate(p.x, p.y);
+                    ctx.rotate(p.rotation * Math.PI / 180);
+                    ctx.fillStyle = p.color;
+                    ctx.fillRect(-p.size / 2, -p.size / 2, p.size, p.size * 0.6);
+                    ctx.restore();
+                });
+                frame++;
+                if (frame < maxFrames) {
+                    requestAnimationFrame(animate);
+                } else {
+                    ctx.clearRect(0, 0, canvas.width, canvas.height);
+                }
+            }
+            animate();
+        }
+        window.addEventListener('resize', () => {
+            const canvas = document.getElementById('confetti-canvas');
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        });
 
         // Smooth Counter Animation
         const counters = document.querySelectorAll('.counter');
@@ -954,16 +1758,102 @@
             requestAnimationFrame(step);
         };
 
-        const observer = new IntersectionObserver((entries) => {
+        const statObserver = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
                     animateCounter(entry.target);
-                    observer.unobserve(entry.target);
+                    statObserver.unobserve(entry.target);
                 }
             });
         }, { threshold: 0.5 });
 
-        counters.forEach(counter => observer.observe(counter));
+        counters.forEach(counter => statObserver.observe(counter));
+
+        // ===== Scroll Reveal Animations =====
+        const revealEls = document.querySelectorAll('.reveal');
+        const revealObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                    revealObserver.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.15 });
+        revealEls.forEach(el => revealObserver.observe(el));
+
+        // ===== Particle Background (Hero) =====
+        (function initParticles() {
+            const canvas = document.getElementById('particles');
+            const ctx = canvas.getContext('2d');
+            const hero = document.getElementById('home');
+
+            function resize() {
+                canvas.width = hero.offsetWidth;
+                canvas.height = hero.offsetHeight;
+            }
+            resize();
+            window.addEventListener('resize', resize);
+
+            const particles = [];
+            const count = 45;
+            for (let i = 0; i < count; i++) {
+                particles.push({
+                    x: Math.random() * canvas.width,
+                    y: Math.random() * canvas.height,
+                    r: 1 + Math.random() * 2.5,
+                    dx: -0.3 + Math.random() * 0.6,
+                    dy: -0.3 + Math.random() * 0.6,
+                    alpha: 0.2 + Math.random() * 0.4
+                });
+            }
+
+            function draw() {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                particles.forEach(p => {
+                    p.x += p.dx;
+                    p.y += p.dy;
+                    if (p.x < 0 || p.x > canvas.width) p.dx *= -1;
+                    if (p.y < 0 || p.y > canvas.height) p.dy *= -1;
+                    ctx.beginPath();
+                    ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+                    ctx.fillStyle = `rgba(56, 239, 125, ${p.alpha})`;
+                    ctx.fill();
+                });
+                requestAnimationFrame(draw);
+            }
+            draw();
+        })();
+
+        // ===== Music Player =====
+        const audio = document.getElementById('audioPlayer');
+        const playBtn = document.getElementById('playBtn');
+        const playIcon = document.getElementById('playIcon');
+        const musicArt = document.getElementById('musicArt');
+        const musicProgress = document.getElementById('musicProgress');
+
+        function toggleMusic() {
+            if (audio.paused) {
+                audio.play().catch(() => {});
+                playIcon.className = 'fas fa-pause';
+                musicArt.classList.add('spinning');
+            } else {
+                audio.pause();
+                playIcon.className = 'fas fa-play';
+                musicArt.classList.remove('spinning');
+            }
+        }
+
+        audio.addEventListener('timeupdate', () => {
+            if (audio.duration) {
+                const pct = (audio.currentTime / audio.duration) * 100;
+                musicProgress.style.width = pct + '%';
+            }
+        });
+
+        audio.addEventListener('ended', () => {
+            playIcon.className = 'fas fa-play';
+            musicArt.classList.remove('spinning');
+        });
     </script>
 </body>
 </html>
