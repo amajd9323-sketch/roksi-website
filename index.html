@@ -44,12 +44,13 @@
         .logo { font-size: 1.5rem; font-weight: 900; letter-spacing: 2px; color: var(--text-light); display: flex; align-items: center; gap: 12px; }
         .logo img { width: 45px; height: 45px; object-fit: contain; border-radius: 50%; background: #fff; padding: 2px; }
         .logo span { color: var(--primary); }
-        .nav-right { display: flex; align-items: center; gap: 1.5rem; }
+        .nav-right { display: flex; align-items: center; gap: 1.5rem; position: relative; }
         .nav-links { display: flex; list-style: none; gap: 2rem; }
         .nav-links a { color: var(--text-light); text-decoration: none; font-weight: 600; transition: 0.3s; }
         .nav-links a:hover { color: var(--accent); }
         .theme-btn, .lang-btn, .share-btn { background: rgba(255, 255, 255, 0.1); border: 1px solid var(--primary); color: var(--text-light); padding: 0.4rem 1rem; border-radius: 20px; cursor: pointer; font-weight: 700; transition: 0.3s; display: flex; align-items: center; gap: 0.5rem; }
         .theme-btn:hover, .lang-btn:hover, .share-btn:hover { background: var(--primary); color: #fff; }
+        .hamburger-btn { display: none; padding: 0.5rem 0.7rem; }
         .reveal { opacity: 0; transform: translateY(40px); transition: opacity 0.8s ease, transform 0.8s ease; }
         .reveal.visible { opacity: 1; transform: translateY(0); }
         .hero { min-height: 100vh; display: flex; align-items: center; justify-content: space-between; padding: 120px 8% 0; background: radial-gradient(circle at top right, rgba(56, 239, 125, 0.15), transparent 50%); position: relative; overflow: hidden; }
@@ -235,9 +236,33 @@
             .hero { flex-direction: column-reverse; text-align: center; padding-top: 120px; }
             .hero-image { width: 250px; height: 250px; }
             .hero-text h1 { font-size: 2.8rem; }
-            .nav-links { display: none; }
+            .hero-text p { font-size: 1rem; max-width: 100%; }
+            nav { padding: 1rem 5%; }
+            .nav-links {
+                display: none;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                right: 0;
+                flex-direction: column;
+                gap: 0;
+                background: var(--nav-bg);
+                backdrop-filter: blur(10px);
+                border-bottom: 1px solid rgba(255,255,255,0.1);
+                box-shadow: 0 10px 20px rgba(0,0,0,0.15);
+            }
+            .nav-links.open { display: flex; }
+            .nav-links li { width: 100%; text-align: center; }
+            .nav-links a { display: block; padding: 1rem; }
+            .hamburger-btn { display: flex; }
+            .lang-btn span:not(#lang-label), .share-btn span { display: none; }
             .music-player { flex-wrap: wrap; }
             .potm-banner { flex-direction: column; text-align: center; }
+            .fifa-card-flip { width: 260px; height: 390px; }
+            .fifa-card, .fifa-card-back { width: 260px; height: 390px; }
+            .video-card.short-card iframe { max-width: 100%; height: 400px; }
+            section { padding: 3rem 6%; }
+            .section-title { font-size: 2rem; }
         }
     </style>
 </head>
@@ -266,7 +291,7 @@
             ROKSAN<span>.17</span>
         </div>
         <div class="nav-right">
-            <ul class="nav-links">
+            <ul class="nav-links" id="navLinks">
                 <li><a href="#home" data-key="nav-home">Home</a></li>
                 <li><a href="#card" data-key="nav-card">Card</a></li>
                 <li><a href="#journey" data-key="nav-journey">Journey</a></li>
@@ -283,6 +308,9 @@
             </button>
             <button class="theme-btn" onclick="toggleTheme()" id="theme-btn">
                 <i class="fas fa-moon"></i>
+            </button>
+            <button class="theme-btn hamburger-btn" onclick="toggleMobileMenu()" id="hamburgerBtn" aria-label="Menu">
+                <i class="fas fa-bars"></i>
             </button>
         </div>
     </nav>
@@ -591,7 +619,7 @@
         <div class="music-player reveal">
             <div class="music-art" id="musicArt"><i class="fas fa-music"></i></div>
             <div class="music-info">
-                <h4 data-key="music-track">woda księzycowa</h4>
+                <h4 data-key="music-track">Woda Księżycowa</h4>
                 <span data-key="music-artist">Match Day Mix</span>
                 <div class="music-progress"><div class="music-progress-bar" id="musicProgress"></div></div>
             </div>
@@ -605,32 +633,32 @@
         <p class="flip-hint" data-key="music-hint" style="text-align:center; margin-top: 1rem;">🎵 Optional background vibes — tap play</p>
     </section>
 
-    <section id="highlights">
+<section id="highlights">
     <h2 class="section-title reveal" data-key="highlight-title">Match Highlights & Videos</h2>
     <div class="video-grid">
         <div class="video-card reveal">
             <iframe src="https://www.youtube.com/embed/N_hw0xxr8jI" title="Team Photo" loading="lazy" allowfullscreen></iframe>
-            <p data-key="vid-team">⚽ Roksana's Goal (#17)</p>
+            <p data-key="vid-goal">⚽ Roksana's Goal (#17)</p>
         </div>
         <div class="video-card short-card reveal">
             <iframe src="https://www.youtube.com/embed/t-Ms9r0nXsY" title="Circle of Support" loading="lazy" allowfullscreen></iframe>
-            <p data-key="vid-circle">🥇 Arrival and Initial Vibes</p>
+            <p data-key="vid-circle">🙌 Team Support Circle</p>
         </div>
         <div class="video-card reveal">
             <iframe src="https://www.youtube.com/embed/razI9ugKlgo" title="Roksana Goal" loading="lazy" allowfullscreen></iframe>
-            <p data-key="vid-goal">📸 Team Photo Session</p>
+            <p data-key="vid-team">📸 Team Photo Session</p>
         </div>
         <div class="video-card short-card reveal">
             <iframe src="https://www.youtube.com/embed/tDH-hr9-Fr8" title="Celebration 1" loading="lazy" allowfullscreen></iframe>
-            <p data-key="vid-celeb1">🥇 Trophy & Medal Ceremony</p>
+            <p data-key="vid-celeb1">🎉 Locker Room Celebration (1)</p>
         </div>
         <div class="video-card short-card reveal">
             <iframe src="https://www.youtube.com/embed/ReOuHt60QZ0" title="Celebration 2" loading="lazy" allowfullscreen></iframe>
-            <p data-key="vid-celeb2">🔥 Locker Room Celebration</p>
+            <p data-key="vid-celeb2">🔥 Locker Room Celebration (2)</p>
         </div>
         <div class="video-card reveal">
             <iframe src="https://www.youtube.com/embed/L2QnDvzwls8" title="Trophy Ceremony" loading="lazy" allowfullscreen></iframe>
-            <p data-key="vid-trophy">🙌 Team Support Circle</p>
+            <p data-key="vid-trophy">🥇 Trophy & Medal Ceremony</p>
         </div>
     </div>
 </section>
@@ -693,11 +721,11 @@
                 "tl-6-desc": "Continuing to grow as one of the team's most promising talents.",
                 "testimonials-title": "What They Say",
                 "test-1": "\"Roksi brings incredible energy to every training session. Her speed and work rate set the tone for the whole team.\"",
-                "test-1-name": "Coach", "test-1-role": "Head Coach",
+                "test-1-name": "Coach rafal ", "test-1-role": "Head Coach",
                 "test-2": "\"Playing next to Roksi is amazing — she always finds the pass you didn't expect. True team player.\"",
-                "test-2-name": "Teammate", "test-2-role": "Midfielder",
+                "test-2-name": "Teammates", "test-2-role": "Midfielder",
                 "test-3": "\"So proud of how far she's come. Every match she plays with heart and determination.\"",
-                "test-3-name": "Family", "test-3-role": "Biggest Fan",
+                "test-3-name": "Family,friends", "test-3-role": "Biggest Fan",
                 "gallery-title": "Team & Highlights Gallery",
                 "gal-team-squad": "Team Championship Squad",
                 "gal-match-prep": "Match Strategy & Rest",
@@ -723,7 +751,7 @@
                 "post-3": "Family on and off the pitch 🙌",
                 "likes-label": "likes",
                 "music-title": "Walkout Song",
-                "music-track": "Champions Anthem",
+                "music-track": "Woda Księżycowa",
                 "music-artist": "Match Day Mix",
                 "music-hint": "🎵 Optional background vibes — tap play",
                 "highlight-title": "Match Highlights & Videos",
@@ -767,11 +795,11 @@
                 "tl-6-desc": "Nadal rozwija się jako jeden z najbardziej obiecujących talentów zespołu.",
                 "testimonials-title": "Co Mówią Inni",
                 "test-1": "\"Roksi wnosi niesamowitą energię do każdego treningu. Jej szybkość nadaje ton całej drużynie.\"",
-                "test-1-name": "Trener", "test-1-role": "Trener Główny",
+                "test-1-name": "Trener Rafał", "test-1-role": "Trener Główny",
                 "test-2": "\"Gra obok Roksi jest niesamowita — zawsze znajdzie podanie, którego się nie spodziewasz.\"",
-                "test-2-name": "Koleżanka z Drużyny", "test-2-role": "Pomocnik",
+                "test-2-name": "Koleżanki z Drużyny", "test-2-role": "Pomocnik",
                 "test-3": "\"Jestem taka dumna z tego, jak daleko zaszła. Każdy mecz gra z sercem.\"",
-                "test-3-name": "Rodzina", "test-3-role": "Największy Fan",
+                "test-3-name": "Rodzina, przyjaciele", "test-3-role": "Największy Fan",
                 "gallery-title": "Galeria Drużyny i Osiągnięć",
                 "gal-team-squad": "Skład Drużyny",
                 "gal-match-prep": "Strategia i Mecz",
@@ -797,7 +825,7 @@
                 "post-3": "Rodzina na boisku i poza nim 🙌",
                 "likes-label": "polubień",
                 "music-title": "Piosenka Wejścia",
-                "music-track": "Hymn Mistrzów",
+                "music-track": "Woda Księżycowa",
                 "music-artist": "Mix na Mecz",
                 "music-hint": "🎵 Opcjonalny klimat w tle — kliknij play",
                 "highlight-title": "Skróty Meczów i Filmy",
@@ -809,6 +837,15 @@
                 "vid-circle": "🙌 Koło Wsparcia Drużyny"
             }
         };
+
+        function toggleMobileMenu() {
+            document.getElementById('navLinks').classList.toggle('open');
+        }
+        document.querySelectorAll('#navLinks a').forEach(link => {
+            link.addEventListener('click', () => {
+                document.getElementById('navLinks').classList.remove('open');
+            });
+        });
 
         let currentLang = 'en';
         function toggleLanguage() {
