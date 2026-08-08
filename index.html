@@ -264,9 +264,67 @@
             section { padding: 3rem 6%; }
             .section-title { font-size: 2rem; }
         }
+
+        /* ===== ROKSI 2.0 EXPERIENCE ===== */
+        .feature-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:1.3rem}
+        .feature-card{background:var(--card-bg);border:1px solid rgba(56,239,125,.16);border-radius:20px;padding:1.5rem;box-shadow:0 8px 25px rgba(0,0,0,.08);transition:.3s}
+        .feature-card:hover{transform:translateY(-6px);border-color:var(--primary)}
+        .feature-icon{width:58px;height:58px;border-radius:16px;background:linear-gradient(135deg,var(--primary-dark),var(--primary));display:flex;align-items:center;justify-content:center;color:#fff;font-size:1.5rem;margin-bottom:1rem}
+        .feature-card h3{margin-bottom:.45rem}.feature-card p{color:var(--text-gray);font-size:.9rem}
+        .fan-card-wrap{display:flex;justify-content:center}
+        .fan-card{width:min(100%,520px);padding:24px;border-radius:26px;background:linear-gradient(135deg,#071b17,#123b2d 55%,#0d6070);color:#fff;position:relative;overflow:hidden;box-shadow:0 20px 50px rgba(0,0,0,.3);border:1px solid rgba(255,255,255,.18)}
+        .fan-card:before{content:"";position:absolute;width:220px;height:220px;border-radius:50%;right:-70px;top:-70px;background:rgba(56,239,125,.18)}
+        .fan-card-top,.fan-card-row{display:flex;justify-content:space-between;align-items:center;gap:1rem;position:relative;z-index:1}
+        .fan-avatar{width:76px;height:76px;border-radius:50%;object-fit:cover;border:3px solid #fff}
+        .fan-name{font-size:1.5rem;font-weight:900}.fan-number{font-size:2.4rem;font-weight:900;color:#38ef7d}
+        .fan-meta{display:grid;grid-template-columns:1fr 1fr;gap:.8rem;margin:1.3rem 0;position:relative;z-index:1}
+        .fan-meta div{background:rgba(255,255,255,.08);padding:.7rem;border-radius:12px}.fan-meta small{display:block;color:#b9d0c7}.fan-meta strong{display:block;margin-top:.2rem}
+        .fan-badge{display:inline-flex;align-items:center;gap:.4rem;padding:.45rem .8rem;border-radius:20px;background:linear-gradient(135deg,#ffd700,#b8860b);color:#111;font-weight:900}
+        .fan-actions{display:flex;justify-content:center;gap:.8rem;flex-wrap:wrap;margin-top:1.2rem}
+        .fan-input{display:block;width:min(100%,360px);margin:0 auto 1rem;padding:.85rem 1rem;border-radius:14px;border:1px solid rgba(56,239,125,.3);background:var(--bg-dark);color:var(--text-light);outline:none}
+        .fan-input:focus{border-color:var(--primary)}
+        .game-shell{max-width:850px;margin:auto;background:var(--card-bg);border-radius:24px;padding:1.5rem;box-shadow:0 15px 40px rgba(0,0,0,.12);border:1px solid rgba(56,239,125,.15)}
+        .game-top{display:flex;justify-content:space-between;gap:1rem;flex-wrap:wrap;margin-bottom:1rem}
+        .game-score{font-size:1.2rem;font-weight:900;color:var(--primary)}.game-status{color:var(--text-gray);font-weight:700}
+        .goal{width:min(100%,700px);height:330px;margin:auto;position:relative;border:5px solid #fff;border-bottom:12px solid #fff;background:linear-gradient(180deg,rgba(56,239,125,.18),rgba(56,189,248,.06));overflow:hidden;box-shadow:inset 0 0 0 2px rgba(255,255,255,.18)}
+        .goal:before{content:"";position:absolute;inset:0;background:repeating-linear-gradient(90deg,transparent 0 38px,rgba(255,255,255,.13) 39px 41px),repeating-linear-gradient(0deg,transparent 0 38px,rgba(255,255,255,.13) 39px 41px);pointer-events:none}
+        .keeper{position:absolute;left:50%;bottom:12px;transform:translateX(-50%);font-size:4rem;transition:left .45s ease,transform .45s ease;z-index:3}
+        .ball{position:absolute;left:50%;bottom:24px;transform:translateX(-50%);font-size:2.4rem;z-index:4;transition:left .45s cubic-bezier(.2,.8,.2,1),bottom .45s cubic-bezier(.2,.8,.2,1),transform .45s ease}
+        .aim{position:absolute;width:56px;height:56px;border:3px solid var(--primary);border-radius:50%;transform:translate(-50%,-50%);left:50%;top:45%;z-index:5;cursor:crosshair;box-shadow:0 0 18px rgba(56,239,125,.45)}
+        .aim:before,.aim:after{content:"";position:absolute;background:var(--primary)}.aim:before{width:2px;height:70px;left:50%;top:-10px}.aim:after{height:2px;width:70px;top:50%;left:-10px}
+        .game-controls{display:flex;justify-content:center;gap:.8rem;flex-wrap:wrap;margin-top:1rem}
+        .game-result{min-height:36px;text-align:center;margin-top:1rem;font-weight:900;font-size:1.2rem}
+        .achievement-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:1rem}
+        .achievement{background:var(--card-bg);padding:1.3rem;border-radius:18px;text-align:center;border:1px solid rgba(255,215,0,.15);opacity:.42;filter:grayscale(.7);transition:.3s}
+        .achievement.unlocked{opacity:1;filter:none;border-color:var(--gold);box-shadow:0 10px 25px rgba(184,134,11,.16)}
+        .achievement i{font-size:2rem;color:var(--gold);margin-bottom:.7rem}.achievement h4{margin-bottom:.25rem}.achievement p{font-size:.78rem;color:var(--text-gray)}
+        .message-panel{text-align:center;max-width:720px;margin:auto;background:linear-gradient(135deg,var(--card-bg),rgba(56,239,125,.08));border:1px solid rgba(56,239,125,.2);border-radius:24px;padding:2rem}
+        .message-display{min-height:80px;display:flex;align-items:center;justify-content:center;font-size:1.35rem;font-weight:900;margin:1rem 0;animation:none}
+        .message-display.pop{animation:messagePop .55s ease}.message-buttons{display:flex;justify-content:center;gap:.7rem;flex-wrap:wrap}
+        @keyframes messagePop{0%{opacity:0;transform:scale(.8) translateY(10px)}100%{opacity:1;transform:scale(1) translateY(0)}}
+        .intro{position:fixed;inset:0;background:#030908;z-index:100000;display:flex;align-items:center;justify-content:center;color:#fff;overflow:hidden;transition:opacity .8s,visibility .8s}
+        .intro.hide{opacity:0;visibility:hidden}.intro-inner{text-align:center;position:relative;z-index:2}.intro-number{font-size:clamp(4rem,13vw,9rem);font-weight:900;color:#38ef7d;line-height:.9}
+        .intro-name{font-size:clamp(3rem,9vw,7rem);font-weight:900;letter-spacing:.08em}.intro-tag{font-size:clamp(1rem,2.5vw,1.5rem);letter-spacing:.35em;color:#9edfc0;margin-top:1rem}
+        .intro-team{margin-top:2rem;font-weight:800;color:#fff}.intro-skip{position:absolute;right:25px;bottom:25px;z-index:3}
+        .sound-toggle{position:fixed;left:20px;bottom:20px;z-index:5001;width:46px;height:46px;border-radius:50%;border:1px solid var(--primary);background:var(--card-bg);color:var(--text-light);cursor:pointer;box-shadow:0 8px 20px rgba(0,0,0,.2)}
+        .qr-box{width:88px;height:88px;background:#fff;color:#111;display:flex;align-items:center;justify-content:center;border-radius:10px;font-size:2.8rem}
+        [dir="rtl"]{direction:rtl}[dir="rtl"] .timeline{padding-left:0;padding-right:2rem}[dir="rtl"] .timeline::before{left:auto;right:8px}[dir="rtl"] .timeline-item{padding-left:0;padding-right:2rem}[dir="rtl"] .timeline-item::before{left:auto;right:-25px}
+        [dir="rtl"] .bio-card{border-left:0;border-right:4px solid var(--accent)}[dir="rtl"] .card-top{left:auto;right:15px}[dir="rtl"] .fifa-card-back ul{text-align:right}
+        @media(max-width:768px){.goal{height:270px}.keeper{font-size:3.3rem}.fan-card{padding:18px}.intro-tag{letter-spacing:.18em}.sound-toggle{left:auto;right:20px}}
+
     </style>
 </head>
 <body>
+    <div class="intro" id="cinematicIntro">
+        <div class="intro-inner">
+            <div class="intro-number">#17</div>
+            <div class="intro-name">ROKSI</div>
+            <div class="intro-tag">PASSION. SPEED. DETERMINATION.</div>
+            <div class="intro-team">Jajniki Grudziądz</div>
+        </div>
+        <button class="btn intro-skip" onclick="skipIntro()">Skip Intro</button>
+    </div>
+    <button class="sound-toggle" id="soundToggle" onclick="toggleSound()" title="Sound ON/OFF"><i class="fas fa-volume-up"></i></button>
 
     <div id="loader">
         <div class="loader-ring"></div>
@@ -299,6 +357,9 @@
                 <li><a href="#players" data-key="nav-players">Favorites</a></li>
                 <li><a href="#stats" data-key="nav-stats">Stats</a></li>
                 <li><a href="#highlights" data-key="nav-highlights">Videos</a></li>
+                <li><a href="#fan-card" data-key="nav-fan-card">Fan Card</a></li>
+                <li><a href="#penalty" data-key="nav-game">Game</a></li>
+                <li><a href="#achievements" data-key="nav-achievements">Achievements</a></li>
             </ul>
               <button class="lang-btn" onclick="toggleLanguage()">
                 <i class="fas fa-globe"></i> <span id="lang-label">PL</span>
@@ -565,6 +626,89 @@
         </div>
     </section>
 
+
+    <section id="fan-card">
+        <h2 class="section-title reveal" data-key="fan-card-title">Digital Fan Card</h2>
+        <div class="message-panel reveal">
+            <p class="flip-hint" data-key="fan-card-desc">Create your personal Roksi #17 fan card.</p>
+            <input id="fanName" class="fan-input" maxlength="24" placeholder="Enter your fan name" aria-label="Fan name">
+            <button class="btn" onclick="createFanCard()"><span data-key="create-fan-card">Create Your Fan Card</span> <i class="fas fa-id-card"></i></button>
+            <div class="fan-card-wrap" id="fanCardWrap" style="margin-top:1.3rem;">
+                <div class="fan-card" id="fanCardPreview">
+                    <div class="fan-card-top">
+                        <div class="fan-card-row">
+                            <img class="fan-avatar" src="roksi cup.jpeg" alt="Roksi">
+                            <div>
+                                <div class="fan-name" id="fanDisplayName">ROKSI FAN</div>
+                                <span data-key="fan-member">Official Fan</span>
+                            </div>
+                        </div>
+                        <div class="fan-number">#17</div>
+                    </div>
+                    <div class="fan-meta">
+                        <div><small data-key="favorite-player">Favorite Player</small><strong>ROKSI #17</strong></div>
+                        <div><small data-key="fan-level">Fan Level</small><strong id="fanLevel">Rookie Fan</strong></div>
+                        <div><small data-key="visits">Visits</small><strong id="fanVisits">1</strong></div>
+                        <div><small data-key="badge">Badge</small><strong class="fan-badge" id="fanBadge">⭐ Supporter</strong></div>
+                    </div>
+                    <div class="fan-card-row">
+                        <div class="qr-box" title="QR-style fan badge"><i class="fas fa-qrcode"></i></div>
+                        <div style="text-align:right"><small data-key="fan-card-team">JAJNIKI GRUDZIĄDZ</small><br><strong>ROKSI LEGEND MODE</strong></div>
+                    </div>
+                </div>
+            </div>
+            <div class="fan-actions">
+                <button class="btn" onclick="downloadFanCard()"><span data-key="download-fan-card">Download Fan Card PNG</span> <i class="fas fa-download"></i></button>
+            </div>
+        </div>
+    </section>
+
+    <section id="messages">
+        <h2 class="section-title reveal" data-key="message-title">A Message for Roksi</h2>
+        <div class="message-panel reveal">
+            <div class="message-display" id="messageDisplay">💚 Keep fighting!</div>
+            <div class="message-buttons">
+                <button class="btn" onclick="showSupportMessage(0)">💚 Keep fighting</button>
+                <button class="btn" onclick="showSupportMessage(1)">⚽ Keep scoring</button>
+                <button class="btn" onclick="showSupportMessage(2)">🏆 More trophies</button>
+                <button class="btn" onclick="showSupportMessage(3)">⭐ You're our star</button>
+            </div>
+        </div>
+    </section>
+
+    <section id="penalty">
+        <h2 class="section-title reveal" data-key="game-title">🎮 Penalty Challenge</h2>
+        <div class="game-shell reveal">
+            <div class="game-top">
+                <div class="game-score"><span data-key="game-score">Score</span>: <span id="gameScore">0</span>/10</div>
+                <div class="game-status" id="gameStatus">Aim at the goal and shoot!</div>
+            </div>
+            <div class="goal" id="goalArea">
+                <div class="keeper" id="keeper">🧤</div>
+                <div class="aim" id="aimTarget" title="Move to aim"></div>
+                <div class="ball" id="gameBall">⚽</div>
+            </div>
+            <div class="game-controls">
+                <button class="btn" onclick="shootPenalty()"><span data-key="shoot">SHOOT</span> ⚽</button>
+                <button class="btn" onclick="resetGame()"><span data-key="restart-game">Restart Game</span> ↻</button>
+            </div>
+            <div class="game-result" id="gameResult">10 shots. Can you beat your high score?</div>
+            <p class="flip-hint"><span data-key="high-score">High Score</span>: <strong id="highScore">0</strong>/10</p>
+        </div>
+    </section>
+
+    <section id="achievements">
+        <h2 class="section-title reveal" data-key="achievements-title">🏆 Achievements</h2>
+        <div class="achievement-grid">
+            <div class="achievement" id="ach-first"><i class="fas fa-play"></i><h4 data-key="ach-first-title">First Shot</h4><p data-key="ach-first-desc">Play the penalty game.</p></div>
+            <div class="achievement" id="ach-goal"><i class="fas fa-futbol"></i><h4 data-key="ach-goal-title">Goal!</h4><p data-key="ach-goal-desc">Score your first goal.</p></div>
+            <div class="achievement" id="ach-five"><i class="fas fa-fire"></i><h4 data-key="ach-five-title">On Fire</h4><p data-key="ach-five-desc">Score 5 goals in one game.</p></div>
+            <div class="achievement" id="ach-perfect"><i class="fas fa-crown"></i><h4 data-key="ach-perfect-title">Perfect 10</h4><p data-key="ach-perfect-desc">Score 10/10.</p></div>
+            <div class="achievement" id="ach-fan"><i class="fas fa-id-card"></i><h4 data-key="ach-fan-title">Super Fan</h4><p data-key="ach-fan-desc">Create your digital fan card.</p></div>
+            <div class="achievement" id="ach-secret"><i class="fas fa-lock"></i><h4 data-key="ach-secret-title">Legend Mode</h4><p data-key="ach-secret-desc">Unlock the #17 secret.</p></div>
+        </div>
+    </section>
+
     <!-- Support Messages Section (safe, static — no open comment form for a minor's page) -->
     <section id="support">
         <h2 class="section-title reveal" data-key="support-title">Words of Support</h2>
@@ -760,7 +904,11 @@
                 "vid-team": "📸 Team Photo Session",
                 "vid-celeb1": "🎉 Locker Room Celebration (1)",
                 "vid-celeb2": "🔥 Locker Room Celebration (2)",
-                "vid-circle": "🙌 Team Support Circle"
+                "vid-circle": "🙌 Team Support Circle",
+                "nav-fan-card":"Fan Card","nav-game":"Game","nav-achievements":"Achievements",
+                "fan-card-title":"Digital Fan Card","fan-card-desc":"Create your personal Roksi #17 fan card.","create-fan-card":"Create Your Fan Card","fan-member":"Official Fan","favorite-player":"Favorite Player","fan-level":"Fan Level","visits":"Visits","badge":"Badge","fan-card-team":"JAJNIKI GRUDZIĄDZ","download-fan-card":"Download Fan Card PNG",
+                "message-title":"A Message for Roksi","game-title":"🎮 Penalty Challenge","game-score":"Score","shoot":"SHOOT","restart-game":"Restart Game","high-score":"High Score",
+                "achievements-title":"🏆 Achievements","ach-first-title":"First Shot","ach-first-desc":"Play the penalty game.","ach-goal-title":"Goal!","ach-goal-desc":"Score your first goal.","ach-five-title":"On Fire","ach-five-desc":"Score 5 goals in one game.","ach-perfect-title":"Perfect 10","ach-perfect-desc":"Score 10/10.","ach-fan-title":"Super Fan","ach-fan-desc":"Create your digital fan card.","ach-secret-title":"Legend Mode","ach-secret-desc":"Unlock the #17 secret."
             },
             pl: {
                 "nav-home": "Strona Główna", "nav-card": "Karta", "nav-journey": "Droga", "nav-gallery": "Galeria", "nav-players": "Ulubieni", "nav-stats": "Statystyki", "nav-highlights": "Filmy",
@@ -834,7 +982,25 @@
                 "vid-team": "📸 Sesja Zdjęciowa Drużyny",
                 "vid-celeb1": "🎉 Świętowanie w Szatni (1)",
                 "vid-celeb2": "🔥 Świętowanie w Szatni (2)",
-                "vid-circle": "🙌 Koło Wsparcia Drużyny"
+                "vid-circle": "🙌 Koło Wsparcia Drużyny",
+                "nav-fan-card":"Karta Fana","nav-game":"Gra","nav-achievements":"Osiągnięcia",
+                "fan-card-title":"Cyfrowa Karta Fana","fan-card-desc":"Stwórz swoją osobistą kartę fana Roksi #17.","create-fan-card":"Utwórz Kartę Fana","fan-member":"Oficjalny Fan","favorite-player":"Ulubiona Zawodniczka","fan-level":"Poziom Fana","visits":"Wizyty","badge":"Odznaka","fan-card-team":"JAJNIKI GRUDZIĄDZ","download-fan-card":"Pobierz Kartę Fana PNG",
+                "message-title":"Wiadomość dla Roksi","game-title":"🎮 Wyzwanie Rzutów Karnych","game-score":"Wynik","shoot":"STRZAŁ","restart-game":"Zagraj Ponownie","high-score":"Rekord",
+                "achievements-title":"🏆 Osiągnięcia","ach-first-title":"Pierwszy Strzał","ach-first-desc":"Zagraj w rzuty karne.","ach-goal-title":"Gol!","ach-goal-desc":"Strzel pierwszego gola.","ach-five-title":"W Ogniu","ach-five-desc":"Strzel 5 goli w jednej grze.","ach-perfect-title":"Perfekcyjna 10","ach-perfect-desc":"Zdobądź 10/10.","ach-fan-title":"Super Fan","ach-fan-desc":"Utwórz cyfrową kartę fana.","ach-secret-title":"Tryb Legendy","ach-secret-desc":"Odblokuj sekret #17."
+            },
+            ar: {
+                "nav-home":"الرئيسية","nav-card":"البطاقة","nav-journey":"المسيرة","nav-gallery":"المعرض","nav-players":"المفضلون","nav-stats":"الإحصائيات","nav-highlights":"الفيديوهات","nav-fan-card":"بطاقة المشجع","nav-game":"اللعبة","nav-achievements":"الإنجازات",
+                "hero-nationality":"لاعبة كرة قدم بولندية","hero-desc":"الشغف والسرعة والإصرار في الملعب. تجاوز الحدود والسعي للتألق في كرة القدم النسائية.","hero-btn":"شاهد أبرز اللحظات",
+                "countdown-title":"🎉 العد التنازلي لميلاد روكسي (20 فبراير)","cnt-days":"يوم","cnt-hours":"ساعة","cnt-min":"دقيقة","cnt-sec":"ثانية","birthday-today":"🎂🎈 عيد ميلاد سعيد روكسي! 🎈🎂",
+                "potm-title":"🌟 لاعبة الشهر","potm-desc":"تقدير للجهد المميز والعمل الجماعي والتطور في الملعب هذا الشهر.","card-title":"بطاقة اللاعبة","flip-hint":"اضغط على البطاقة لقلبها","download-card-btn":"تحميل البطاقة كصورة","card-back-title":"معلومات اللاعبة","card-back-club":"النادي: Jajniki Grudziądz","card-back-num":"الرقم: 17","card-back-foot":"القدم المفضلة: اليمنى","card-back-role":"الدور: جناح / صانعة لعب","card-back-style":"الأسلوب: السرعة والمراوغة",
+                "journey-title":"مسيرتها الكروية","tl-1-title":"الخطوات الأولى","tl-1-desc":"انضمت روكسي إلى أول نادٍ للشباب ووقعت في حب اللعبة.","tl-2-title":"أول هدف","tl-2-desc":"سجلت أول هدف رسمي لها وبدأ شغفها بالهجوم.","tl-3-title":"الانضمام إلى Jajniki Grudziądz","tl-3-desc":"انضمت إلى النادي وأصبحت لاعبة أساسية بالرقم 17.","tl-4-title":"أول كأس","tl-4-desc":"ساعدت الفريق على الوصول إلى النهائي وحصلت على أول ميدالية.","tl-5-title":"المركز الثاني - كأس Grudziądz","tl-5-desc":"أداء مميز في البطولة مع الفريق.","tl-6-title":"نجمة صاعدة","tl-6-desc":"تواصل التطور كواحدة من المواهب الواعدة في الفريق.",
+                "testimonials-title":"ماذا يقولون","gallery-title":"معرض الفريق والإنجازات","gal-team-squad":"تشكيلة البطولة","gal-match-prep":"الاستعداد للمباراة","gal-trophy":"كأس المركز الثاني - Grudziądz","awards-title":"الجوائز والميداليات","award-1-title":"كأس المركز الثاني","award-1-sub":"بطولة Grudziądz، 2025","award-2-title":"الهداف","award-2-sub":"موسم دوري الشباب","award-3-title":"جائزة MVP","award-3-sub":"البطولة الإقليمية","award-4-title":"جائزة اللعب النظيف","award-4-sub":"تقدير النادي",
+                "bio-height-title":"الطول","bio-dob-title":"تاريخ الميلاد","bio-colors-title":"الألوان المفضلة","bio-colors-val":"الأخضر والأزرق الفاتح","players-title":"اللاعبون المفضلون","pets-title":"الحيوانات الأليفة","pet-dog":"كلب","pet-cat":"قطة","pet-rabbit":"أرنب",
+                "stats-title":"إحصائيات المسيرة","stat-goals":"الأهداف","stat-assists":"التمريرات الحاسمة","stat-trophies":"الكؤوس والجوائز","stat-matches":"المباريات",
+                "support-title":"كلمات الدعم","support-1":"استمري في التألق في الملعب يا روكسي! 💚","support-2":"فخورون بكل مباراة وكل هدف وكل مجهود! ⚽","support-3":"العائلة والفريق كله يشجعك! 🏆","social-title":"أحدث المنشورات","post-1":"يوم جديد، مباراة جديدة. هيا يا فريق! ⚽🔥","post-2":"فخور جدًا بهذا الفريق 🏆💚","post-3":"العائلة داخل الملعب وخارجه 🙌","likes-label":"إعجاب",
+                "music-title":"أغنية الدخول","music-track":"Woda Księżycowa","music-artist":"مزيج يوم المباراة","music-hint":"🎵 موسيقى اختيارية — اضغط تشغيل","highlight-title":"أبرز المباريات والفيديوهات","vid-goal":"⚽ هدف روكسي (#17)","vid-trophy":"🥇 حفل الكأس والميدالية","vid-team":"📸 جلسة صور الفريق","vid-celeb1":"🎉 احتفال غرفة الملابس (1)","vid-celeb2":"🔥 احتفال غرفة الملابس (2)","vid-circle":"🙌 دائرة دعم الفريق",
+                "fan-card-title":"بطاقة المشجع الرقمية","fan-card-desc":"أنشئ بطاقة مشجعك الخاصة بروكسي #17.","create-fan-card":"إنشاء بطاقة المشجع","fan-member":"مشجع رسمي","favorite-player":"اللاعبة المفضلة","fan-level":"مستوى المشجع","visits":"الزيارات","badge":"الشارة","fan-card-team":"JAJNIKI GRUDZIĄDZ","download-fan-card":"تحميل بطاقة المشجع PNG",
+                "message-title":"رسالة إلى روكسي","game-title":"🎮 تحدي ركلات الجزاء","game-score":"النتيجة","shoot":"تسديد","restart-game":"إعادة اللعب","high-score":"أعلى نتيجة","achievements-title":"🏆 الإنجازات","ach-first-title":"أول تسديدة","ach-first-desc":"العب لعبة ركلات الجزاء.","ach-goal-title":"هدف!","ach-goal-desc":"سجل أول هدف.","ach-five-title":"في القمة","ach-five-desc":"سجل 5 أهداف في مباراة واحدة.","ach-perfect-title":"10 مثالية","ach-perfect-desc":"احصل على 10/10.","ach-fan-title":"مشجع خارق","ach-fan-desc":"أنشئ بطاقة المشجع الرقمية.","ach-secret-title":"وضع الأسطورة","ach-secret-desc":"افتح سر #17."
             }
         };
 
@@ -847,15 +1013,23 @@
             });
         });
 
-        let currentLang = 'en';
-        function toggleLanguage() {
-            currentLang = currentLang === 'en' ? 'pl' : 'en';
-            document.getElementById('lang-label').innerText = currentLang === 'en' ? 'PL' : 'EN';
+        let currentLang = localStorage.getItem('roksi-language') || 'en';
+        function applyLanguage(lang) {
+            currentLang = translations[lang] ? lang : 'en';
+            document.documentElement.lang = currentLang;
+            document.documentElement.dir = currentLang === 'ar' ? 'rtl' : 'ltr';
+            document.getElementById('lang-label').innerText = currentLang === 'en' ? 'PL' : (currentLang === 'pl' ? 'AR' : 'EN');
             document.querySelectorAll('[data-key]').forEach(el => {
                 const key = el.getAttribute('data-key');
-                if (translations[currentLang][key]) el.innerText = translations[currentLang][key];
+                if (translations[currentLang] && translations[currentLang][key]) el.innerText = translations[currentLang][key];
             });
+            localStorage.setItem('roksi-language', currentLang);
         }
+        function toggleLanguage() {
+            const next = currentLang === 'en' ? 'pl' : (currentLang === 'pl' ? 'ar' : 'en');
+            applyLanguage(next);
+        }
+        applyLanguage(currentLang);
 
         /* ===== Theme Toggle (persisted with localStorage) ===== */
         function applyTheme(theme) {
@@ -1188,6 +1362,198 @@
                 });
             }, 100);
         }
+
+        /* ===== ROKSI 2.0: Intro, sound, fan card, penalty game, messages, achievements, easter egg ===== */
+        let soundEnabled = localStorage.getItem('roksi-sound') !== 'off';
+        const soundToggle = document.getElementById('soundToggle');
+        function updateSoundIcon(){
+            soundToggle.innerHTML = soundEnabled ? '<i class="fas fa-volume-up"></i>' : '<i class="fas fa-volume-mute"></i>';
+        }
+        function toggleSound(){
+            soundEnabled = !soundEnabled;
+            localStorage.setItem('roksi-sound', soundEnabled ? 'on' : 'off');
+            updateSoundIcon();
+        }
+        updateSoundIcon();
+
+        function playSfx(type){
+            if(!soundEnabled) return;
+            try{
+                const Ctx = window.AudioContext || window.webkitAudioContext;
+                if(!Ctx) return;
+                const ctx = new Ctx(), osc = ctx.createOscillator(), gain = ctx.createGain();
+                const tones = {click:420, goal:720, save:180, post:260, success:880};
+                osc.frequency.value = tones[type] || 420;
+                osc.type = type === 'goal' || type === 'success' ? 'triangle' : 'sine';
+                gain.gain.setValueAtTime(.0001, ctx.currentTime);
+                gain.gain.exponentialRampToValueAtTime(.08, ctx.currentTime+.01);
+                gain.gain.exponentialRampToValueAtTime(.0001, ctx.currentTime+.18);
+                osc.connect(gain); gain.connect(ctx.destination); osc.start(); osc.stop(ctx.currentTime+.2);
+            }catch(e){}
+        }
+
+        function skipIntro(){
+            document.getElementById('cinematicIntro').classList.add('hide');
+            localStorage.setItem('roksi-intro-seen','1');
+        }
+        window.addEventListener('load',()=>{
+            setTimeout(()=>{
+                if(localStorage.getItem('roksi-intro-seen') === '1') skipIntro();
+                else setTimeout(skipIntro, 3500);
+            }, 700);
+        });
+
+        let visits = Number(localStorage.getItem('roksi-visits') || 0) + 1;
+        localStorage.setItem('roksi-visits', String(visits));
+        document.getElementById('fanVisits').innerText = visits;
+
+        function fanLevelFor(v){
+            if(v >= 20) return currentLang === 'ar' ? 'أسطورة' : currentLang === 'pl' ? 'Legenda' : 'Legend';
+            if(v >= 10) return currentLang === 'ar' ? 'مشجع مميز' : currentLang === 'pl' ? 'Super Fan' : 'Super Fan';
+            if(v >= 5) return currentLang === 'ar' ? 'مشجع متقدم' : currentLang === 'pl' ? 'Zaawansowany' : 'Dedicated Fan';
+            return currentLang === 'ar' ? 'مشجع جديد' : currentLang === 'pl' ? 'Nowy Fan' : 'Rookie Fan';
+        }
+        document.getElementById('fanLevel').innerText = fanLevelFor(visits);
+
+        function createFanCard(){
+            const input = document.getElementById('fanName');
+            const name = (input.value || '').trim() || 'ROKSI FAN';
+            document.getElementById('fanDisplayName').innerText = name.toUpperCase();
+            document.getElementById('fanVisits').innerText = visits;
+            document.getElementById('fanLevel').innerText = fanLevelFor(visits);
+            document.getElementById('fanBadge').innerHTML = visits >= 10 ? '🏆 Super Fan' : '⭐ Supporter';
+            localStorage.setItem('roksi-fan-name', name);
+            unlockAchievement('ach-fan');
+            playSfx('success');
+            document.getElementById('fanCardPreview').animate([{transform:'scale(.96)'},{transform:'scale(1)'}],{duration:400});
+        }
+        const savedFanName = localStorage.getItem('roksi-fan-name');
+        if(savedFanName) document.getElementById('fanName').value = savedFanName;
+
+        function downloadFanCard(){
+            if(!window.html2canvas){ return; }
+            html2canvas(document.getElementById('fanCardPreview'),{backgroundColor:null,scale:2,useCORS:true}).then(canvas=>{
+                const link=document.createElement('a');
+                link.download='roksi-fan-card.png';
+                link.href=canvas.toDataURL('image/png');
+                link.click();
+            }).catch(()=>{});
+        }
+
+        const supportMessages = [
+            '💚 Keep fighting!',
+            '⚽ Keep scoring!',
+            '🏆 More trophies are coming!',
+            '⭐ You are our star!'
+        ];
+        function showSupportMessage(i){
+            const el=document.getElementById('messageDisplay');
+            el.classList.remove('pop'); void el.offsetWidth;
+            el.innerText=supportMessages[i] || supportMessages[0];
+            el.classList.add('pop'); playSfx('success');
+        }
+
+        let gameScore = 0, shots = 0, gameLocked = false;
+        const aim = document.getElementById('aimTarget');
+        const goal = document.getElementById('goalArea');
+        const keeper = document.getElementById('keeper');
+        const ball = document.getElementById('gameBall');
+        const gameStatus = document.getElementById('gameStatus');
+        function moveAim(e){
+            if(gameLocked) return;
+            const r=goal.getBoundingClientRect();
+            const x=Math.max(30,Math.min(r.width-30,e.clientX-r.left));
+            const y=Math.max(35,Math.min(r.height-70,e.clientY-r.top));
+            aim.style.left=x+'px'; aim.style.top=y+'px';
+        }
+        goal.addEventListener('pointermove',moveAim);
+        goal.addEventListener('pointerdown',e=>{moveAim(e);});
+        function shootPenalty(){
+            if(gameLocked || shots>=10) return;
+            shots++; gameLocked=true;
+            unlockAchievement('ach-first');
+            const r=goal.getBoundingClientRect(), a=aim.getBoundingClientRect();
+            const targetX=a.left+a.width/2-r.left, targetY=a.top+a.height/2-r.top;
+            const keeperX=20+Math.random()*(r.width-40);
+            keeper.style.left=keeperX+'px';
+            ball.style.left=targetX+'px'; ball.style.bottom=Math.max(55,r.height-targetY-25)+'px';
+            const save=Math.abs(targetX-keeperX)<72 && Math.random()<.78;
+            setTimeout(()=>{
+                if(save){
+                    gameStatus.innerText='🧤 SAVE!';
+                    gameStatus.style.color='var(--accent)';
+                    playSfx('save');
+                }else{
+                    gameScore++; gameStatus.innerText='⚽ GOAL!';
+                    gameStatus.style.color='var(--primary)';
+                    playSfx('goal'); unlockAchievement('ach-goal');
+                    if(gameScore>=5) unlockAchievement('ach-five');
+                }
+                document.getElementById('gameScore').innerText=gameScore;
+                document.getElementById('gameResult').innerText=`Shot ${shots}/10 — ${save?'The keeper got it!':'What a finish!'}`;
+                setTimeout(()=>{
+                    gameLocked=false;
+                    ball.style.left='50%'; ball.style.bottom='24px';
+                    if(shots>=10) finishGame();
+                },650);
+            },450);
+        }
+        function finishGame(){
+            const high=Number(localStorage.getItem('roksi-high-score')||0);
+            if(gameScore>high) localStorage.setItem('roksi-high-score',String(gameScore));
+            document.getElementById('highScore').innerText=Math.max(gameScore,high);
+            document.getElementById('gameResult').innerText=`Your Score: ${gameScore}/10`;
+            if(gameScore===10) {unlockAchievement('ach-perfect'); launchConfetti(); playSfx('success');}
+        }
+        function resetGame(){
+            gameScore=0; shots=0; gameLocked=false;
+            document.getElementById('gameScore').innerText='0';
+            document.getElementById('highScore').innerText=localStorage.getItem('roksi-high-score')||'0';
+            document.getElementById('gameResult').innerText='10 shots. Can you beat your high score?';
+            gameStatus.innerText='Aim at the goal and shoot!';
+            gameStatus.style.color='var(--text-gray)';
+            ball.style.left='50%'; ball.style.bottom='24px'; keeper.style.left='50%';
+        }
+        document.getElementById('highScore').innerText=localStorage.getItem('roksi-high-score')||'0';
+
+        function unlockAchievement(id){
+            const el=document.getElementById(id);
+            if(!el || el.classList.contains('unlocked')) return;
+            el.classList.add('unlocked');
+            try{
+                const arr=JSON.parse(localStorage.getItem('roksi-achievements')||'[]');
+                if(!arr.includes(id)){arr.push(id);localStorage.setItem('roksi-achievements',JSON.stringify(arr));}
+            }catch(e){}
+            playSfx('success');
+        }
+        try{
+            JSON.parse(localStorage.getItem('roksi-achievements')||'[]').forEach(id=>document.getElementById(id)?.classList.add('unlocked'));
+        }catch(e){}
+
+        let secretBuffer='';
+        document.addEventListener('keydown',e=>{
+            secretBuffer=(secretBuffer+e.key.toLowerCase()).slice(-5);
+            if(secretBuffer==='roksi'){
+                unlockAchievement('ach-secret');
+                launchConfetti();
+                document.body.animate([{filter:'brightness(1)'},{filter:'brightness(1.35)'},{filter:'brightness(1)'}],{duration:900});
+                const toast=document.getElementById('toast'); toast.innerText='🔐 SECRET UNLOCKED — ROKSI LEGEND MODE'; toast.classList.add('show');
+                setTimeout(()=>toast.classList.remove('show'),3000);
+                secretBuffer='';
+            }
+        });
+        let seventeenClicks=0, seventeenTimer;
+        document.querySelector('.badge-number')?.addEventListener('click',()=>{
+            seventeenClicks++;
+            clearTimeout(seventeenTimer);
+            seventeenTimer=setTimeout(()=>seventeenClicks=0,2500);
+            if(seventeenClicks>=17){
+                unlockAchievement('ach-secret'); launchConfetti(); seventeenClicks=0;
+                const toast=document.getElementById('toast'); toast.innerText='⭐ ROKSI LEGEND MODE UNLOCKED!'; toast.classList.add('show');
+                setTimeout(()=>toast.classList.remove('show'),3000);
+            }
+        });
+
     </script>
 </body>
 </html>
