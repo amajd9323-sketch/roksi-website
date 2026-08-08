@@ -4,1076 +4,262 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ROKSAN #17 | ROKSI</title>
-    <!-- Google Fonts & Font Awesome Icons -->
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;800;900&family=Montserrat:wght@700;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <style>
         :root {
-            --primary: #38ef7d;       /* Green Vibrant Accent */
-            --primary-dark: #11998e;  /* Deep Emerald */
-            --accent: #38bdf8;        /* Light Blue */
-            --bg-dark: #0f172a;       /* Dark Background */
-            --card-bg: #1e293b;       /* Card Background */
+            --primary: #38ef7d;
+            --primary-dark: #11998e;
+            --accent: #38bdf8;
+            --bg-dark: #0f172a;
+            --card-bg: #1e293b;
             --text-light: #f8fafc;
             --text-gray: #94a3b8;
             --nav-bg: rgba(15, 23, 42, 0.95);
             --gold: #FFD700;
         }
-
+        /* Softer, more comfortable light theme (muted greens/grays instead of harsh bright white/green) */
         [data-theme="light"] {
-            --bg-dark: #f0fdf4;
+            --primary: #1f9d5c;
+            --primary-dark: #167a47;
+            --accent: #0284c7;
+            --bg-dark: #eef2f0;
             --card-bg: #ffffff;
-            --text-light: #0f172a;
-            --text-gray: #475569;
-            --nav-bg: rgba(255, 255, 255, 0.95);
+            --text-light: #1e293b;
+            --text-gray: #5b6b76;
+            --nav-bg: rgba(238, 242, 240, 0.95);
+            --gold: #b8860b;
         }
-
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Poppins', sans-serif;
-            scroll-behavior: smooth;
-            transition: background-color 0.3s, color 0.3s;
-        }
-
-        body {
-            background-color: var(--bg-dark);
-            color: var(--text-light);
-            overflow-x: hidden;
-        }
-
-        /* ===== Loading Screen ===== */
-        #loader {
-            position: fixed;
-            inset: 0;
-            background: var(--bg-dark);
-            z-index: 99999;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            transition: opacity 0.6s ease, visibility 0.6s ease;
-        }
-        #loader.hide {
-            opacity: 0;
-            visibility: hidden;
-        }
-        .loader-ring {
-            width: 70px;
-            height: 70px;
-            border: 5px solid rgba(56, 239, 125, 0.15);
-            border-top-color: var(--primary);
-            border-radius: 50%;
-            animation: spin 0.9s linear infinite;
-        }
-        .loader-text {
-            margin-top: 1.2rem;
-            font-weight: 800;
-            letter-spacing: 2px;
-            color: var(--primary);
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; scroll-behavior: smooth; transition: background-color 0.3s, color 0.3s; }
+        body { background-color: var(--bg-dark); color: var(--text-light); overflow-x: hidden; }
+        #loader { position: fixed; inset: 0; background: var(--bg-dark); z-index: 99999; display: flex; flex-direction: column; align-items: center; justify-content: center; transition: opacity 0.6s ease, visibility 0.6s ease; }
+        #loader.hide { opacity: 0; visibility: hidden; }
+        .loader-ring { width: 70px; height: 70px; border: 5px solid rgba(56, 239, 125, 0.15); border-top-color: var(--primary); border-radius: 50%; animation: spin 0.9s linear infinite; }
+        .loader-text { margin-top: 1.2rem; font-weight: 800; letter-spacing: 2px; color: var(--primary); }
         @keyframes spin { to { transform: rotate(360deg); } }
-
-        /* ===== Confetti Canvas ===== */
-        #confetti-canvas {
-            position: fixed;
-            inset: 0;
-            pointer-events: none;
-            z-index: 9998;
-        }
-
-        /* ===== Particle background (hero) ===== */
-        #particles {
-            position: absolute;
-            inset: 0;
-            z-index: 0;
-            pointer-events: none;
-        }
-
-        /* Navigation Bar */
-        nav {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 1rem 8%;
-            background: var(--nav-bg);
-            backdrop-filter: blur(10px);
-            position: fixed;
-            width: 100%;
-            top: 0;
-            z-index: 1000;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-        }
-
-        .logo {
-            font-size: 1.5rem;
-            font-weight: 900;
-            letter-spacing: 2px;
-            color: var(--text-light);
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
-
-        .logo img {
-            width: 45px;
-            height: 45px;
-            object-fit: contain;
-            border-radius: 50%;
-            background: #fff;
-            padding: 2px;
-        }
-
-        .logo span {
-            color: var(--primary);
-        }
-
-        .nav-right {
-            display: flex;
-            align-items: center;
-            gap: 1.5rem;
-        }
-
-        .nav-links {
-            display: flex;
-            list-style: none;
-            gap: 2rem;
-        }
-
-        .nav-links a {
-            color: var(--text-light);
-            text-decoration: none;
-            font-weight: 600;
-            transition: 0.3s;
-        }
-
-        .nav-links a:hover {
-            color: var(--accent);
-        }
-
-        .theme-btn, .lang-btn, .share-btn {
-            background: rgba(255, 255, 255, 0.1);
-            border: 1px solid var(--primary);
-            color: var(--text-light);
-            padding: 0.4rem 1rem;
-            border-radius: 20px;
-            cursor: pointer;
-            font-weight: 700;
-            transition: 0.3s;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-
-        .theme-btn:hover, .lang-btn:hover, .share-btn:hover {
-            background: var(--primary);
-            color: #0f172a;
-        }
-
-        /* Reveal on scroll */
-        .reveal {
-            opacity: 0;
-            transform: translateY(40px);
-            transition: opacity 0.8s ease, transform 0.8s ease;
-        }
-        .reveal.visible {
-            opacity: 1;
-            transform: translateY(0);
-        }
-
-        /* Hero Section */
-        .hero {
-            min-height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 120px 8% 0;
-            background: radial-gradient(circle at top right, rgba(56, 239, 125, 0.15), transparent 50%);
-            position: relative;
-            overflow: hidden;
-        }
-
-        .hero-text, .hero-image {
-            position: relative;
-            z-index: 2;
-        }
-
-        .hero-text .nationality {
-            display: inline-flex;
-            align-items: center;
-            gap: 0.5rem;
-            background: rgba(255, 255, 255, 0.05);
-            padding: 0.4rem 1rem;
-            border-radius: 20px;
-            color: var(--accent);
-            font-weight: 700;
-            margin-bottom: 1rem;
-            border: 1px solid rgba(56, 189, 248, 0.3);
-        }
-
-        .hero-text h1 {
-            font-size: 4rem;
-            font-weight: 900;
-            line-height: 1.1;
-            margin-bottom: 1rem;
-            font-family: 'Montserrat', sans-serif;
-        }
-
-        .hero-text p {
-            color: var(--text-gray);
-            font-size: 1.2rem;
-            max-width: 500px;
-            margin-bottom: 2rem;
-        }
-
-        .btn {
-            display: inline-block;
-            padding: 0.8rem 2.5rem;
-            background: linear-gradient(45deg, var(--primary-dark), var(--primary));
-            color: #0f172a;
-            text-decoration: none;
-            border-radius: 30px;
-            font-weight: 800;
-            box-shadow: 0 10px 20px rgba(56, 239, 125, 0.3);
-            transition: 0.3s transform, 0.3s box-shadow;
-            border: none;
-            cursor: pointer;
-            font-size: 1rem;
-        }
-
-        .btn:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 15px 25px rgba(56, 239, 125, 0.5);
-        }
-
-        .hero-image {
-            width: 350px;
-            height: 350px;
-            border-radius: 50%;
-            background: linear-gradient(45deg, var(--primary), var(--accent));
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            animation: floaty 5s ease-in-out infinite;
-        }
-        @keyframes floaty {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-14px); }
-        }
-
-        .hero-image img {
-            width: 95%;
-            height: 95%;
-            object-fit: cover;
-            border-radius: 50%;
-            border: 4px solid var(--bg-dark);
-        }
-
-        .badge-number {
-            position: absolute;
-            bottom: 10px;
-            right: 10px;
-            background: var(--accent);
-            color: #0f172a;
-            font-size: 2.2rem;
-            font-weight: 900;
-            width: 75px;
-            height: 75px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
-            border: 3px solid var(--bg-dark);
-        }
-
-        /* Countdown Container */
-        .countdown-container {
-            background: linear-gradient(135deg, var(--card-bg), rgba(56, 239, 125, 0.1));
-            border: 1px solid var(--primary);
-            padding: 1.5rem;
-            border-radius: 20px;
-            text-align: center;
-            max-width: 600px;
-            margin: 2rem auto -2rem;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
-            position: relative;
-            z-index: 5;
-        }
-
-        .countdown-title {
-            font-size: 1.1rem;
-            font-weight: 700;
-            color: var(--accent);
-            margin-bottom: 0.8rem;
-        }
-
-        .countdown-timer {
-            display: flex;
-            justify-content: center;
-            gap: 1.5rem;
-        }
-
-        .time-box {
-            background: rgba(0,0,0,0.2);
-            padding: 0.5rem 1rem;
-            border-radius: 10px;
-            min-width: 70px;
-        }
-
-        .time-box h3 {
-            font-size: 1.8rem;
-            color: var(--primary);
-        }
-
-        .time-box span {
-            font-size: 0.75rem;
-            color: var(--text-gray);
-            text-transform: uppercase;
-        }
-
-        .birthday-today {
-            display: none;
-            margin-top: 1rem;
-            font-weight: 800;
-            color: var(--gold);
-            font-size: 1.2rem;
-        }
-
-        /* EA FC Card Styling */
-        .fifa-card-container {
-            display: flex;
-            justify-content: center;
-            margin: 2rem 0;
-            perspective: 1200px;
-        }
-
-        .fifa-card-flip {
-            width: 300px;
-            height: 450px;
-            position: relative;
-            transform-style: preserve-3d;
-            transition: transform 0.7s;
-            cursor: pointer;
-        }
-        .fifa-card-flip.flipped {
-            transform: rotateY(180deg);
-        }
-
-        .fifa-card, .fifa-card-back {
-            width: 300px;
-            height: 450px;
-            background: linear-gradient(135deg, #FFE259 0%, #FFA751 50%, #FFD700 100%);
-            border-radius: 20px;
-            padding: 12px;
-            color: #1a1a1a;
-            position: absolute;
-            top: 0;
-            left: 0;
-            box-shadow: 0 15px 35px rgba(255, 215, 0, 0.3), 0 0 20px rgba(0,0,0,0.5);
-            transition: transform 0.4s ease, box-shadow 0.4s ease;
-            clip-path: polygon(12% 0%, 88% 0%, 100% 8%, 100% 92%, 88% 100%, 12% 100%, 0% 92%, 0% 8%);
-            backface-visibility: hidden;
-            overflow: hidden;
-        }
-
-        .fifa-card-back {
-            transform: rotateY(180deg);
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            text-align: center;
-            padding: 30px 25px;
-        }
-
-        .fifa-card-back h3 {
-            font-family: 'Montserrat', sans-serif;
-            font-size: 1.4rem;
-            margin-bottom: 15px;
-            border-bottom: 2px solid rgba(0,0,0,0.2);
-            padding-bottom: 8px;
-        }
-
-        .fifa-card-back ul {
-            list-style: none;
-            text-align: left;
-            width: 100%;
-        }
-
-        .fifa-card-back li {
-            font-weight: 700;
-            font-size: 0.95rem;
-            margin-bottom: 10px;
-            display: flex;
-            gap: 8px;
-            align-items: center;
-        }
-
-        .fifa-card-flip:hover .fifa-card,
-        .fifa-card-flip:hover .fifa-card-back {
-            box-shadow: 0 25px 50px rgba(56, 239, 125, 0.4);
-        }
-
-        .flip-hint {
-            text-align: center;
-            margin-top: 1rem;
-            color: var(--text-gray);
-            font-size: 0.9rem;
-        }
-
-        /* Shine sweep effect */
-        .card-shine {
-            position: absolute;
-            top: 0;
-            left: -75%;
-            width: 50%;
-            height: 100%;
-            background: linear-gradient(120deg, transparent 0%, rgba(255,255,255,0.6) 50%, transparent 100%);
-            transform: skewX(-20deg);
-            animation: shineSweep 3.5s ease-in-out infinite;
-            pointer-events: none;
-            z-index: 5;
-        }
-        @keyframes shineSweep {
-            0% { left: -75%; }
-            30%, 100% { left: 130%; }
-        }
-
-        .card-inner {
-            border: 2px solid rgba(255, 255, 255, 0.8);
-            height: 100%;
-            padding: 15px 12px;
-            position: relative;
-            background: linear-gradient(180deg, rgba(255, 255, 255, 0.3) 0%, rgba(0, 0, 0, 0.05) 60%, rgba(0, 0, 0, 0.25) 100%);
-            clip-path: polygon(12% 0%, 88% 0%, 100% 8%, 100% 92%, 88% 100%, 12% 100%, 0% 92%, 0% 8%);
-            display: flex;
-            flex-direction: column;
-        }
-
-        .card-top {
-            position: absolute;
-            top: 15px;
-            left: 15px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            z-index: 3;
-        }
-
-        .card-rating {
-            font-size: 2.8rem;
-            font-weight: 900;
-            line-height: 0.9;
-            font-family: 'Montserrat', sans-serif;
-        }
-
-        .card-pos {
-            font-size: 1.2rem;
-            font-weight: 800;
-            margin-top: 2px;
-        }
-
-        .card-flag {
-            width: 26px;
-            height: 18px;
-            margin-top: 5px;
-            border-radius: 2px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.3);
-            object-fit: cover;
-        }
-
-        .card-club-logo {
-            width: 28px;
-            height: 28px;
-            margin-top: 5px;
-            object-fit: contain;
-            filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3));
-        }
-
-        .card-img-wrapper {
-            width: 100%;
-            height: 220px;
-            display: flex;
-            justify-content: center;
-            align-items: flex-end;
-            margin-top: 5px;
-            position: relative;
-        }
-
-        .card-player-img {
-            height: 210px;
-            width: 170px;
-            object-fit: cover;
-            object-position: top;
-            filter: drop-shadow(0 8px 10px rgba(0,0,0,0.4));
-            mask-image: linear-gradient(to bottom, black 80%, transparent 100%);
-            -webkit-mask-image: linear-gradient(to bottom, black 80%, transparent 100%);
-        }
-
-        .card-name {
-            text-align: center;
-            font-size: 1.6rem;
-            font-weight: 900;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            border-bottom: 2px solid rgba(0, 0, 0, 0.15);
-            padding-bottom: 4px;
-            margin-top: 5px;
-            font-family: 'Montserrat', sans-serif;
-        }
-
-        .card-stats {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            column-gap: 20px;
-            row-gap: 4px;
-            margin-top: 10px;
-            padding: 0 10px;
-            font-weight: 800;
-            font-size: 1.05rem;
-        }
-
-        .stat-item {
-            display: flex;
-            gap: 6px;
-            align-items: center;
-        }
-
-        .stat-item span {
-            font-weight: 900;
-            font-size: 1.15rem;
-        }
-
-        /* Common Section Styling */
-        section {
-            padding: 4rem 8%;
-        }
-
-        .section-title {
-            text-align: center;
-            font-size: 2.5rem;
-            margin-bottom: 3rem;
-            position: relative;
-        }
-
-        .section-title::after {
-            content: '';
-            display: block;
-            width: 60px;
-            height: 4px;
-            background: var(--primary);
-            margin: 10px auto 0;
-            border-radius: 2px;
-        }
-
-        /* Photo Gallery Section */
-        .gallery-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 1.5rem;
-        }
-
-        .gallery-card {
-            background: var(--card-bg);
-            border-radius: 15px;
-            overflow: hidden;
-            border: 1px solid rgba(255, 255, 255, 0.05);
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-            transition: 0.3s;
-        }
-
-        .gallery-card:hover {
-            transform: translateY(-5px);
-            border-color: var(--primary);
-        }
-
-        .gallery-card img {
-            width: 100%;
-            height: 250px;
-            object-fit: cover;
-        }
-
-        .gallery-card .info {
-            padding: 1rem;
-            text-align: center;
-            font-weight: 700;
-        }
-
-        /* Bio Quick Cards */
-        .bio-info {
-            display: flex;
-            justify-content: center;
-            gap: 2rem;
-            flex-wrap: wrap;
-        }
-
-        .bio-card {
-            background: var(--card-bg);
-            padding: 1.2rem 2rem;
-            border-radius: 15px;
-            border-left: 4px solid var(--accent);
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
-        }
-
-        .bio-card i {
-            font-size: 1.8rem;
-            color: var(--accent);
-        }
-
-        .bio-card h4 {
-            font-size: 0.9rem;
-            color: var(--text-gray);
-        }
-
-        .bio-card p {
-            font-size: 1.2rem;
-            font-weight: 700;
-            color: var(--text-light);
-        }
-
-        /* Players & Pets Grid */
-        .players-grid, .pets-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-            gap: 1.5rem;
-        }
-
-        .player-card, .pet-card {
-            background: var(--card-bg);
-            padding: 1.5rem;
-            border-radius: 15px;
-            text-align: center;
-            border: 1px solid rgba(255, 255, 255, 0.05);
-            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
-            transition: 0.3s;
-        }
-
-        .player-card:hover, .pet-card:hover {
-            transform: translateY(-5px);
-            border-color: var(--primary);
-        }
-
-        .player-card i, .pet-card i {
-            font-size: 2rem;
-            color: var(--primary);
-            margin-bottom: 0.8rem;
-        }
-
-        /* Stats Grid */
-        .stats-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 2rem;
-        }
-
-        .stat-card {
-            background: var(--card-bg);
-            padding: 2.5rem 1.5rem;
-            border-radius: 15px;
-            text-align: center;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
-        }
-
-        .stat-card i {
-            font-size: 2.5rem;
-            color: var(--primary);
-            margin-bottom: 1rem;
-        }
-
-        .stat-card h2 {
-            font-size: 3rem;
-            color: var(--text-light);
-        }
-
-        /* ===== Timeline / Journey Section ===== */
-        .timeline {
-            position: relative;
-            max-width: 800px;
-            margin: 0 auto;
-            padding-left: 2rem;
-        }
-        .timeline::before {
-            content: '';
-            position: absolute;
-            left: 8px;
-            top: 0;
-            bottom: 0;
-            width: 3px;
-            background: linear-gradient(var(--primary), var(--accent));
-            border-radius: 3px;
-        }
-        .timeline-item {
-            position: relative;
-            padding: 0 0 2.5rem 2rem;
-        }
-        .timeline-item::before {
-            content: '';
-            position: absolute;
-            left: -25px;
-            top: 4px;
-            width: 18px;
-            height: 18px;
-            background: var(--primary);
-            border-radius: 50%;
-            border: 3px solid var(--bg-dark);
-            box-shadow: 0 0 0 3px var(--primary);
-        }
-        .timeline-year {
-            color: var(--accent);
-            font-weight: 800;
-            font-size: 0.95rem;
-            margin-bottom: 0.3rem;
-        }
-        .timeline-item h4 {
-            font-size: 1.2rem;
-            margin-bottom: 0.3rem;
-        }
-        .timeline-item p {
-            color: var(--text-gray);
-        }
-
-        /* ===== Testimonials Section ===== */
-        .testimonial-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 1.5rem;
-        }
-        .testimonial-card {
-            background: var(--card-bg);
-            padding: 1.8rem;
-            border-radius: 15px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
-            border-top: 4px solid var(--accent);
-            position: relative;
-        }
-        .testimonial-card i.quote-icon {
-            color: var(--primary);
-            font-size: 1.5rem;
-            opacity: 0.5;
-            margin-bottom: 0.8rem;
-        }
-        .testimonial-card p.quote-text {
-            font-style: italic;
-            color: var(--text-light);
-            margin-bottom: 1rem;
-            line-height: 1.5;
-        }
-        .testimonial-author {
-            display: flex;
-            align-items: center;
-            gap: 0.7rem;
-        }
-        .testimonial-author .avatar {
-            width: 38px;
-            height: 38px;
-            border-radius: 50%;
-            background: linear-gradient(45deg, var(--primary), var(--accent));
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: 800;
-            color: #0f172a;
-        }
-        .testimonial-author strong {
-            display: block;
-            font-size: 0.95rem;
-        }
-        .testimonial-author span {
-            font-size: 0.8rem;
-            color: var(--text-gray);
-        }
-
-        /* ===== Awards Gallery ===== */
-        .awards-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-            gap: 1.5rem;
-        }
-        .award-card {
-            background: var(--card-bg);
-            border-radius: 15px;
-            padding: 2rem 1.2rem;
-            text-align: center;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
-            border: 1px solid rgba(255,215,0,0.15);
-            transition: 0.3s;
-        }
-        .award-card:hover {
-            transform: translateY(-6px);
-            box-shadow: 0 10px 25px rgba(255,215,0,0.25);
-        }
-        .award-card .medal {
-            width: 70px;
-            height: 70px;
-            border-radius: 50%;
-            margin: 0 auto 1rem;
+        #confetti-canvas { position: fixed; inset: 0; pointer-events: none; z-index: 9998; }
+        #particles { position: absolute; inset: 0; z-index: 0; pointer-events: none; }
+        nav { display: flex; justify-content: space-between; align-items: center; padding: 1rem 8%; background: var(--nav-bg); backdrop-filter: blur(10px); position: fixed; width: 100%; top: 0; z-index: 1000; border-bottom: 1px solid rgba(255, 255, 255, 0.1); }
+        .logo { font-size: 1.5rem; font-weight: 900; letter-spacing: 2px; color: var(--text-light); display: flex; align-items: center; gap: 12px; }
+        .logo img { width: 45px; height: 45px; object-fit: contain; border-radius: 50%; background: #fff; padding: 2px; }
+        .logo span { color: var(--primary); }
+        .nav-right { display: flex; align-items: center; gap: 1.5rem; }
+        .nav-links { display: flex; list-style: none; gap: 2rem; }
+        .nav-links a { color: var(--text-light); text-decoration: none; font-weight: 600; transition: 0.3s; }
+        .nav-links a:hover { color: var(--accent); }
+        .theme-btn, .lang-btn, .share-btn { background: rgba(255, 255, 255, 0.1); border: 1px solid var(--primary); color: var(--text-light); padding: 0.4rem 1rem; border-radius: 20px; cursor: pointer; font-weight: 700; transition: 0.3s; display: flex; align-items: center; gap: 0.5rem; }
+        .theme-btn:hover, .lang-btn:hover, .share-btn:hover { background: var(--primary); color: #fff; }
+        .reveal { opacity: 0; transform: translateY(40px); transition: opacity 0.8s ease, transform 0.8s ease; }
+        .reveal.visible { opacity: 1; transform: translateY(0); }
+        .hero { min-height: 100vh; display: flex; align-items: center; justify-content: space-between; padding: 120px 8% 0; background: radial-gradient(circle at top right, rgba(56, 239, 125, 0.15), transparent 50%); position: relative; overflow: hidden; }
+        .hero-text, .hero-image { position: relative; z-index: 2; }
+        .hero-text .nationality { display: inline-flex; align-items: center; gap: 0.5rem; background: rgba(255, 255, 255, 0.05); padding: 0.4rem 1rem; border-radius: 20px; color: var(--accent); font-weight: 700; margin-bottom: 1rem; border: 1px solid rgba(56, 189, 248, 0.3); }
+        .hero-text h1 { font-size: 4rem; font-weight: 900; line-height: 1.1; margin-bottom: 1rem; font-family: 'Montserrat', sans-serif; }
+        .hero-text p { color: var(--text-gray); font-size: 1.2rem; max-width: 500px; margin-bottom: 2rem; }
+        .btn { display: inline-block; padding: 0.8rem 2.5rem; background: linear-gradient(45deg, var(--primary-dark), var(--primary)); color: #fff; text-decoration: none; border-radius: 30px; font-weight: 800; box-shadow: 0 10px 20px rgba(56, 239, 125, 0.3); transition: 0.3s transform, 0.3s box-shadow; border: none; cursor: pointer; font-size: 1rem; }
+        .btn:hover { transform: translateY(-3px); box-shadow: 0 15px 25px rgba(56, 239, 125, 0.5); }
+        .hero-image { width: 350px; height: 350px; border-radius: 50%; background: linear-gradient(45deg, var(--primary), var(--accent)); display: flex; justify-content: center; align-items: center; animation: floaty 5s ease-in-out infinite; }
+        @keyframes floaty { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-14px); } }
+        .hero-image img { width: 95%; height: 95%; object-fit: cover; border-radius: 50%; border: 4px solid var(--bg-dark); }
+        .badge-number { position: absolute; bottom: 10px; right: 10px; background: var(--accent); color: #fff; font-size: 2.2rem; font-weight: 900; width: 75px; height: 75px; border-radius: 50%; display: flex; align-items: center; justify-content: center; box-shadow: 0 5px 15px rgba(0,0,0,0.3); border: 3px solid var(--bg-dark); }
+        .countdown-container { background: linear-gradient(135deg, var(--card-bg), rgba(56, 239, 125, 0.1)); border: 1px solid var(--primary); padding: 1.5rem; border-radius: 20px; text-align: center; max-width: 600px; margin: 2rem auto -2rem; box-shadow: 0 10px 25px rgba(0,0,0,0.1); position: relative; z-index: 5; }
+        .countdown-title { font-size: 1.1rem; font-weight: 700; color: var(--accent); margin-bottom: 0.8rem; }
+        .countdown-timer { display: flex; justify-content: center; gap: 1.5rem; }
+        .time-box { background: rgba(0,0,0,0.08); padding: 0.5rem 1rem; border-radius: 10px; min-width: 70px; }
+        .time-box h3 { font-size: 1.8rem; color: var(--primary); }
+        .time-box span { font-size: 0.75rem; color: var(--text-gray); text-transform: uppercase; }
+        .birthday-today { display: none; margin-top: 1rem; font-weight: 800; color: var(--gold); font-size: 1.2rem; }
+        .fifa-card-container { display: flex; justify-content: center; margin: 2rem 0; perspective: 1200px; }
+        .fifa-card-flip { width: 300px; height: 450px; position: relative; transform-style: preserve-3d; transition: transform 0.7s; cursor: pointer; }
+        .fifa-card-flip.flipped { transform: rotateY(180deg); }
+        .fifa-card, .fifa-card-back { width: 300px; height: 450px; background: linear-gradient(135deg, #FFE259 0%, #FFA751 50%, #FFD700 100%); border-radius: 20px; padding: 12px; color: #1a1a1a; position: absolute; top: 0; left: 0; box-shadow: 0 15px 35px rgba(255, 215, 0, 0.3), 0 0 20px rgba(0,0,0,0.5); transition: transform 0.4s ease, box-shadow 0.4s ease; clip-path: polygon(12% 0%, 88% 0%, 100% 8%, 100% 92%, 88% 100%, 12% 100%, 0% 92%, 0% 8%); backface-visibility: hidden; overflow: hidden; }
+        .fifa-card-back { transform: rotateY(180deg); display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; padding: 30px 25px; }
+        .fifa-card-back h3 { font-family: 'Montserrat', sans-serif; font-size: 1.4rem; margin-bottom: 15px; border-bottom: 2px solid rgba(0,0,0,0.2); padding-bottom: 8px; }
+        .fifa-card-back ul { list-style: none; text-align: left; width: 100%; }
+        .fifa-card-back li { font-weight: 700; font-size: 0.95rem; margin-bottom: 10px; display: flex; gap: 8px; align-items: center; }
+        .fifa-card-flip:hover .fifa-card, .fifa-card-flip:hover .fifa-card-back { box-shadow: 0 25px 50px rgba(56, 239, 125, 0.4); }
+        .flip-hint { text-align: center; margin-top: 1rem; color: var(--text-gray); font-size: 0.9rem; }
+        .card-shine { position: absolute; top: 0; left: -75%; width: 50%; height: 100%; background: linear-gradient(120deg, transparent 0%, rgba(255,255,255,0.6) 50%, transparent 100%); transform: skewX(-20deg); animation: shineSweep 3.5s ease-in-out infinite; pointer-events: none; z-index: 5; }
+        @keyframes shineSweep { 0% { left: -75%; } 30%, 100% { left: 130%; } }
+        .card-inner { border: 2px solid rgba(255, 255, 255, 0.8); height: 100%; padding: 15px 12px; position: relative; background: linear-gradient(180deg, rgba(255, 255, 255, 0.3) 0%, rgba(0, 0, 0, 0.05) 60%, rgba(0, 0, 0, 0.25) 100%); clip-path: polygon(12% 0%, 88% 0%, 100% 8%, 100% 92%, 88% 100%, 12% 100%, 0% 92%, 0% 8%); display: flex; flex-direction: column; }
+        .card-top { position: absolute; top: 15px; left: 15px; display: flex; flex-direction: column; align-items: center; z-index: 3; }
+        .card-rating { font-size: 2.8rem; font-weight: 900; line-height: 0.9; font-family: 'Montserrat', sans-serif; }
+        .card-pos { font-size: 1.2rem; font-weight: 800; margin-top: 2px; }
+        .card-flag { width: 26px; height: 18px; margin-top: 5px; border-radius: 2px; box-shadow: 0 2px 5px rgba(0,0,0,0.3); object-fit: cover; }
+        .card-club-logo { width: 28px; height: 28px; margin-top: 5px; object-fit: contain; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3)); }
+        .card-img-wrapper { width: 100%; height: 220px; display: flex; justify-content: center; align-items: flex-end; margin-top: 5px; position: relative; }
+        .card-player-img { height: 210px; width: 170px; object-fit: cover; object-position: top; filter: drop-shadow(0 8px 10px rgba(0,0,0,0.4)); mask-image: linear-gradient(to bottom, black 80%, transparent 100%); -webkit-mask-image: linear-gradient(to bottom, black 80%, transparent 100%); }
+        .card-name { text-align: center; font-size: 1.6rem; font-weight: 900; text-transform: uppercase; letter-spacing: 1px; border-bottom: 2px solid rgba(0, 0, 0, 0.15); padding-bottom: 4px; margin-top: 5px; font-family: 'Montserrat', sans-serif; }
+        .card-stats { display: grid; grid-template-columns: 1fr 1fr; column-gap: 20px; row-gap: 4px; margin-top: 10px; padding: 0 10px; font-weight: 800; font-size: 1.05rem; }
+        .stat-item { display: flex; gap: 6px; align-items: center; }
+        .stat-item span { font-weight: 900; font-size: 1.15rem; }
+        .download-card-btn { display: block; margin: 1.2rem auto 0; }
+        section { padding: 4rem 8%; }
+        .section-title { text-align: center; font-size: 2.5rem; margin-bottom: 3rem; position: relative; }
+        .section-title::after { content: ''; display: block; width: 60px; height: 4px; background: var(--primary); margin: 10px auto 0; border-radius: 2px; }
+        .gallery-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem; }
+        .gallery-card { background: var(--card-bg); border-radius: 15px; overflow: hidden; border: 1px solid rgba(0, 0, 0, 0.05); box-shadow: 0 5px 15px rgba(0,0,0,0.1); transition: 0.3s; cursor: zoom-in; }
+        .gallery-card:hover { transform: translateY(-5px); border-color: var(--primary); }
+        .gallery-card img { width: 100%; height: 250px; object-fit: cover; }
+        .gallery-card .info { padding: 1rem; text-align: center; font-weight: 700; }
+        .bio-info { display: flex; justify-content: center; gap: 2rem; flex-wrap: wrap; }
+        .bio-card { background: var(--card-bg); padding: 1.2rem 2rem; border-radius: 15px; border-left: 4px solid var(--accent); display: flex; align-items: center; gap: 1rem; box-shadow: 0 5px 15px rgba(0,0,0,0.05); }
+        .bio-card i { font-size: 1.8rem; color: var(--accent); }
+        .bio-card h4 { font-size: 0.9rem; color: var(--text-gray); }
+        .bio-card p { font-size: 1.2rem; font-weight: 700; color: var(--text-light); }
+        .players-grid, .pets-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 1.5rem; }
+        .player-card, .pet-card { background: var(--card-bg); padding: 1.5rem; border-radius: 15px; text-align: center; border: 1px solid rgba(0, 0, 0, 0.05); box-shadow: 0 5px 15px rgba(0,0,0,0.05); transition: 0.3s; }
+        .player-card:hover, .pet-card:hover { transform: translateY(-5px); border-color: var(--primary); }
+        .player-card i, .pet-card i { font-size: 2rem; color: var(--primary); margin-bottom: 0.8rem; }
+        .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 2rem; }
+        .stat-card { background: var(--card-bg); padding: 2.5rem 1.5rem; border-radius: 15px; text-align: center; box-shadow: 0 5px 15px rgba(0,0,0,0.05); }
+        .stat-card i { font-size: 2.5rem; color: var(--primary); margin-bottom: 1rem; }
+        .stat-card h2 { font-size: 3rem; color: var(--text-light); }
+        .timeline { position: relative; max-width: 800px; margin: 0 auto; padding-left: 2rem; }
+        .timeline::before { content: ''; position: absolute; left: 8px; top: 0; bottom: 0; width: 3px; background: linear-gradient(var(--primary), var(--accent)); border-radius: 3px; }
+        .timeline-item { position: relative; padding: 0 0 2.5rem 2rem; }
+        .timeline-item::before { content: ''; position: absolute; left: -25px; top: 4px; width: 18px; height: 18px; background: var(--primary); border-radius: 50%; border: 3px solid var(--bg-dark); box-shadow: 0 0 0 3px var(--primary); }
+        .timeline-year { color: var(--accent); font-weight: 800; font-size: 0.95rem; margin-bottom: 0.3rem; }
+        .timeline-item h4 { font-size: 1.2rem; margin-bottom: 0.3rem; }
+        .timeline-item p { color: var(--text-gray); }
+        .testimonial-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem; }
+        .testimonial-card { background: var(--card-bg); padding: 1.8rem; border-radius: 15px; box-shadow: 0 5px 15px rgba(0,0,0,0.05); border-top: 4px solid var(--accent); position: relative; }
+        .testimonial-card i.quote-icon { color: var(--primary); font-size: 1.5rem; opacity: 0.5; margin-bottom: 0.8rem; }
+        .testimonial-card p.quote-text { font-style: italic; color: var(--text-light); margin-bottom: 1rem; line-height: 1.5; }
+        .testimonial-author { display: flex; align-items: center; gap: 0.7rem; }
+        .testimonial-author .avatar { width: 38px; height: 38px; border-radius: 50%; background: linear-gradient(45deg, var(--primary), var(--accent)); display: flex; align-items: center; justify-content: center; font-weight: 800; color: #fff; }
+        .testimonial-author strong { display: block; font-size: 0.95rem; }
+        .testimonial-author span { font-size: 0.8rem; color: var(--text-gray); }
+        .awards-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1.5rem; }
+        .award-card { background: var(--card-bg); border-radius: 15px; padding: 2rem 1.2rem; text-align: center; box-shadow: 0 5px 15px rgba(0,0,0,0.05); border: 1px solid rgba(184,134,11,0.15); transition: 0.3s; }
+        .award-card:hover { transform: translateY(-6px); box-shadow: 0 10px 25px rgba(184,134,11,0.2); }
+        .award-card .medal { width: 70px; height: 70px; border-radius: 50%; margin: 0 auto 1rem; background: linear-gradient(135deg, var(--gold), #b8860b); display: flex; align-items: center; justify-content: center; font-size: 1.8rem; color: #fff; box-shadow: 0 5px 15px rgba(184,134,11,0.35); }
+        .award-card h4 { margin-bottom: 0.3rem; }
+        .award-card span { color: var(--text-gray); font-size: 0.85rem; }
+        .social-feed-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 1.5rem; }
+        .social-post { background: var(--card-bg); border-radius: 15px; overflow: hidden; box-shadow: 0 5px 15px rgba(0,0,0,0.08); transition: 0.3s; }
+        .social-post:hover { transform: translateY(-5px); }
+        .social-post-img { width: 100%; height: 220px; object-fit: cover; cursor: zoom-in; }
+        .social-post-body { padding: 1rem; }
+        .social-post-header { display: flex; align-items: center; gap: 0.6rem; margin-bottom: 0.6rem; font-weight: 700; font-size: 0.9rem; }
+        .social-post-header i { color: #E1306C; }
+        .social-post-caption { font-size: 0.88rem; color: var(--text-gray); }
+        .social-post-likes { margin-top: 0.6rem; font-size: 0.8rem; color: var(--accent); font-weight: 700; }
+        .music-player { max-width: 420px; margin: 0 auto; background: var(--card-bg); border-radius: 20px; padding: 1.5rem; display: flex; align-items: center; gap: 1.2rem; box-shadow: 0 10px 25px rgba(0,0,0,0.1); border: 1px solid rgba(56, 239, 125, 0.2); }
+        .music-art { width: 65px; height: 65px; border-radius: 50%; background: linear-gradient(45deg, var(--primary), var(--accent)); display: flex; align-items: center; justify-content: center; font-size: 1.5rem; color: #fff; flex-shrink: 0; animation: none; }
+        .music-art.spinning { animation: spin 4s linear infinite; }
+        .music-info { flex: 1; min-width: 0; }
+        .music-info h4 { font-size: 1rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .music-info span { color: var(--text-gray); font-size: 0.8rem; }
+        .music-controls { display: flex; gap: 0.8rem; align-items: center; }
+        .music-controls button { background: none; border: none; color: var(--text-light); font-size: 1.3rem; cursor: pointer; }
+        .music-controls .play-btn { width: 42px; height: 42px; border-radius: 50%; background: var(--primary); color: #fff; display: flex; align-items: center; justify-content: center; font-size: 1.1rem; }
+        .music-progress { width: 100%; height: 4px; background: rgba(0,0,0,0.1); border-radius: 2px; margin-top: 0.5rem; overflow: hidden; }
+        .music-progress-bar { height: 100%; width: 0%; background: var(--primary); transition: width 0.3s linear; }
+        .video-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.5rem; }
+        .video-card { background: var(--card-bg); border-radius: 15px; padding: 12px; border: 1px solid rgba(0, 0, 0, 0.05); box-shadow: 0 5px 15px rgba(0,0,0,0.1); display: flex; flex-direction: column; align-items: center; transition: 0.3s; }
+        .video-card:hover { transform: translateY(-5px); border-color: var(--primary); }
+        .video-card iframe { width: 100%; height: 210px; border: 0; border-radius: 10px; }
+        .video-card.short-card iframe { height: 450px; max-width: 270px; }
+        .video-card p { margin-top: 12px; font-weight: 700; color: var(--text-light); text-align: center; font-size: 0.95rem; }
+        footer { background: rgba(0, 0, 0, 0.15); text-align: center; padding: 2rem; border-top: 1px solid rgba(0, 0, 0, 0.05); }
+        .socials a { color: var(--text-light); font-size: 1.5rem; margin: 0 10px; }
+        #toast { position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%) translateY(20px); background: var(--primary); color: #fff; font-weight: 700; padding: 0.7rem 1.4rem; border-radius: 30px; opacity: 0; pointer-events: none; transition: 0.3s; z-index: 5000; box-shadow: 0 10px 25px rgba(0,0,0,0.3); }
+        #toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+        /* ===== Lightbox ===== */
+        #lightbox {
+            position: fixed; inset: 0; background: rgba(0,0,0,0.9);
+            display: none; align-items: center; justify-content: center;
+            z-index: 20000; padding: 2rem; flex-direction: column;
+        }
+        #lightbox.open { display: flex; }
+        #lightbox img {
+            max-width: 90vw; max-height: 80vh; border-radius: 10px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.6);
+            animation: lightboxIn 0.3s ease;
+        }
+        @keyframes lightboxIn { from { opacity: 0; transform: scale(0.92); } to { opacity: 1; transform: scale(1); } }
+        #lightbox-caption { color: #fff; margin-top: 1rem; font-weight: 700; text-align: center; }
+        .lightbox-close {
+            position: absolute; top: 20px; right: 30px; font-size: 2.2rem;
+            color: #fff; background: none; border: none; cursor: pointer; z-index: 20001;
+        }
+        .lightbox-nav {
+            position: absolute; top: 50%; transform: translateY(-50%);
+            background: rgba(255,255,255,0.1); border: none; color: #fff;
+            font-size: 1.8rem; padding: 0.6rem 1rem; cursor: pointer; border-radius: 8px;
+        }
+        .lightbox-nav:hover { background: var(--primary); color: #fff; }
+        #lightbox-prev { left: 20px; }
+        #lightbox-next { right: 20px; }
+
+        /* ===== Support Messages Section ===== */
+        .support-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1.2rem; }
+        .support-card {
+            background: var(--card-bg); border-radius: 15px; padding: 1.4rem;
+            text-align: center; box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            border: 1px solid rgba(56, 239, 125, 0.15);
+        }
+        .support-card i { color: var(--primary); font-size: 1.4rem; margin-bottom: 0.5rem; }
+        .support-card p { font-weight: 700; }
+
+        /* ===== Player of the Month Badge ===== */
+        .potm-banner {
+            max-width: 700px; margin: 0 auto; background: linear-gradient(135deg, var(--card-bg), rgba(184,134,11,0.08));
+            border: 1px solid var(--gold); border-radius: 20px; padding: 1.8rem;
+            display: flex; align-items: center; gap: 1.5rem; box-shadow: 0 10px 25px rgba(184,134,11,0.15);
+        }
+        .potm-icon {
+            width: 80px; height: 80px; border-radius: 50%; flex-shrink: 0;
             background: linear-gradient(135deg, var(--gold), #b8860b);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.8rem;
-            color: #1a1a1a;
-            box-shadow: 0 5px 15px rgba(255,215,0,0.4);
+            display: flex; align-items: center; justify-content: center;
+            font-size: 2rem; color: #fff; box-shadow: 0 5px 15px rgba(184,134,11,0.35);
         }
-        .award-card h4 {
-            margin-bottom: 0.3rem;
-        }
-        .award-card span {
-            color: var(--text-gray);
-            font-size: 0.85rem;
-        }
+        .potm-text h3 { margin-bottom: 0.3rem; }
+        .potm-text p { color: var(--text-gray); }
 
-        /* ===== Social Feed Section ===== */
-        .social-feed-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-            gap: 1.5rem;
+        /* ===== Share buttons (WhatsApp/Facebook) ===== */
+        .share-buttons { display: flex; gap: 0.8rem; justify-content: center; flex-wrap: wrap; margin-top: 1rem; }
+        .share-chip {
+            display: inline-flex; align-items: center; gap: 0.5rem;
+            padding: 0.55rem 1.1rem; border-radius: 20px; text-decoration: none;
+            font-weight: 700; font-size: 0.9rem; color: #fff; transition: 0.3s;
         }
-        .social-post {
-            background: var(--card-bg);
-            border-radius: 15px;
-            overflow: hidden;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.08);
-            transition: 0.3s;
-        }
-        .social-post:hover {
-            transform: translateY(-5px);
-        }
-        .social-post-img {
-            width: 100%;
-            height: 220px;
-            object-fit: cover;
-        }
-        .social-post-body {
-            padding: 1rem;
-        }
-        .social-post-header {
-            display: flex;
-            align-items: center;
-            gap: 0.6rem;
-            margin-bottom: 0.6rem;
-            font-weight: 700;
-            font-size: 0.9rem;
-        }
-        .social-post-header i {
-            color: #E1306C;
-        }
-        .social-post-caption {
-            font-size: 0.88rem;
-            color: var(--text-gray);
-        }
-        .social-post-likes {
-            margin-top: 0.6rem;
-            font-size: 0.8rem;
-            color: var(--accent);
-            font-weight: 700;
-        }
-
-        /* ===== Music Player ===== */
-        .music-player {
-            max-width: 420px;
-            margin: 0 auto;
-            background: var(--card-bg);
-            border-radius: 20px;
-            padding: 1.5rem;
-            display: flex;
-            align-items: center;
-            gap: 1.2rem;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
-            border: 1px solid rgba(56, 239, 125, 0.2);
-        }
-        .music-art {
-            width: 65px;
-            height: 65px;
-            border-radius: 50%;
-            background: linear-gradient(45deg, var(--primary), var(--accent));
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.5rem;
-            color: #0f172a;
-            flex-shrink: 0;
-            animation: none;
-        }
-        .music-art.spinning {
-            animation: spin 4s linear infinite;
-        }
-        .music-info {
-            flex: 1;
-            min-width: 0;
-        }
-        .music-info h4 {
-            font-size: 1rem;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-        }
-        .music-info span {
-            color: var(--text-gray);
-            font-size: 0.8rem;
-        }
-        .music-controls {
-            display: flex;
-            gap: 0.8rem;
-            align-items: center;
-        }
-        .music-controls button {
-            background: none;
-            border: none;
-            color: var(--text-light);
-            font-size: 1.3rem;
-            cursor: pointer;
-        }
-        .music-controls .play-btn {
-            width: 42px;
-            height: 42px;
-            border-radius: 50%;
-            background: var(--primary);
-            color: #0f172a;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.1rem;
-        }
-        .music-progress {
-            width: 100%;
-            height: 4px;
-            background: rgba(255,255,255,0.1);
-            border-radius: 2px;
-            margin-top: 0.5rem;
-            overflow: hidden;
-        }
-        .music-progress-bar {
-            height: 100%;
-            width: 0%;
-            background: var(--primary);
-            transition: width 0.3s linear;
-        }
-
-        /* Videos Grid & Cards Styling */
-        .video-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 1.5rem;
-        }
-
-        .video-card {
-            background: var(--card-bg);
-            border-radius: 15px;
-            padding: 12px;
-            border: 1px solid rgba(255, 255, 255, 0.05);
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            transition: 0.3s;
-        }
-
-        .video-card:hover {
-            transform: translateY(-5px);
-            border-color: var(--primary);
-        }
-
-        .video-card iframe {
-            width: 100%;
-            height: 210px;
-            border: 0;
-            border-radius: 10px;
-        }
-
-        /* Shorts Card Styling (Vertical) */
-        .video-card.short-card iframe {
-            height: 450px;
-            max-width: 270px;
-        }
-
-        .video-card p {
-            margin-top: 12px;
-            font-weight: 700;
-            color: var(--text-light);
-            text-align: center;
-            font-size: 0.95rem;
-        }
-
-        /* Footer */
-        footer {
-            background: rgba(0, 0, 0, 0.2);
-            text-align: center;
-            padding: 2rem;
-            border-top: 1px solid rgba(255, 255, 255, 0.05);
-        }
-
-        .socials a {
-            color: var(--text-light);
-            font-size: 1.5rem;
-            margin: 0 10px;
-        }
-
-        /* Share toast */
-        #toast {
-            position: fixed;
-            bottom: 24px;
-            left: 50%;
-            transform: translateX(-50%) translateY(20px);
-            background: var(--primary);
-            color: #0f172a;
-            font-weight: 700;
-            padding: 0.7rem 1.4rem;
-            border-radius: 30px;
-            opacity: 0;
-            pointer-events: none;
-            transition: 0.3s;
-            z-index: 5000;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.3);
-        }
-        #toast.show {
-            opacity: 1;
-            transform: translateX(-50%) translateY(0);
-        }
+        .share-chip.whatsapp { background: #25D366; }
+        .share-chip.facebook { background: #1877F2; }
+        .share-chip:hover { transform: translateY(-2px); filter: brightness(1.08); }
 
         @media (max-width: 768px) {
-            .hero {
-                flex-direction: column-reverse;
-                text-align: center;
-                padding-top: 120px;
-            }
-            .hero-image {
-                width: 250px;
-                height: 250px;
-            }
-            .hero-text h1 {
-                font-size: 2.8rem;
-            }
-            .nav-links {
-                display: none;
-            }
-            .music-player {
-                flex-wrap: wrap;
-            }
+            .hero { flex-direction: column-reverse; text-align: center; padding-top: 120px; }
+            .hero-image { width: 250px; height: 250px; }
+            .hero-text h1 { font-size: 2.8rem; }
+            .nav-links { display: none; }
+            .music-player { flex-wrap: wrap; }
+            .potm-banner { flex-direction: column; text-align: center; }
         }
     </style>
 </head>
 <body>
 
-    <!-- Loading Screen -->
     <div id="loader">
         <div class="loader-ring"></div>
         <div class="loader-text">LOADING ROKSI #17...</div>
     </div>
 
-    <!-- Confetti Canvas -->
     <canvas id="confetti-canvas"></canvas>
-
-    <!-- Toast -->
     <div id="toast">Link copied!</div>
 
-    <!-- Navigation Bar -->
+    <!-- Lightbox -->
+    <div id="lightbox">
+        <button class="lightbox-close" onclick="closeLightbox()">&times;</button>
+        <button class="lightbox-nav" id="lightbox-prev" onclick="navLightbox(-1)">&#10094;</button>
+        <img id="lightbox-img" src="" alt="">
+        <button class="lightbox-nav" id="lightbox-next" onclick="navLightbox(1)">&#10095;</button>
+        <div id="lightbox-caption"></div>
+    </div>
+
     <nav>
         <div class="logo">
             <img src="logo.jpg" alt="Jajniki Grudziądz Logo">
@@ -1089,19 +275,18 @@
                 <li><a href="#stats" data-key="nav-stats">Stats</a></li>
                 <li><a href="#highlights" data-key="nav-highlights">Videos</a></li>
             </ul>
+              <button class="lang-btn" onclick="toggleLanguage()">
+                <i class="fas fa-globe"></i> <span id="lang-label">PL</span>
+            </button>
             <button class="share-btn" onclick="shareSite()" title="Share">
                 <i class="fas fa-share-alt"></i>
             </button>
             <button class="theme-btn" onclick="toggleTheme()" id="theme-btn">
                 <i class="fas fa-moon"></i>
             </button>
-            <button class="lang-btn" onclick="toggleLanguage()">
-                <i class="fas fa-globe"></i> <span id="lang-label">PL</span>
-            </button>
         </div>
     </nav>
 
-    <!-- Hero Section -->
     <section class="hero" id="home">
         <canvas id="particles"></canvas>
         <div class="hero-text">
@@ -1118,7 +303,6 @@
         </div>
     </section>
 
-    <!-- Birthday Countdown Section -->
     <div class="countdown-container reveal">
         <div class="countdown-title" data-key="countdown-title">🎉 Countdown to Roksi's Birthday (Feb 20)</div>
         <div class="countdown-timer" id="countdown-timer">
@@ -1130,7 +314,17 @@
         <div class="birthday-today" id="birthday-today" data-key="birthday-today">🎂🎈 HAPPY BIRTHDAY ROKSI! 🎈🎂</div>
     </div>
 
-    <!-- FIFA Player Card Section -->
+    <!-- Player of the Month Banner -->
+    <section id="potm">
+        <div class="potm-banner reveal">
+            <div class="potm-icon"><i class="fas fa-star"></i></div>
+            <div class="potm-text">
+                <h3 data-key="potm-title">🌟 Player of the Month</h3>
+                <p data-key="potm-desc">Recognized for outstanding effort, teamwork, and growth on the pitch this month.</p>
+            </div>
+        </div>
+    </section>
+
     <section id="card">
         <h2 class="section-title reveal" data-key="card-title">Ultimate Player Card</h2>
         <div class="fifa-card-container reveal">
@@ -1139,22 +333,22 @@
                     <div class="card-shine"></div>
                     <div class="card-inner">
                         <div class="card-top">
-                            <div class="card-rating">94</div>
+                            <div class="card-rating">89</div>
                             <div class="card-pos">RW</div>
-                            <img src="https://flagcdn.com/w40/pl.png" alt="Poland" class="card-flag">
-                            <img src="logo.jpg" alt="Team Logo" class="card-club-logo">
+                            <img src="https://flagcdn.com/w40/pl.png" alt="Poland" class="card-flag" loading="lazy">
+                            <img src="logo.jpg" alt="Team Logo" class="card-club-logo" loading="lazy">
                         </div>
                         <div class="card-img-wrapper">
-                            <img src="roksi cup.jpeg" alt="Roksi" class="card-player-img">
+                            <img src="roksi cup.jpeg" alt="Roksi" class="card-player-img" loading="lazy">
                         </div>
                         <div class="card-name">ROKSI</div>
                         <div class="card-stats">
-                            <div class="stat-item"><span>96</span> PAC</div>
-                            <div class="stat-item"><span>92</span> DRI</div>
-                            <div class="stat-item"><span>90</span> SHO</div>
-                            <div class="stat-item"><span>78</span> DEF</div>
-                            <div class="stat-item"><span>91</span> PAS</div>
-                            <div class="stat-item"><span>85</span> PHY</div>
+                            <div class="stat-item"><span>94</span> PAC</div>
+                            <div class="stat-item"><span>85</span> DRI</div>
+                            <div class="stat-item"><span>84</span> SHO</div>
+                            <div class="stat-item"><span>89</span> DEF</div>
+                            <div class="stat-item"><span>96</span> PAS</div>
+                            <div class="stat-item"><span>93</span> PHY</div>
                         </div>
                     </div>
                 </div>
@@ -1171,36 +365,38 @@
             </div>
         </div>
         <p class="flip-hint reveal" data-key="flip-hint"><i class="fas fa-hand-pointer"></i> Click the card to flip it</p>
+        <button class="btn download-card-btn reveal" onclick="downloadCard()">
+            <span data-key="download-card-btn">Download Card as Image</span> <i class="fas fa-download"></i>
+        </button>
     </section>
 
-    <!-- Timeline / Journey Section -->
     <section id="journey">
         <h2 class="section-title reveal" data-key="journey-title">Her Football Journey</h2>
         <div class="timeline">
             <div class="timeline-item reveal">
-                <div class="timeline-year">2019</div>
+                <div class="timeline-year">2022/2023</div>
                 <h4 data-key="tl-1-title">First Steps on the Pitch</h4>
                 <p data-key="tl-1-desc">Roksi joined her first youth football club and fell in love with the game.</p>
             </div>
-            <div class="timeline-item reveal">
-                <div class="timeline-year">2021</div>
-                <h4 data-key="tl-2-title">First Goal</h4>
-                <p data-key="tl-2-desc">Scored her first official goal, sparking a passion for attacking play.</p>
-            </div>
-            <div class="timeline-item reveal">
+             <div class="timeline-item reveal">
                 <div class="timeline-year">2023</div>
                 <h4 data-key="tl-3-title">Joined Jajniki Grudziądz</h4>
                 <p data-key="tl-3-desc">Signed with the club and quickly became a key player wearing #17.</p>
             </div>
             <div class="timeline-item reveal">
-                <div class="timeline-year">2024</div>
-                <h4 data-key="tl-4-title">First Trophy</h4>
-                <p data-key="tl-4-desc">Helped the team reach the finals and lifted her first medal.</p>
+                <div class="timeline-year">2025</div>
+                <h4 data-key="tl-2-title">First Goal</h4>
+                <p data-key="tl-2-desc">Scored her first official goal, sparking a passion for attacking play.</p>
             </div>
             <div class="timeline-item reveal">
                 <div class="timeline-year">2025</div>
                 <h4 data-key="tl-5-title">2nd Place - Grudziądz Cup</h4>
                 <p data-key="tl-5-desc">A standout tournament performance, finishing in 2nd place with the squad.</p>
+            </div>
+            <div class="timeline-item reveal">
+                <div class="timeline-year">December 2025</div>
+                <h4 data-key="tl-4-title">First Trophy</h4>
+                <p data-key="tl-4-desc">Helped the team reach the finals and lifted her first medal.</p>
             </div>
             <div class="timeline-item reveal">
                 <div class="timeline-year">2026</div>
@@ -1210,7 +406,6 @@
         </div>
     </section>
 
-    <!-- Testimonials Section -->
     <section id="testimonials">
         <h2 class="section-title reveal" data-key="testimonials-title">What They Say</h2>
         <div class="testimonial-grid">
@@ -1219,7 +414,7 @@
                 <p class="quote-text" data-key="test-1">"Roksi brings incredible energy to every training session. Her speed and work rate set the tone for the whole team."</p>
                 <div class="testimonial-author">
                     <div class="avatar">T</div>
-                    <div><strong data-key="test-1-name">Coach</strong><span data-key="test-1-role">Head Coach</span></div>
+                    <div><strong data-key="test-1-name">Coach rafal </strong><span data-key="test-1-role">Head Coach</span></div>
                 </div>
             </div>
             <div class="testimonial-card reveal">
@@ -1227,7 +422,7 @@
                 <p class="quote-text" data-key="test-2">"Playing next to Roksi is amazing — she always finds the pass you didn't expect. True team player."</p>
                 <div class="testimonial-author">
                     <div class="avatar">K</div>
-                    <div><strong data-key="test-2-name">Teammate</strong><span data-key="test-2-role">Midfielder</span></div>
+                    <div><strong data-key="test-2-name">Teammates</strong><span data-key="test-2-role">Midfielder</span></div>
                 </div>
             </div>
             <div class="testimonial-card reveal">
@@ -1235,32 +430,30 @@
                 <p class="quote-text" data-key="test-3">"So proud of how far she's come. Every match she plays with heart and determination."</p>
                 <div class="testimonial-author">
                     <div class="avatar">F</div>
-                    <div><strong data-key="test-3-name">Family</strong><span data-key="test-3-role">Biggest Fan</span></div>
+                    <div><strong data-key="test-3-name">Family,friends</strong><span data-key="test-3-role">Biggest Fan</span></div>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Photo Gallery Section -->
     <section id="gallery">
         <h2 class="section-title reveal" data-key="gallery-title">Team & Highlights Gallery</h2>
-        <div class="gallery-grid">
-            <div class="gallery-card reveal">
-                <img src="team 11.jpeg" alt="Team Squad">
+        <div class="gallery-grid" id="galleryGrid">
+            <div class="gallery-card reveal" data-lightbox-index="0">
+                <img src="team 11.jpeg" alt="Team Squad" loading="lazy">
                 <div class="info" data-key="gal-team-squad">Team Championship Squad</div>
             </div>
-            <div class="gallery-card reveal">
-                <img src="team 6.jpeg" alt="Match Preparation">
+            <div class="gallery-card reveal" data-lightbox-index="1">
+                <img src="team 6.jpeg" alt="Match Preparation" loading="lazy">
                 <div class="info" data-key="gal-match-prep">Match Strategy & Rest</div>
             </div>
-            <div class="gallery-card reveal">
-                <img src="cup.jpeg" alt="Trophy">
+            <div class="gallery-card reveal" data-lightbox-index="2">
+                <img src="cup.jpeg" alt="Trophy" loading="lazy">
                 <div class="info" data-key="gal-trophy">2nd Place Trophy - Grudziądz</div>
             </div>
         </div>
     </section>
 
-    <!-- Awards Gallery -->
     <section id="awards">
         <h2 class="section-title reveal" data-key="awards-title">Awards & Medals</h2>
         <div class="awards-grid">
@@ -1287,7 +480,6 @@
         </div>
     </section>
 
-    <!-- Player Bio Info Section -->
     <section>
         <div class="bio-info">
             <div class="bio-card reveal">
@@ -1301,7 +493,7 @@
                 <i class="fas fa-birthday-cake"></i>
                 <div>
                     <h4 data-key="bio-dob-title">Date of Birth</h4>
-                    <p>20 Feb 2009</p>
+                    <p>20 Feb</p>
                 </div>
             </div>
             <div class="bio-card reveal">
@@ -1314,7 +506,6 @@
         </div>
     </section>
 
-    <!-- Favorite Football Players Section -->
     <section id="players">
         <h2 class="section-title reveal" data-key="players-title">Favorite Footballers</h2>
         <div class="players-grid">
@@ -1327,7 +518,6 @@
         </div>
     </section>
 
-    <!-- Pets Section -->
     <section>
         <h2 class="section-title reveal" data-key="pets-title">Pets & Companions</h2>
         <div class="pets-grid">
@@ -1337,23 +527,40 @@
         </div>
     </section>
 
-    <!-- Stats Section -->
     <section id="stats">
         <h2 class="section-title reveal" data-key="stats-title">Career Statistics</h2>
         <div class="stats-grid">
-            <div class="stat-card reveal"><i class="fas fa-futbol"></i><h2 class="counter" data-target="28">0</h2><p data-key="stat-goals">Goals Scored</p></div>
-            <div class="stat-card reveal"><i class="fas fa-running"></i><h2 class="counter" data-target="19">0</h2><p data-key="stat-assists">Assists</p></div>
-            <div class="stat-card reveal"><i class="fas fa-trophy"></i><h2 class="counter" data-target="6">0</h2><p data-key="stat-trophies">Trophies & Awards</p></div>
-            <div class="stat-card reveal"><i class="fas fa-shield-alt"></i><h2 class="counter" data-target="54">0</h2><p data-key="stat-matches">Matches Played</p></div>
+            <div class="stat-card reveal"><i class="fas fa-futbol"></i><h2 class="counter" data-target="8">0</h2><p data-key="stat-goals">Goals Scored</p></div>
+            <div class="stat-card reveal"><i class="fas fa-running"></i><h2 class="counter" data-target="5">0</h2><p data-key="stat-assists">Assists</p></div>
+            <div class="stat-card reveal"><i class="fas fa-trophy"></i><h2 class="counter" data-target="2">0</h2><p data-key="stat-trophies">Trophies & Awards</p></div>
+            <div class="stat-card reveal"><i class="fas fa-shield-alt"></i><h2 class="counter" data-target="24">0</h2><p data-key="stat-matches">Matches Played</p></div>
         </div>
     </section>
 
-    <!-- Social Feed Section -->
+    <!-- Support Messages Section (safe, static — no open comment form for a minor's page) -->
+    <section id="support">
+        <h2 class="section-title reveal" data-key="support-title">Words of Support</h2>
+        <div class="support-grid">
+            <div class="support-card reveal">
+                <i class="fas fa-heart"></i>
+                <p data-key="support-1">Keep shining on the pitch, Roksi! 💚</p>
+            </div>
+            <div class="support-card reveal">
+                <i class="fas fa-fist-raised"></i>
+                <p data-key="support-2">Proud of every match, every goal, every effort! ⚽</p>
+            </div>
+            <div class="support-card reveal">
+                <i class="fas fa-trophy"></i>
+                <p data-key="support-3">The whole family and team are cheering you on! 🏆</p>
+            </div>
+        </div>
+    </section>
+
     <section id="social-feed">
         <h2 class="section-title reveal" data-key="social-title">Latest Posts</h2>
-        <div class="social-feed-grid">
+        <div class="social-feed-grid" id="socialGrid">
             <div class="social-post reveal">
-                <img class="social-post-img" src="roksi cup.jpeg" alt="post1">
+                <img class="social-post-img" src="roksi cup.jpeg" alt="post1" loading="lazy" data-social-index="0">
                 <div class="social-post-body">
                     <div class="social-post-header"><i class="fab fa-instagram"></i> roksi.17</div>
                     <div class="social-post-caption" data-key="post-1">Another day, another match. Let's go team! ⚽🔥</div>
@@ -1361,7 +568,7 @@
                 </div>
             </div>
             <div class="social-post reveal">
-                <img class="social-post-img" src="cup.jpeg" alt="post2">
+                <img class="social-post-img" src="cup.jpeg" alt="post2" loading="lazy" data-social-index="1">
                 <div class="social-post-body">
                     <div class="social-post-header"><i class="fab fa-instagram"></i> roksi.17</div>
                     <div class="social-post-caption" data-key="post-2">So proud of this team 🏆💚</div>
@@ -1369,7 +576,7 @@
                 </div>
             </div>
             <div class="social-post reveal">
-                <img class="social-post-img" src="team 11.jpeg" alt="post3">
+                <img class="social-post-img" src="team 11.jpeg" alt="post3" loading="lazy" data-social-index="2">
                 <div class="social-post-body">
                     <div class="social-post-header"><i class="fab fa-instagram"></i> roksi.17</div>
                     <div class="social-post-caption" data-key="post-3">Family on and off the pitch 🙌</div>
@@ -1379,13 +586,12 @@
         </div>
     </section>
 
-    <!-- Music Player Section -->
     <section id="music">
         <h2 class="section-title reveal" data-key="music-title">Walkout Song</h2>
         <div class="music-player reveal">
             <div class="music-art" id="musicArt"><i class="fas fa-music"></i></div>
             <div class="music-info">
-                <h4 data-key="music-track">Champions Anthem</h4>
+                <h4 data-key="music-track">woda księzycowa</h4>
                 <span data-key="music-artist">Match Day Mix</span>
                 <div class="music-progress"><div class="music-progress-bar" id="musicProgress"></div></div>
             </div>
@@ -1394,75 +600,65 @@
             </div>
         </div>
         <audio id="audioPlayer" loop>
-            <source src="https://cdn.pixabay.com/download/audio/2022/03/15/audio_c8b8a73467.mp3" type="audio/mpeg">
+            <source src="https://files.catbox.moe/ld9a99.mp3" type="audio/mpeg">
         </audio>
         <p class="flip-hint" data-key="music-hint" style="text-align:center; margin-top: 1rem;">🎵 Optional background vibes — tap play</p>
     </section>
 
-    <!-- Videos & Highlights Section -->
     <section id="highlights">
     <h2 class="section-title reveal" data-key="highlight-title">Match Highlights & Videos</h2>
     <div class="video-grid">
-
-        <!-- 1. Team Photo Video -->
         <div class="video-card reveal">
-            <iframe src="https://www.youtube.com/embed/N_hw0xxr8jI" title="Team Photo" allowfullscreen></iframe>
-            <p data-key="vid-team">📸 Team Photo Session</p>
+            <iframe src="https://www.youtube.com/embed/N_hw0xxr8jI" title="Team Photo" loading="lazy" allowfullscreen></iframe>
+            <p data-key="vid-team">⚽ Roksana's Goal (#17)</p>
         </div>
-
-        <!-- 2. Team Support Circle -->
         <div class="video-card short-card reveal">
-            <iframe src="https://www.youtube.com/embed/t-Ms9r0nXsY" title="Circle of Support" allowfullscreen></iframe>
-            <p data-key="vid-circle">🙌 Team Support Circle</p>
+            <iframe src="https://www.youtube.com/embed/t-Ms9r0nXsY" title="Circle of Support" loading="lazy" allowfullscreen></iframe>
+            <p data-key="vid-circle">🥇 Arrival and Initial Vibes</p>
         </div>
-
-        <!-- 3. Roksana Goal -->
         <div class="video-card reveal">
-            <iframe src="https://www.youtube.com/embed/razI9ugKlgo" title="Roksana Goal" allowfullscreen></iframe>
-            <p data-key="vid-goal">⚽ Roksana's Goal (#17)</p>
+            <iframe src="https://www.youtube.com/embed/razI9ugKlgo" title="Roksana Goal" loading="lazy" allowfullscreen></iframe>
+            <p data-key="vid-goal">📸 Team Photo Session</p>
         </div>
-
-        <!-- 4. Locker Room Celebration 1 -->
         <div class="video-card short-card reveal">
-            <iframe src="https://www.youtube.com/embed/tDH-hr9-Fr8" title="Celebration 1" allowfullscreen></iframe>
+            <iframe src="https://www.youtube.com/embed/tDH-hr9-Fr8" title="Celebration 1" loading="lazy" allowfullscreen></iframe>
             <p data-key="vid-celeb1">🥇 Trophy & Medal Ceremony</p>
         </div>
-
-        <!-- 5. Locker Room Celebration 2 -->
         <div class="video-card short-card reveal">
-            <iframe src="https://www.youtube.com/embed/ReOuHt60QZ0" title="Celebration 2" allowfullscreen></iframe>
+            <iframe src="https://www.youtube.com/embed/ReOuHt60QZ0" title="Celebration 2" loading="lazy" allowfullscreen></iframe>
             <p data-key="vid-celeb2">🔥 Locker Room Celebration</p>
         </div>
-
-        <!-- 6. Trophy Ceremony -->
         <div class="video-card reveal">
-            <iframe src="https://www.youtube.com/embed/L2QnDvzwls8" title="Trophy Ceremony" allowfullscreen></iframe>
-            <p data-key="vid-trophy">🥇 Arrival and Initial Vibes</p>
+            <iframe src="https://www.youtube.com/embed/L2QnDvzwls8" title="Trophy Ceremony" loading="lazy" allowfullscreen></iframe>
+            <p data-key="vid-trophy">🙌 Team Support Circle</p>
         </div>
-
     </div>
 </section>
 
-    <!-- Footer -->
     <footer>
         <div class="socials">
             <a href="#"><i class="fab fa-instagram"></i></a>
             <a href="#"><i class="fab fa-tiktok"></i></a>
             <a href="#"><i class="fab fa-youtube"></i></a>
         </div>
+        <div class="share-buttons">
+            <a class="share-chip whatsapp" id="waShare" href="#" target="_blank" rel="noopener">
+                <i class="fab fa-whatsapp"></i> WhatsApp
+            </a>
+            <a class="share-chip facebook" id="fbShare" href="#" target="_blank" rel="noopener">
+                <i class="fab fa-facebook"></i> Facebook
+            </a>
+        </div>
         <p style="margin-top: 10px;">Crafted with ❤️ for <strong>ROKSAN "Roksi" #17</strong></p>
     </footer>
 
-    <!-- JavaScript logic -->
     <script>
-        // ===== Loading Screen =====
         window.addEventListener('load', () => {
             setTimeout(() => {
                 document.getElementById('loader').classList.add('hide');
             }, 500);
         });
 
-        // Language System
         const translations = {
             en: {
                 "nav-home": "Home", "nav-card": "Card", "nav-journey": "Journey", "nav-gallery": "Gallery", "nav-players": "Favorites", "nav-stats": "Stats", "nav-highlights": "Videos",
@@ -1471,8 +667,11 @@
                 "hero-btn": "Watch Highlights", "countdown-title": "🎉 Countdown to Roksi's Birthday (Feb 20)",
                 "cnt-days": "Days", "cnt-hours": "Hours", "cnt-min": "Mins", "cnt-sec": "Secs",
                 "birthday-today": "🎂🎈 HAPPY BIRTHDAY ROKSI! 🎈🎂",
+                "potm-title": "🌟 Player of the Month",
+                "potm-desc": "Recognized for outstanding effort, teamwork, and growth on the pitch this month.",
                 "card-title": "Ultimate Player Card",
                 "flip-hint": "Click the card to flip it",
+                "download-card-btn": "Download Card as Image",
                 "card-back-title": "Player Info",
                 "card-back-club": "Club: Jajniki Grudziądz",
                 "card-back-num": "Squad Number: 17",
@@ -1514,6 +713,10 @@
                 "pet-dog": "Dog", "pet-cat": "Cat", "pet-rabbit": "Rabbit",
                 "stats-title": "Career Statistics", "stat-goals": "Goals Scored", "stat-assists": "Assists",
                 "stat-trophies": "Trophies & Awards", "stat-matches": "Matches Played",
+                "support-title": "Words of Support",
+                "support-1": "Keep shining on the pitch, Roksi! 💚",
+                "support-2": "Proud of every match, every goal, every effort! ⚽",
+                "support-3": "The whole family and team are cheering you on! 🏆",
                 "social-title": "Latest Posts",
                 "post-1": "Another day, another match. Let's go team! ⚽🔥",
                 "post-2": "So proud of this team 🏆💚",
@@ -1538,8 +741,11 @@
                 "hero-btn": "Obejrzyj Skróty", "countdown-title": "🎉 Odliczanie do urodzin Roksi (20 Lutego)",
                 "cnt-days": "Dni", "cnt-hours": "Godz", "cnt-min": "Min", "cnt-sec": "Sek",
                 "birthday-today": "🎂🎈 WSZYSTKIEGO NAJLEPSZEGO ROKSI! 🎈🎂",
+                "potm-title": "🌟 Zawodniczka Miesiąca",
+                "potm-desc": "Wyróżniona za wyjątkowy wysiłek, grę zespołową i rozwój na boisku w tym miesiącu.",
                 "card-title": "Karta Zawodniczki EA FC",
                 "flip-hint": "Kliknij kartę, aby ją odwrócić",
+                "download-card-btn": "Pobierz kartę jako obraz",
                 "card-back-title": "Informacje o Zawodniczce",
                 "card-back-club": "Klub: Jajniki Grudziądz",
                 "card-back-num": "Numer: 17",
@@ -1581,6 +787,10 @@
                 "pet-dog": "Pies", "pet-cat": "Kot", "pet-rabbit": "Królik",
                 "stats-title": "Statystyki Kariery", "stat-goals": "Strzelone Bramki", "stat-assists": "Asysty",
                 "stat-trophies": "Trofea i Wyróżnienia", "stat-matches": "Rozegrane Mecze",
+                "support-title": "Słowa Wsparcia",
+                "support-1": "Świeć dalej na boisku, Roksi! 💚",
+                "support-2": "Dumni z każdego meczu, gola i wysiłku! ⚽",
+                "support-3": "Cała rodzina i drużyna Cię wspiera! 🏆",
                 "social-title": "Najnowsze Posty",
                 "post-1": "Kolejny dzień, kolejny mecz. Do przodu drużyno! ⚽🔥",
                 "post-2": "Taka dumna z tej drużyny 🏆💚",
@@ -1610,20 +820,33 @@
             });
         }
 
-        // Theme Toggle Logic
-        function toggleTheme() {
-            const body = document.body;
+        /* ===== Theme Toggle (persisted with localStorage) ===== */
+        function applyTheme(theme) {
             const themeBtn = document.getElementById('theme-btn');
-            if (body.getAttribute('data-theme') === 'light') {
-                body.removeAttribute('data-theme');
-                themeBtn.innerHTML = '<i class="fas fa-moon"></i>';
-            } else {
-                body.setAttribute('data-theme', 'light');
+            if (theme === 'light') {
+                document.body.setAttribute('data-theme', 'light');
                 themeBtn.innerHTML = '<i class="fas fa-sun"></i>';
+            } else {
+                document.body.removeAttribute('data-theme');
+                themeBtn.innerHTML = '<i class="fas fa-moon"></i>';
             }
         }
+        function toggleTheme() {
+            const isLight = document.body.getAttribute('data-theme') === 'light';
+            const newTheme = isLight ? 'dark' : 'light';
+            applyTheme(newTheme);
+            try { localStorage.setItem('roksi-theme', newTheme); } catch (e) {}
+        }
+        (function initTheme() {
+            let saved = null;
+            try { saved = localStorage.getItem('roksi-theme'); } catch (e) {}
+            if (saved) {
+                applyTheme(saved);
+            } else if (window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches) {
+                applyTheme('light');
+            }
+        })();
 
-        // ===== Share Button =====
         function shareSite() {
             const url = window.location.href;
             const toast = document.getElementById('toast');
@@ -1641,7 +864,14 @@
             }
         }
 
-        // Birthday Countdown Timer Logic + Confetti Trigger
+        /* ===== WhatsApp / Facebook share links ===== */
+        (function initShareLinks() {
+            const url = encodeURIComponent(window.location.href);
+            const text = encodeURIComponent("Check out Roksi's player profile! ⚽💚");
+            document.getElementById('waShare').href = `https://wa.me/?text=${text}%20${url}`;
+            document.getElementById('fbShare').href = `https://www.facebook.com/sharer/sharer.php?u=${url}`;
+        })();
+
         let confettiFired = false;
         function updateCountdown() {
             const now = new Date();
@@ -1686,7 +916,6 @@
         setInterval(updateCountdown, 1000);
         updateCountdown();
 
-        // ===== Confetti Effect =====
         function launchConfetti() {
             const canvas = document.getElementById('confetti-canvas');
             const ctx = canvas.getContext('2d');
@@ -1736,28 +965,23 @@
             canvas.height = window.innerHeight;
         });
 
-        // Smooth Counter Animation
         const counters = document.querySelectorAll('.counter');
         const animateCounter = (counter) => {
             const target = +counter.getAttribute('data-target');
             const duration = 1500;
             const startTime = performance.now();
-
             const step = (currentTime) => {
                 const elapsed = currentTime - startTime;
                 const progress = Math.min(elapsed / duration, 1);
                 counter.innerText = Math.floor(progress * target);
-
                 if (progress < 1) {
                     requestAnimationFrame(step);
                 } else {
                     counter.innerText = target;
                 }
             };
-
             requestAnimationFrame(step);
         };
-
         const statObserver = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
@@ -1766,10 +990,8 @@
                 }
             });
         }, { threshold: 0.5 });
-
         counters.forEach(counter => statObserver.observe(counter));
 
-        // ===== Scroll Reveal Animations =====
         const revealEls = document.querySelectorAll('.reveal');
         const revealObserver = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
@@ -1781,19 +1003,16 @@
         }, { threshold: 0.15 });
         revealEls.forEach(el => revealObserver.observe(el));
 
-        // ===== Particle Background (Hero) =====
         (function initParticles() {
             const canvas = document.getElementById('particles');
             const ctx = canvas.getContext('2d');
             const hero = document.getElementById('home');
-
             function resize() {
                 canvas.width = hero.offsetWidth;
                 canvas.height = hero.offsetHeight;
             }
             resize();
             window.addEventListener('resize', resize);
-
             const particles = [];
             const count = 45;
             for (let i = 0; i < count; i++) {
@@ -1806,7 +1025,6 @@
                     alpha: 0.2 + Math.random() * 0.4
                 });
             }
-
             function draw() {
                 ctx.clearRect(0, 0, canvas.width, canvas.height);
                 particles.forEach(p => {
@@ -1824,13 +1042,11 @@
             draw();
         })();
 
-        // ===== Music Player =====
         const audio = document.getElementById('audioPlayer');
         const playBtn = document.getElementById('playBtn');
         const playIcon = document.getElementById('playIcon');
         const musicArt = document.getElementById('musicArt');
         const musicProgress = document.getElementById('musicProgress');
-
         function toggleMusic() {
             if (audio.paused) {
                 audio.play().catch(() => {});
@@ -1842,18 +1058,99 @@
                 musicArt.classList.remove('spinning');
             }
         }
-
         audio.addEventListener('timeupdate', () => {
             if (audio.duration) {
                 const pct = (audio.currentTime / audio.duration) * 100;
                 musicProgress.style.width = pct + '%';
             }
         });
-
         audio.addEventListener('ended', () => {
             playIcon.className = 'fas fa-play';
             musicArt.classList.remove('spinning');
         });
+
+        /* ===== Lightbox (gallery + social feed) ===== */
+        let lightboxImages = [];
+        let lightboxIndex = 0;
+
+        function buildLightboxList() {
+            lightboxImages = [];
+            document.querySelectorAll('#galleryGrid .gallery-card img').forEach(img => {
+                lightboxImages.push({ src: img.src, caption: img.closest('.gallery-card').querySelector('.info').innerText });
+            });
+        }
+
+        function openLightbox(index) {
+            buildLightboxList();
+            lightboxIndex = index;
+            renderLightbox();
+            document.getElementById('lightbox').classList.add('open');
+        }
+
+        function renderLightbox() {
+            const item = lightboxImages[lightboxIndex];
+            if (!item) return;
+            document.getElementById('lightbox-img').src = item.src;
+            document.getElementById('lightbox-caption').innerText = item.caption || '';
+        }
+
+        function closeLightbox() {
+            document.getElementById('lightbox').classList.remove('open');
+        }
+
+        function navLightbox(dir) {
+            lightboxIndex = (lightboxIndex + dir + lightboxImages.length) % lightboxImages.length;
+            renderLightbox();
+        }
+
+        document.getElementById('lightbox').addEventListener('click', (e) => {
+            if (e.target.id === 'lightbox') closeLightbox();
+        });
+        document.addEventListener('keydown', (e) => {
+            if (!document.getElementById('lightbox').classList.contains('open')) return;
+            if (e.key === 'Escape') closeLightbox();
+            if (e.key === 'ArrowLeft') navLightbox(-1);
+            if (e.key === 'ArrowRight') navLightbox(1);
+        });
+
+        document.querySelectorAll('#galleryGrid .gallery-card').forEach((card, i) => {
+            card.addEventListener('click', () => openLightbox(i));
+        });
+
+        // Social feed images also open the lightbox using the same gallery set
+        document.querySelectorAll('#socialGrid .social-post-img').forEach((img) => {
+            img.addEventListener('click', () => {
+                buildLightboxList();
+                // Try to find a matching gallery image by src, else just show this one alone
+                const matchIndex = lightboxImages.findIndex(item => item.src === img.src);
+                if (matchIndex >= 0) {
+                    openLightbox(matchIndex);
+                } else {
+                    lightboxImages = [{ src: img.src, caption: '' }];
+                    lightboxIndex = 0;
+                    renderLightbox();
+                    document.getElementById('lightbox').classList.add('open');
+                }
+            });
+        });
+
+        /* ===== Download Player Card as PNG (html2canvas) ===== */
+        function downloadCard() {
+            const cardEl = document.getElementById('fifaCard');
+            const wasFlipped = cardEl.classList.contains('flipped');
+            if (wasFlipped) cardEl.classList.remove('flipped');
+            setTimeout(() => {
+                html2canvas(cardEl.querySelector('.fifa-card'), { backgroundColor: null, scale: 2 }).then(canvas => {
+                    const link = document.createElement('a');
+                    link.download = 'roksi-player-card.png';
+                    link.href = canvas.toDataURL('image/png');
+                    link.click();
+                    if (wasFlipped) cardEl.classList.add('flipped');
+                }).catch(() => {
+                    if (wasFlipped) cardEl.classList.add('flipped');
+                });
+            }, 100);
+        }
     </script>
 </body>
 </html>
