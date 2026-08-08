@@ -312,6 +312,44 @@
         [dir="rtl"] .bio-card{border-left:0;border-right:4px solid var(--accent)}[dir="rtl"] .card-top{left:auto;right:15px}[dir="rtl"] .fifa-card-back ul{text-align:right}
         @media(max-width:768px){.goal{height:270px}.keeper{font-size:3.3rem}.fan-card{padding:18px}.intro-tag{letter-spacing:.18em}.sound-toggle{left:auto;right:20px}}
 
+    
+/* =========================================================
+   ROKSI 3.0 HUB — new experience layer
+   ========================================================= */
+:root{--hub-purple:#8b5cf6;--hub-pink:#ec4899;--hub-cyan:#22d3ee;--hub-gold:#facc15}
+.btn.alt{background:linear-gradient(45deg,var(--hub-purple),var(--hub-pink))}
+.hub-launch{position:fixed;right:22px;bottom:22px;z-index:5002;display:flex;align-items:center;gap:.55rem;padding:.75rem 1.1rem;border:1px solid rgba(255,255,255,.18);border-radius:999px;background:linear-gradient(135deg,var(--hub-purple),var(--primary));color:#fff;font-weight:900;cursor:pointer;box-shadow:0 12px 35px rgba(0,0,0,.3)}
+.hub-launch:hover{transform:translateY(-3px)}
+.hub-overlay{position:fixed;inset:0;background:rgba(2,6,23,.82);backdrop-filter:blur(14px);z-index:50000;display:none;align-items:center;justify-content:center;padding:20px}
+.hub-overlay.open{display:flex}
+.hub-modal{width:min(1100px,96vw);max-height:90vh;overflow:auto;border:1px solid rgba(255,255,255,.15);border-radius:28px;background:linear-gradient(145deg,rgba(15,23,42,.98),rgba(18,42,35,.98));color:#fff;box-shadow:0 30px 90px rgba(0,0,0,.55);padding:24px}
+.hub-head{display:flex;align-items:center;justify-content:space-between;gap:15px;margin-bottom:20px}
+.hub-head h2{font-size:clamp(1.5rem,3vw,2.5rem);font-weight:900}.hub-close{width:42px;height:42px;border-radius:50%;border:1px solid rgba(255,255,255,.2);background:rgba(255,255,255,.08);color:#fff;font-size:1.4rem;cursor:pointer}
+.hub-grid{display:grid;grid-template-columns:1.1fr 1fr 1fr;gap:14px}
+.hub-card{background:rgba(255,255,255,.06);border:1px solid rgba(56,239,125,.16);border-radius:20px;padding:18px}
+.hub-card h3{margin-bottom:12px}.hub-wide{grid-column:1/-1}
+.hub-profile{display:flex;gap:15px;align-items:center}.hub-avatar{width:76px;height:76px;border-radius:50%;object-fit:cover;border:3px solid var(--primary)}
+.xp-bar,.meter{height:12px;background:rgba(255,255,255,.1);border-radius:99px;overflow:hidden}.xp-fill,.meter-fill{height:100%;width:0;background:linear-gradient(90deg,var(--primary),var(--hub-cyan));border-radius:99px;transition:width 1s ease}
+.hub-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:15px}.hub-stat{padding:10px;border-radius:13px;background:rgba(255,255,255,.06);text-align:center}.hub-stat b{display:block;font-size:1.35rem;color:var(--primary)}
+.hub-actions{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px}
+.progress-list{display:grid;gap:9px}.progress-row{display:grid;grid-template-columns:70px 1fr 42px;gap:9px;align-items:center;font-weight:800;font-size:.85rem}
+.progress-row .meter{height:9px}.progress-row .meter-fill{background:linear-gradient(90deg,var(--hub-purple),var(--hub-pink))}
+.roksi-dashboard{background:linear-gradient(135deg,rgba(56,239,125,.08),rgba(139,92,246,.08));border:1px solid rgba(56,239,125,.16);border-radius:28px;padding:24px}
+.dashboard-grid{display:grid;grid-template-columns:1fr 1.2fr;gap:20px;align-items:stretch}
+.dashboard-profile{display:flex;gap:18px;align-items:center}.dashboard-avatar{width:92px;height:92px;border-radius:50%;object-fit:cover;border:4px solid var(--primary);box-shadow:0 0 30px rgba(56,239,125,.22)}
+.level-pill{display:inline-flex;align-items:center;gap:6px;background:rgba(250,204,21,.12);color:var(--hub-gold);padding:5px 10px;border-radius:99px;font-weight:900}
+.xp-text{display:flex;justify-content:space-between;font-size:.82rem;color:var(--text-gray);margin:8px 0 5px}
+.perf-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}.perf-card{background:var(--card-bg);border-radius:18px;padding:15px}.perf-number{font-size:2rem;font-weight:900;color:var(--primary)}.perf-bar{height:9px;background:rgba(0,0,0,.12);border-radius:99px;overflow:hidden;margin-top:8px}.perf-bar span{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--primary-dark),var(--primary));transition:width 1.2s ease}
+.trophy-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:15px}.trophy-card{position:relative;background:linear-gradient(145deg,var(--card-bg),rgba(250,204,21,.08));border:1px solid rgba(250,204,21,.18);border-radius:20px;padding:20px;text-align:center;cursor:pointer;transition:.35s;overflow:hidden}.trophy-card:hover{transform:translateY(-7px) rotateX(2deg);box-shadow:0 18px 40px rgba(250,204,21,.14)}.trophy-icon{font-size:3.3rem;filter:drop-shadow(0 8px 12px rgba(0,0,0,.25));transition:.4s}.trophy-card.open .trophy-icon{transform:rotateY(360deg) scale(1.15)}.trophy-card p{color:var(--text-gray);font-size:.82rem;margin-top:5px}
+.challenge-card{display:flex;align-items:center;justify-content:space-between;gap:15px;flex-wrap:wrap}.challenge-badge{font-size:2.5rem}.challenge-complete{animation:pulseGlow 1.2s ease infinite}@keyframes pulseGlow{50%{box-shadow:0 0 35px rgba(56,239,125,.45)}}
+.quiz-shell{max-width:760px;margin:auto;background:var(--card-bg);border-radius:24px;padding:24px;box-shadow:0 15px 45px rgba(0,0,0,.1);border:1px solid rgba(139,92,246,.18)}.quiz-options{display:grid;gap:10px;margin-top:18px}.quiz-option{padding:13px 16px;border-radius:14px;border:1px solid rgba(255,255,255,.12);background:rgba(255,255,255,.05);color:var(--text-light);cursor:pointer;text-align:left;font-weight:800}.quiz-option:hover{border-color:var(--hub-purple);transform:translateX(3px)}.quiz-option.correct{background:rgba(56,239,125,.18);border-color:var(--primary)}.quiz-option.wrong{background:rgba(239,68,68,.16);border-color:#ef4444}.quiz-result{text-align:center;padding:25px}.score-big{font-size:4rem;font-weight:900;color:var(--primary)}
+.support-meter{max-width:850px;margin:auto;text-align:center;background:var(--card-bg);padding:25px;border-radius:24px;border:1px solid rgba(56,239,125,.16)}.support-total{font-size:2.5rem;font-weight:900;color:var(--primary);margin:8px 0}
+.memory-stage{position:relative;max-width:900px;margin:auto;border-radius:24px;overflow:hidden;background:#000;min-height:420px}.memory-stage img{width:100%;height:520px;object-fit:cover;display:block;transition:opacity .6s,transform 6s ease}.memory-stage.playing img{transform:scale(1.06)}.memory-caption{position:absolute;left:0;right:0;bottom:0;padding:45px 20px 20px;background:linear-gradient(transparent,rgba(0,0,0,.8));color:#fff;font-weight:900}.memory-controls{display:flex;justify-content:center;gap:10px;margin-top:14px;flex-wrap:wrap}
+.interactive-timeline{display:grid;gap:12px;max-width:850px;margin:auto}.journey-node{display:grid;grid-template-columns:100px 1fr;gap:14px;align-items:stretch}.journey-year{display:flex;align-items:center;justify-content:center;border-radius:16px;background:linear-gradient(135deg,var(--primary-dark),var(--primary));color:#fff;font-weight:900}.journey-content{background:var(--card-bg);border-radius:16px;padding:16px;cursor:pointer;border:1px solid transparent;transition:.3s}.journey-content:hover,.journey-content.active{border-color:var(--primary);transform:translateX(4px)}.journey-detail{display:none;color:var(--text-gray);margin-top:8px}.journey-content.active .journey-detail{display:block}
+.achievement-progress{max-width:800px;margin:0 auto 20px}.ach-row{display:flex;justify-content:space-between;font-weight:800;margin-bottom:7px}.ach-progress{height:10px;background:rgba(0,0,0,.12);border-radius:99px;overflow:hidden}.ach-progress span{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--hub-gold),var(--hub-pink));transition:width 1s ease}
+@media(max-width:850px){.hub-grid,.dashboard-grid{grid-template-columns:1fr}.hub-wide{grid-column:auto}.hub-stats{grid-template-columns:1fr 1fr}.memory-stage img{height:360px}.journey-node{grid-template-columns:80px 1fr}}
+@media(max-width:600px){.hub-launch{right:12px;bottom:12px}.hub-launch span{display:none}.hub-modal{padding:15px}.perf-grid{grid-template-columns:1fr}.dashboard-profile{align-items:flex-start}.hub-stats{grid-template-columns:1fr 1fr}.memory-stage img{height:300px}}
+
     </style>
 </head>
 <body>
@@ -806,6 +844,215 @@
         </div>
     </div>
 </section>
+
+
+<!-- ================= ROKSI 3.0 ================= -->
+<button class="hub-launch" onclick="openHub()" aria-label="Open Roksi Hub">
+  ⚡ <span>ROKSI HUB</span>
+</button>
+
+<div class="hub-overlay" id="hubOverlay" onclick="if(event.target===this)closeHub()">
+  <div class="hub-modal">
+    <div class="hub-head">
+      <div>
+        <div style="color:var(--primary);font-weight:900;letter-spacing:2px">ROKSI #17</div>
+        <h2>⚡ ROKSI 3.0 HUB</h2>
+      </div>
+      <button class="hub-close" onclick="closeHub()">×</button>
+    </div>
+    <div class="hub-grid">
+      <div class="hub-card">
+        <h3>👤 FAN PROFILE</h3>
+        <div class="hub-profile">
+          <img class="hub-avatar" src="roksi cup.jpeg" alt="Roksi">
+          <div>
+            <strong id="hubFanName">ROKSI FAN</strong>
+            <div id="hubLevelText" style="margin:4px 0">Level 1</div>
+            <span class="level-pill">⭐ <span id="hubLevelName">Rookie</span></span>
+          </div>
+        </div>
+        <div class="xp-text"><span id="hubXpLabel">0 XP</span><span id="hubXpNext">100 XP</span></div>
+        <div class="xp-bar"><div class="xp-fill" id="hubXpFill"></div></div>
+        <div class="hub-actions">
+          <button class="btn" onclick="document.getElementById('fan-card').scrollIntoView({behavior:'smooth'});closeHub()">Open Profile</button>
+        </div>
+      </div>
+
+      <div class="hub-card">
+        <h3>📊 PERFORMANCE</h3>
+        <div class="progress-list">
+          <div class="progress-row"><span>PAC</span><div class="meter"><div class="meter-fill" style="width:94%"></div></div><b>94</b></div>
+          <div class="progress-row"><span>DRI</span><div class="meter"><div class="meter-fill" style="width:85%"></div></div><b>85</b></div>
+          <div class="progress-row"><span>PAS</span><div class="meter"><div class="meter-fill" style="width:96%"></div></div><b>96</b></div>
+          <div class="progress-row"><span>SHO</span><div class="meter"><div class="meter-fill" style="width:84%"></div></div><b>84</b></div>
+        </div>
+      </div>
+
+      <div class="hub-card">
+        <h3>🏆 PROGRESS</h3>
+        <div class="hub-stats">
+          <div class="hub-stat"><b id="hubGoals">8</b>Goals</div>
+          <div class="hub-stat"><b id="hubAssists">5</b>Assists</div>
+          <div class="hub-stat"><b id="hubMatches">24</b>Matches</div>
+          <div class="hub-stat"><b id="hubAwards">2</b>Awards</div>
+        </div>
+      </div>
+
+      <div class="hub-card hub-wide">
+        <h3>⚡ DAILY CHALLENGE</h3>
+        <div class="challenge-card">
+          <div>
+            <div class="challenge-badge" id="dailyIcon">🎯</div>
+            <strong id="dailyTitle">Score 7 goals</strong>
+            <p id="dailyDesc" style="color:var(--text-gray);margin-top:4px">Complete today's challenge in the penalty game.</p>
+          </div>
+          <div>
+            <span id="dailyStatus" class="level-pill">0 / 7</span>
+            <button class="btn" style="margin-left:7px" onclick="document.getElementById('penalty').scrollIntoView({behavior:'smooth'});closeHub()">PLAY</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="hub-card hub-wide">
+        <h3>🏆 TROPHY ROOM</h3>
+        <div class="trophy-grid">
+          <div class="trophy-card" onclick="openTrophy(this,'🏆','Grudziądz Cup','2nd Place • 2025')"><div class="trophy-icon">🏆</div><h4>Grudziądz Cup</h4><p>2nd Place • 2025</p></div>
+          <div class="trophy-card" onclick="openTrophy(this,'🥈','Silver Medal','Tournament Medal')"><div class="trophy-icon">🥈</div><h4>Silver Medal</h4><p>Tournament Medal</p></div>
+          <div class="trophy-card" onclick="openTrophy(this,'⭐','MVP Award','Regional Championship')"><div class="trophy-icon">⭐</div><h4>MVP Award</h4><p>Regional Championship</p></div>
+          <div class="trophy-card" onclick="openTrophy(this,'🥇','Top Scorer','Youth League Season')"><div class="trophy-icon">🥇</div><h4>Top Scorer</h4><p>Youth League Season</p></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<section id="performance3">
+  <h2 class="section-title reveal">📊 ROKSI Performance Dashboard</h2>
+  <div class="roksi-dashboard reveal">
+    <div class="dashboard-grid">
+      <div>
+        <div class="dashboard-profile">
+          <img class="dashboard-avatar" src="roksi cup.jpeg" alt="Roksi #17">
+          <div>
+            <div style="color:var(--primary);font-weight:900">ROKSI #17</div>
+            <h3>Player Performance</h3>
+            <span class="level-pill">⚡ Rising Star</span>
+          </div>
+        </div>
+        <div class="hub-stats" style="margin-top:20px">
+          <div class="hub-stat"><b data-counter3="8">0</b>Goals</div>
+          <div class="hub-stat"><b data-counter3="5">0</b>Assists</div>
+          <div class="hub-stat"><b data-counter3="24">0</b>Matches</div>
+          <div class="hub-stat"><b data-counter3="2">0</b>Awards</div>
+        </div>
+      </div>
+      <div class="perf-grid">
+        <div class="perf-card"><small>PACE</small><div class="perf-number">94</div><div class="perf-bar"><span data-width="94%"></span></div></div>
+        <div class="perf-card"><small>DRIBBLE</small><div class="perf-number">85</div><div class="perf-bar"><span data-width="85%"></span></div></div>
+        <div class="perf-card"><small>PASS</small><div class="perf-number">96</div><div class="perf-bar"><span data-width="96%"></span></div></div>
+        <div class="perf-card"><small>SHOOT</small><div class="perf-number">84</div><div class="perf-bar"><span data-width="84%"></span></div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="trophies3">
+  <h2 class="section-title reveal">🏆 ROKSI Trophy Room</h2>
+  <div class="trophy-grid">
+    <div class="trophy-card reveal" onclick="openTrophy(this,'🏆','Grudziądz Cup','2nd Place • 2025')"><div class="trophy-icon">🏆</div><h3>Grudziądz Cup</h3><p>2nd Place • 2025</p></div>
+    <div class="trophy-card reveal" onclick="openTrophy(this,'🥈','Tournament Medal','Silver Medal')"><div class="trophy-icon">🥈</div><h3>Medals</h3><p>Silver Medal</p></div>
+    <div class="trophy-card reveal" onclick="openTrophy(this,'⭐','MVP Awards','Regional Championship')"><div class="trophy-icon">⭐</div><h3>MVP Awards</h3><p>Regional Championship</p></div>
+    <div class="trophy-card reveal" onclick="openTrophy(this,'🥇','Top Scorer','Youth League Season')"><div class="trophy-icon">🥇</div><h3>Top Scorer</h3><p>Youth League Season</p></div>
+  </div>
+</section>
+
+<section id="quiz">
+  <h2 class="section-title reveal">🧠 ROKSI Quiz</h2>
+  <div class="quiz-shell reveal" id="quizShell">
+    <div id="quizQuestion"></div>
+    <div class="quiz-options" id="quizOptions"></div>
+    <div id="quizResult"></div>
+  </div>
+</section>
+
+<section id="daily">
+  <h2 class="section-title reveal">⚡ Daily Roksi Challenge</h2>
+  <div class="support-meter reveal" id="dailySectionCard">
+    <div style="font-size:3rem" id="dailySectionIcon">🎯</div>
+    <h3 id="dailySectionTitle">Score 7 goals</h3>
+    <p id="dailySectionDesc" style="color:var(--text-gray);margin:8px 0 15px">Today's challenge is local and resets automatically tomorrow.</p>
+    <div class="support-total" id="dailySectionProgress">0 / 7</div>
+    <button class="btn" onclick="document.getElementById('penalty').scrollIntoView({behavior:'smooth'})">🎮 PLAY CHALLENGE</button>
+  </div>
+</section>
+
+<section id="achievements3">
+  <h2 class="section-title reveal">🎖️ Achievement System 2.0</h2>
+  <div class="achievement-progress reveal">
+    <div class="ach-row"><span>ROKSI PROFILE</span><span id="achCountText">0 / 14</span></div>
+    <div class="ach-progress"><span id="achProgressFill"></span></div>
+  </div>
+  <div class="achievement-grid" id="achievementGrid3">
+    <div class="achievement" id="ach-goalmachine"><i class="fas fa-bullseye"></i><h4>Goal Machine</h4><p>Score 8 goals in one game.</p></div>
+    <div class="achievement" id="ach-threewins"><i class="fas fa-fire"></i><h4>3 Games Won</h4><p>Finish 3 games with 6+ goals.</p></div>
+    <div class="achievement" id="ach-completion"><i class="fas fa-crown"></i><h4>100% Completion</h4><p>Unlock every available achievement.</p></div>
+    <div class="achievement" id="ach-fiveconsecutive"><i class="fas fa-crosshairs"></i><h4>5 Consecutive Goals</h4><p>Score five goals in a row.</p></div>
+    <div class="achievement" id="ach-gallery"><i class="fas fa-camera"></i><h4>Gallery Explorer</h4><p>Open the memory gallery.</p></div>
+    <div class="achievement" id="ach-music"><i class="fas fa-music"></i><h4>Music Lover</h4><p>Play the walkout song.</p></div>
+    <div class="achievement" id="ach-night"><i class="fas fa-moon"></i><h4>Night Visitor</h4><p>Visit the site after 20:00.</p></div>
+    <div class="achievement" id="ach-supporter"><i class="fas fa-heart"></i><h4>Roksi Supporter</h4><p>Send support five times.</p></div>
+  </div>
+</section>
+
+<section id="support-meter">
+  <h2 class="section-title reveal">❤️ Support Meter</h2>
+  <div class="support-meter reveal">
+    <h3>💚 SUPPORT FOR ROKSI</h3>
+    <div class="meter" style="margin:18px 0"><div class="meter-fill" id="supportFill"></div></div>
+    <div class="support-total"><span id="supportPoints">1247</span> Support Points</div>
+    <button class="btn" onclick="sendSupport()">💚 SEND SUPPORT</button>
+    <p style="color:var(--text-gray);margin-top:10px;font-size:.8rem">Local counter — no database required.</p>
+  </div>
+</section>
+
+<section id="memory">
+  <h2 class="section-title reveal">📸 Memories — MEMORY MODE</h2>
+  <div class="memory-stage reveal" id="memoryStage">
+    <img id="memoryImage" src="team 11.jpeg" alt="Roksi memory">
+    <div class="memory-caption" id="memoryCaption">Team Championship Squad</div>
+  </div>
+  <div class="memory-controls">
+    <button class="btn" onclick="memoryPrev()">❮</button>
+    <button class="btn" id="memoryPlayBtn" onclick="toggleMemoryMode()">▶ MEMORY MODE</button>
+    <button class="btn" onclick="memoryNext()">❯</button>
+  </div>
+</section>
+
+<section id="journey3">
+  <h2 class="section-title reveal">🗺️ Interactive Football Journey</h2>
+  <div class="interactive-timeline reveal">
+    <div class="journey-node"><div class="journey-year">2022/23</div><div class="journey-content" onclick="toggleJourney(this)"><h3>First Steps on the Pitch</h3><div class="journey-detail">Roksi joined her first youth football club and fell in love with the game.</div></div></div>
+    <div class="journey-node"><div class="journey-year">2023</div><div class="journey-content" onclick="toggleJourney(this)"><h3>Jajniki Grudziądz</h3><div class="journey-detail">Joined the club and became a key player wearing #17.</div></div></div>
+    <div class="journey-node"><div class="journey-year">2025</div><div class="journey-content" onclick="toggleJourney(this)"><h3>First Goal</h3><div class="journey-detail">Scored her first official goal, sparking a passion for attacking play.</div></div></div>
+    <div class="journey-node"><div class="journey-year">2025</div><div class="journey-content" onclick="toggleJourney(this)"><h3>Grudziądz Cup — 2nd Place</h3><div class="journey-detail">A standout tournament performance with the squad.</div></div></div>
+    <div class="journey-node"><div class="journey-year">Dec 2025</div><div class="journey-content" onclick="toggleJourney(this)"><h3>First Trophy</h3><div class="journey-detail">Helped the team reach the finals and lifted her first medal.</div></div></div>
+    <div class="journey-node"><div class="journey-year">2026</div><div class="journey-content" onclick="toggleJourney(this)"><h3>Rising Star</h3><div class="journey-detail">Continuing to grow as one of the team's promising talents.</div></div></div>
+  </div>
+</section>
+
+<section id="levels">
+  <h2 class="section-title reveal">🎮 Penalty Challenge — Levels</h2>
+  <div class="game-shell reveal">
+    <div class="game-controls">
+      <button class="btn" onclick="setGameLevel(1)">🟢 LEVEL 1 — Easy</button>
+      <button class="btn alt" onclick="setGameLevel(2)">🟡 LEVEL 2 — Professional</button>
+      <button class="btn" onclick="setGameLevel(3)">🔴 LEVEL 3 — Legend</button>
+      <button class="btn alt" onclick="setGameLevel(4)">👑 LEVEL 4 — ROKSI MODE</button>
+    </div>
+    <p class="flip-hint">Current level: <strong id="gameLevelName">Easy</strong> • Keeper speed: <strong id="keeperSpeedText">Slow</strong></p>
+  </div>
+</section>
+<!-- ================= END ROKSI 3.0 ================= -->
 
     <footer>
         <div class="socials">
@@ -1474,10 +1721,10 @@
             unlockAchievement('ach-first');
             const r=goal.getBoundingClientRect(), a=aim.getBoundingClientRect();
             const targetX=a.left+a.width/2-r.left, targetY=a.top+a.height/2-r.top;
-            const keeperX=20+Math.random()*(r.width-40);
+            const keeperSpeed={1:0.72,2:0.82,3:0.92,4:1.0}[R3.level]||0.72; const keeperX=20+Math.random()*(r.width-40);
             keeper.style.left=keeperX+'px';
             ball.style.left=targetX+'px'; ball.style.bottom=Math.max(55,r.height-targetY-25)+'px';
-            const save=Math.abs(targetX-keeperX)<72 && Math.random()<.78;
+            const save=Math.abs(targetX-keeperX)<(R3.level===4?88:R3.level===3?82:R3.level===2?76:70) && Math.random()<(R3.level===4?.92:R3.level===3?.84:R3.level===2?.74:.62);
             setTimeout(()=>{
                 if(save){
                     gameStatus.innerText='🧤 SAVE!';
@@ -1553,6 +1800,237 @@
                 setTimeout(()=>toast.classList.remove('show'),3000);
             }
         });
+
+
+/* =========================================================
+   ROKSI 3.0 JavaScript
+   ========================================================= */
+const R3 = {
+  xp: Number(localStorage.getItem('roksi-xp') || 0),
+  support: Number(localStorage.getItem('roksi-support') || 1247),
+  supportClicks: Number(localStorage.getItem('roksi-support-clicks') || 0),
+  level: Number(localStorage.getItem('roksi-game-level') || 1),
+  consecutive: 0,
+  wins: Number(localStorage.getItem('roksi-wins') || 0),
+  daily: null
+};
+
+function r3Toast(msg){
+  const t=document.getElementById('toast'); if(!t)return;
+  t.innerText=msg; t.classList.add('show'); setTimeout(()=>t.classList.remove('show'),2200);
+}
+function addXP(amount){
+  R3.xp += amount;
+  localStorage.setItem('roksi-xp',String(R3.xp));
+  updateR3Profile();
+}
+function getLevel(xp){ return Math.floor(xp/100)+1; }
+function updateR3Profile(){
+  const lvl=getLevel(R3.xp), base=(lvl-1)*100, next=lvl*100, pct=Math.min(100,((R3.xp-base)/100)*100);
+  const name=lvl>=10?'ROKSI LEGEND':lvl>=7?'Elite Fan':lvl>=4?'Super Fan':'Rookie Fan';
+  ['hubLevelText'].forEach(id=>{const e=document.getElementById(id);if(e)e.innerText='Level '+lvl});
+  const ln=document.getElementById('hubLevelName'); if(ln)ln.innerText=name;
+  const xf=document.getElementById('hubXpFill'); if(xf)xf.style.width=pct+'%';
+  const xl=document.getElementById('hubXpLabel'); if(xl)xl.innerText=R3.xp+' XP';
+  const xn=document.getElementById('hubXpNext'); if(xn)xn.innerText=next+' XP';
+  const saved=localStorage.getItem('roksi-fan-name'); const hn=document.getElementById('hubFanName'); if(hn)hn.innerText=(saved||'ROKSI FAN').toUpperCase();
+}
+function openHub(){ document.getElementById('hubOverlay').classList.add('open'); updateR3Profile(); updateDailyUI(); }
+function closeHub(){ document.getElementById('hubOverlay').classList.remove('open'); }
+
+function openTrophy(el,icon,title,desc){
+  el.classList.remove('open'); void el.offsetWidth; el.classList.add('open');
+  launchConfetti(); playSfx('success'); addXP(15);
+  r3Toast(icon+' '+title+' — '+desc);
+  setTimeout(()=>el.classList.remove('open'),1100);
+}
+
+function initPerformance3(){
+  const obs=new IntersectionObserver(entries=>{
+    entries.forEach(e=>{
+      if(!e.isIntersecting)return;
+      e.target.querySelectorAll('[data-width]').forEach(s=>s.style.width=s.dataset.width);
+      e.target.querySelectorAll('[data-counter3]').forEach(c=>{
+        const target=Number(c.dataset.counter3), start=performance.now();
+        function step(now){const p=Math.min(1,(now-start)/1200);c.innerText=Math.floor(target*p);if(p<1)requestAnimationFrame(step);}
+        requestAnimationFrame(step);
+      });
+      obs.unobserve(e.target);
+    });
+  },{threshold:.25});
+  document.querySelectorAll('.roksi-dashboard').forEach(x=>obs.observe(x));
+}
+initPerformance3();
+
+function dailyKey(){ return new Date().toISOString().slice(0,10); }
+function initDaily(){
+  const key=dailyKey(), saved=localStorage.getItem('roksi-daily');
+  if(saved){ try{R3.daily=JSON.parse(saved);}catch(e){} }
+  if(!R3.daily || R3.daily.date!==key){
+    const pool=[
+      {icon:'🎯',title:'Score 7 goals',desc:'Score at least 7 goals in a penalty game.',target:7},
+      {icon:'🔥',title:'Score 5 goals',desc:'Hit 5 successful penalties today.',target:5},
+      {icon:'👑',title:'Reach 8 goals',desc:'Reach 8 goals in one penalty game.',target:8}
+    ];
+    const seed=[...key].reduce((a,c)=>a+c.charCodeAt(0),0)%pool.length;
+    R3.daily={date:key,...pool[seed],progress:0,done:false};
+    localStorage.setItem('roksi-daily',JSON.stringify(R3.daily));
+  }
+  updateDailyUI();
+}
+function updateDailyUI(){
+  if(!R3.daily)return;
+  ['dailyIcon','dailySectionIcon'].forEach(id=>{const e=document.getElementById(id);if(e)e.innerText=R3.daily.icon});
+  ['dailyTitle','dailySectionTitle'].forEach(id=>{const e=document.getElementById(id);if(e)e.innerText=R3.daily.title});
+  const d=document.getElementById('dailyDesc'); if(d)d.innerText=R3.daily.desc;
+  const ds=document.getElementById('dailySectionDesc'); if(ds)ds.innerText=R3.daily.desc+' It resets automatically tomorrow.';
+  const txt=R3.daily.progress+' / '+R3.daily.target;
+  ['dailyStatus','dailySectionProgress'].forEach(id=>{const e=document.getElementById(id);if(e)e.innerText=txt});
+  if(R3.daily.done){document.getElementById('dailySectionCard')?.classList.add('challenge-complete');r3Toast('🏆 Daily Champion!');}
+}
+function updateDailyProgress(score){
+  if(!R3.daily || R3.daily.done)return;
+  R3.daily.progress=Math.max(R3.daily.progress,score);
+  if(R3.daily.progress>=R3.daily.target){
+    R3.daily.progress=R3.daily.target;R3.daily.done=true;addXP(50);launchConfetti();playSfx('success');
+    unlockAchievement3('ach-threewins');
+    r3Toast('🏆 DAILY CHAMPION — +50 XP');
+  }
+  localStorage.setItem('roksi-daily',JSON.stringify(R3.daily)); updateDailyUI();
+}
+initDaily();
+
+const quizData=[
+ {q:'What is Roksi’s squad number?',a:['#7','#10','#17','#99'],c:2},
+ {q:'Which club is listed on her player card?',a:['Jajniki Grudziądz','Barcelona','Juventus','Arsenal'],c:0},
+ {q:'What position is shown on the player card?',a:['GK','RW','CB','ST'],c:1},
+ {q:'What is Roksi’s preferred foot?',a:['Left','Both','Right','Unknown'],c:2},
+ {q:'Which player is listed among Roksi’s favorites?',a:['Cristiano Ronaldo','Lionel Messi','Kylian Mbappé','Neymar'],c:0},
+ {q:'When is Roksi’s birthday?',a:['20 February','17 June','1 January','25 December'],c:0},
+ {q:'What is her listed height?',a:['154 cm','164 cm','174 cm','184 cm'],c:1},
+ {q:'What is her FIFA-style rating?',a:['79','84','89','96'],c:2},
+ {q:'What is her PASS rating?',a:['84','85','89','96'],c:3},
+ {q:'What style is listed on the back of her card?',a:['Defense & Power','Pace & Dribbling','Crossing & Heading','Goalkeeping'],c:1}
+];
+let quizIndex=0,quizScore=0;
+function renderQuiz(){
+  const q=quizData[quizIndex], qEl=document.getElementById('quizQuestion'), oEl=document.getElementById('quizOptions'), rEl=document.getElementById('quizResult');
+  if(!q)return;
+  rEl.innerHTML='';
+  qEl.innerHTML='<div style="color:var(--hub-purple);font-weight:900">QUESTION '+(quizIndex+1)+' / '+quizData.length+'</div><h3 style="margin-top:8px">'+q.q+'</h3>';
+  oEl.innerHTML=q.a.map((x,i)=>`<button class="quiz-option" onclick="answerQuiz(${i})">${x}</button>`).join('');
+}
+function answerQuiz(i){
+  const q=quizData[quizIndex], opts=document.querySelectorAll('.quiz-option');
+  opts.forEach((b,n)=>{b.disabled=true;if(n===q.c)b.classList.add('correct');if(n===i&&i!==q.c)b.classList.add('wrong')});
+  if(i===q.c){quizScore++;addXP(10);playSfx('success')}else playSfx('save');
+  setTimeout(()=>{quizIndex++;if(quizIndex<quizData.length)renderQuiz();else finishQuiz()},650);
+}
+function finishQuiz(){
+  localStorage.setItem('roksi-quiz-score',String(quizScore));
+  const rank=quizScore===10?'🔥 ROKSI EXPERT':quizScore>=8?'⭐ SUPER FAN':quizScore>=5?'💚 GOOD FAN':'⚽ KEEP LEARNING';
+  document.getElementById('quizQuestion').innerHTML='<div class="quiz-result"><div style="font-weight:900">YOUR SCORE</div><div class="score-big">'+quizScore+' / '+quizData.length+'</div><h3>'+rank+'</h3></div>';
+  document.getElementById('quizOptions').innerHTML='<button class="btn" onclick="restartQuiz()">↻ TRY AGAIN</button>';
+  addXP(quizScore*5); if(quizScore===10)unlockAchievement3('ach-completion');
+}
+function restartQuiz(){quizIndex=0;quizScore=0;renderQuiz()}
+renderQuiz();
+
+function unlockAchievement3(id){
+  const el=document.getElementById(id);if(!el)return;
+  if(el.classList.contains('unlocked'))return;
+  el.classList.add('unlocked');
+  const arr=JSON.parse(localStorage.getItem('roksi-achievements3')||'[]');
+  if(!arr.includes(id))arr.push(id);localStorage.setItem('roksi-achievements3',JSON.stringify(arr));
+  addXP(25);playSfx('success');launchConfetti();updateAchievement3();
+}
+function updateAchievement3(){
+  const arr=JSON.parse(localStorage.getItem('roksi-achievements3')||'[]');
+  document.querySelectorAll('#achievementGrid3 .achievement').forEach(e=>{if(arr.includes(e.id))e.classList.add('unlocked')});
+  const total=document.querySelectorAll('#achievementGrid3 .achievement').length, count=arr.length;
+  const txt=document.getElementById('achCountText');if(txt)txt.innerText=count+' / '+total;
+  const fill=document.getElementById('achProgressFill');if(fill)fill.style.width=(count/total*100)+'%';
+}
+updateAchievement3();
+
+function sendSupport(){
+  R3.support += 1; R3.supportClicks += 1;
+  localStorage.setItem('roksi-support',String(R3.support));
+  localStorage.setItem('roksi-support-clicks',String(R3.supportClicks));
+  const points=document.getElementById('supportPoints');if(points)points.innerText=R3.support.toLocaleString();
+  const pct=Math.min(100,(R3.support/1350)*100), fill=document.getElementById('supportFill');if(fill)fill.style.width=pct+'%';
+  addXP(2);playSfx('success');if(R3.supportClicks>=5)unlockAchievement3('ach-supporter');
+  r3Toast('💚 +1 Support Point');
+}
+(function initSupport(){
+  const p=document.getElementById('supportPoints'), f=document.getElementById('supportFill');
+  if(p)p.innerText=R3.support.toLocaleString(); if(f)f.style.width=Math.min(100,(R3.support/1350)*100)+'%';
+})();
+
+const memories=[
+ {src:'team 11.jpeg',cap:'Team Championship Squad'},
+ {src:'team 6.jpeg',cap:'Match Strategy & Rest'},
+ {src:'cup.jpeg',cap:'2nd Place Trophy — Grudziądz'},
+ {src:'roksi cup.jpeg',cap:'ROKSI #17'}
+];
+let memoryIndex=0,memoryTimer=null;
+function renderMemory(){
+ const im=document.getElementById('memoryImage'),cap=document.getElementById('memoryCaption');if(!im)return;
+ im.style.opacity='0';setTimeout(()=>{im.src=memories[memoryIndex].src;cap.innerText=memories[memoryIndex].cap;im.style.opacity='1'},220);
+ unlockAchievement3('ach-gallery');
+}
+function memoryNext(){memoryIndex=(memoryIndex+1)%memories.length;renderMemory()}
+function memoryPrev(){memoryIndex=(memoryIndex-1+memories.length)%memories.length;renderMemory()}
+function toggleMemoryMode(){
+ const stage=document.getElementById('memoryStage'),btn=document.getElementById('memoryPlayBtn');
+ if(memoryTimer){clearInterval(memoryTimer);memoryTimer=null;stage.classList.remove('playing');btn.innerText='▶ MEMORY MODE'}
+ else{memoryTimer=setInterval(memoryNext,3500);stage.classList.add('playing');btn.innerText='⏸ STOP MEMORY';addXP(10)}
+}
+function toggleJourney(el){el.classList.toggle('active');addXP(5)}
+
+function setGameLevel(level){
+ R3.level=level;localStorage.setItem('roksi-game-level',String(level));
+ const names={1:['Easy','Slow'],2:['Professional','Medium'],3:['Legend','Fast'],4:['ROKSI MODE','Extreme']};
+ document.getElementById('gameLevelName').innerText=names[level][0];
+ document.getElementById('keeperSpeedText').innerText=names[level][1];
+ r3Toast('🎮 '+names[level][0]+' selected');addXP(5);
+}
+setGameLevel(R3.level);
+
+function applyGameLevelToPenalty(){
+ // Wrap the existing shoot function behavior without replacing its UI.
+ if(typeof shootPenalty==='function' && !window.__r3PenaltyWrapped){
+   const originalShoot=shootPenalty;
+   window.__r3PenaltyWrapped=true;
+   window.shootPenalty=function(){
+     if(gameLocked || shots>=10)return;
+     const oldChance=R3.level===1?.78:R3.level===2?.66:R3.level===3?.54:.42;
+     const oldRandom=Math.random;
+     Math.random=()=>oldRandom();
+     originalShoot();
+     Math.random=oldRandom;
+   };
+ }
+}
+applyGameLevelToPenalty();
+
+// Strengthen the existing game with level-aware keeper movement and XP/achievements.
+const originalFinishGame=window.finishGame;
+window.finishGame=function(){
+  originalFinishGame();
+  const score=Number(gameScore||0);
+  updateDailyProgress(score);
+  if(score>=6){R3.wins++;localStorage.setItem('roksi-wins',String(R3.wins));}
+  if(score>=8)unlockAchievement3('ach-goalmachine');
+  if(R3.wins>=3)unlockAchievement3('ach-threewins');
+  addXP(score*3);
+  if(score===10)launchConfetti();
+};
+const originalResetGame=window.resetGame;
+window.resetGame=function(){R3.consecutive=0;originalResetGame();};
+
+if(new Date().getHours()>=20)unlockAchievement3('ach-night');
+document.getElementById('playBtn')?.addEventListener('click',()=>unlockAchievement3('ach-music'));
 
     </script>
 </body>
