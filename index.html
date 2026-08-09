@@ -901,28 +901,21 @@ img[loading] {
 
 </style>
 <base target="_blank">
-<script type="module">
-// ============================================
-// 🔥 FIREBASE INTEGRATION — ROKSI FAN APP
-// ============================================
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-import { 
-    getFirestore, collection, addDoc, onSnapshot, query, orderBy, limit, 
-    serverTimestamp, doc, setDoc, getDoc, getDocs, updateDoc, increment 
-} from "https://www.gstatic.com/firebasejs/10.12.0/firestore.js";
-
-const firebaseConfig = {
+<!-- 🔥 FIREBASE COMPAT (Global) — More Reliable -->
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
+<script>
+  const firebaseConfig = {
     apiKey: "AIzaSyDwe346Zn62SszTzTEgpTUELbbGhQNoOs",
     authDomain: "roksi-fan-app.firebaseapp.com",
     projectId: "roksi-fan-app",
     storageBucket: "roksi-fan-app.firebasestorage.app",
     messagingSenderId: "414958416310",
     appId: "1:414958416310:web:9e25a467398321a7d89117"
-};
-
-const app = initializeApp(firebaseConfig);
-const db = getFirestore(app);
-window.roksiDB = db;
+  };
+  firebase.initializeApp(firebaseConfig);
+  window.roksiDB = firebase.firestore();
+  console.log('✅ Firebase connected:', window.roksiDB ? 'YES' : 'NO');
 </script>
 <base target="_blank">
 </head>
@@ -2875,8 +2868,8 @@ function loadFanWall() {
         loadFanWallLocal();
         return;
     }
-    const q = query(collection(window.roksiDB, "fans"), orderBy("timestamp", "desc"), limit(50));
-    onSnapshot(q, (snapshot) => {
+    const q = window.roksiDB.collection("fans").orderBy("timestamp", "desc").limit(50);
+    q.onSnapshot((snapshot) => {
         const fans = snapshot.docs.map(d => d.data());
         if (fans.length === 0) {
             grid.innerHTML = '<p style="text-align:center;color:var(--text-gray)">Be the first fan! 💚</p>';
@@ -2929,10 +2922,10 @@ async function addToFanWall() {
         return;
     }
     try {
-        await addDoc(collection(window.roksiDB, "fans"), {
+        await window.roksiDB.collection("fans").add({
             name: name,
             badge: getFanBadge(),
-            timestamp: serverTimestamp()
+            timestamp: firebase.firestore.FieldValue.serverTimestamp()
         });
         input.value = '';
         unlockAchievement5('ach-fanwall');
@@ -3323,24 +3316,25 @@ S.visits++;render();
 async function saveToLeaderboard(name, xp) {
     if (!window.roksiDB) return;
     const safeId = name.toLowerCase().replace(/[^a-z0-9]/g, '-').slice(0, 30) || 'fan-' + Date.now();
-    const userRef = doc(window.roksiDB, "leaderboard", safeId);
-    const current = await getDoc(userRef);
-    const currentXP = current.exists() ? (current.data().xp || 0) : 0;
-    const newXP = Math.max(currentXP, xp);
-    await setDoc(userRef, {
-        name: name.slice(0, 20),
-        xp: newXP,
-        level: Math.floor(newXP / 100) + 1,
-        updatedAt: serverTimestamp()
-    });
+    const userRef = window.roksiDB.collection("leaderboard").doc(safeId);
+    try {
+        const current = await userRef.get();
+        const currentXP = current.exists ? (current.data().xp || 0) : 0;
+        const newXP = Math.max(currentXP, xp);
+        await userRef.set({
+            name: name.slice(0, 20),
+            xp: newXP,
+            level: Math.floor(newXP / 100) + 1,
+            updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+        });
+    } catch(e) { console.error(e); }
 }
 
 async function loadLeaderboard() {
     const tbody = document.getElementById('ruRanks');
     if (!tbody || !window.roksiDB) return;
     try {
-        const q = query(collection(window.roksiDB, "leaderboard"), orderBy("xp", "desc"), limit(20));
-        const snapshot = await getDocs(q);
+        const snapshot = await window.roksiDB.collection("leaderboard").orderBy("xp", "desc").limit(20).get();
         const ranks = snapshot.docs.map(d => d.data());
         if (ranks.length === 0) {
             tbody.innerHTML = '<tr><td colspan="5" style="text-align:center">No fans yet. Be the first!</td></tr>';
@@ -3361,13 +3355,13 @@ async function loadLeaderboard() {
 // ================= FIREBASE SUPPORT METER (Shared) =================
 function initGlobalSupport() {
     if (!window.roksiDB) return;
-    const ref = doc(window.roksiDB, "stats", "global");
-    getDoc(ref).then(snap => {
-        if (!snap.exists()) {
-            setDoc(ref, { points: 1247, lastUpdated: serverTimestamp() });
+    const ref = window.roksiDB.collection("stats").doc("global");
+    ref.get().then(snap => {
+        if (!snap.exists) {
+            ref.set({ points: 1247, lastUpdated: firebase.firestore.FieldValue.serverTimestamp() });
         }
     });
-    onSnapshot(ref, (snap) => {
+    ref.onSnapshot((snap) => {
         const data = snap.data() || { points: 1247 };
         const el = document.getElementById('reactionPoints');
         const fill = document.getElementById('reactionFill');
@@ -3385,9 +3379,9 @@ async function sendReaction(emoji, pts) {
         return;
     }
     try {
-        await updateDoc(doc(window.roksiDB, "stats", "global"), {
-            points: increment(pts),
-            lastUpdated: serverTimestamp()
+        await window.roksiDB.collection("stats").doc("global").update({
+            points: firebase.firestore.FieldValue.increment(pts),
+            lastUpdated: firebase.firestore.FieldValue.serverTimestamp()
         });
         addXP(pts);
         playSfx('success');
