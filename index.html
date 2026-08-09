@@ -901,6 +901,30 @@ img[loading] {
 
 </style>
 <base target="_blank">
+<script type="module">
+// ============================================
+// 🔥 FIREBASE INTEGRATION — ROKSI FAN APP
+// ============================================
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+import { 
+    getFirestore, collection, addDoc, onSnapshot, query, orderBy, limit, 
+    serverTimestamp, doc, setDoc, getDoc, getDocs, updateDoc, increment 
+} from "https://www.gstatic.com/firebasejs/10.12.0/firestore.js";
+
+const firebaseConfig = {
+    apiKey: "AIzaSyDwe346Zn62SszTzTEgpTUELbbGhQNoOs",
+    authDomain: "roksi-fan-app.firebaseapp.com",
+    projectId: "roksi-fan-app",
+    storageBucket: "roksi-fan-app.firebasestorage.app",
+    messagingSenderId: "414958416310",
+    appId: "1:414958416310:web:9e25a467398321a7d89117"
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+window.roksiDB = db;
+</script>
+<base target="_blank">
 </head>
 <body>
     <div class="intro" id="cinematicIntro">
@@ -2829,12 +2853,50 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
 })();
 
 /* ----- Fan Wall ----- */
+// ================= FIREBASE FAN WALL (Shared) =================
+function escapeHtml(text) {
+    const div = document.createElement('div');
+    div.textContent = text;
+    return div.innerHTML;
+}
+
+function getFanBadge() {
+    const visits = Number(localStorage.getItem('roksi-visits') || 1);
+    if (visits >= 15) return '⭐ Legend';
+    if (visits >= 8) return '🏆 Elite Fan';
+    if (visits >= 3) return '💚 Super Fan';
+    return '👋 Supporter';
+}
+
 function loadFanWall() {
+    const grid = document.getElementById('fanWallGrid');
+    if (!grid) return;
+    if (!window.roksiDB) {
+        loadFanWallLocal();
+        return;
+    }
+    const q = query(collection(window.roksiDB, "fans"), orderBy("timestamp", "desc"), limit(50));
+    onSnapshot(q, (snapshot) => {
+        const fans = snapshot.docs.map(d => d.data());
+        if (fans.length === 0) {
+            grid.innerHTML = '<p style="text-align:center;color:var(--text-gray)">Be the first fan! 💚</p>';
+            return;
+        }
+        grid.innerHTML = fans.map((f, i) => `
+            <div class="fan-wall-card" style="animation-delay:${i * 0.05}s">
+                <div class="fan-wall-avatar">${f.name.charAt(0).toUpperCase()}</div>
+                <div class="fan-wall-name">${escapeHtml(f.name)}</div>
+                <div class="fan-wall-badge">${f.badge || 'Supporter'}</div>
+            </div>
+        `).join('');
+    });
+}
+
+function loadFanWallLocal() {
     const grid = document.getElementById('fanWallGrid');
     if (!grid) return;
     let fans = [];
     try { fans = JSON.parse(localStorage.getItem('roksi-fanwall') || '[]'); } catch(e) {}
-    // Add default fans if empty
     if (fans.length === 0) {
         fans = [
             {name: 'Alex', badge: 'Super Fan'},
@@ -2847,31 +2909,49 @@ function loadFanWall() {
     grid.innerHTML = fans.map((f, i) => `
         <div class="fan-wall-card" style="animation-delay:${i * 0.05}s">
             <div class="fan-wall-avatar">${f.name.charAt(0).toUpperCase()}</div>
-            <div class="fan-wall-name">${f.name}</div>
+            <div class="fan-wall-name">${escapeHtml(f.name)}</div>
             <div class="fan-wall-badge">${f.badge}</div>
         </div>
     `).join('');
 }
-function addToFanWall() {
+async function addToFanWall() {
     const input = document.getElementById('fanWallName');
     const name = (input.value || '').trim();
     if (!name) { r3Toast('Please enter your name!'); return; }
+    if (name.length > 20) { r3Toast('Name too long (max 20 chars)'); return; }
+    const badWords = ['spam', 'admin', 'badword'];
+    if (badWords.some(w => name.toLowerCase().includes(w))) {
+        r3Toast('Inappropriate name detected.'); return;
+    }
+    if (!window.roksiDB) {
+        r3Toast('Network not ready. Saved locally.');
+        addToFanWallLocal(name);
+        return;
+    }
+    try {
+        await addDoc(collection(window.roksiDB, "fans"), {
+            name: name,
+            badge: getFanBadge(),
+            timestamp: serverTimestamp()
+        });
+        input.value = '';
+        unlockAchievement5('ach-fanwall');
+        addXP(15);
+        playSfx('success');
+        r3Toast('💚 Added to Fan Wall!');
+    } catch (err) {
+        console.error(err);
+        r3Toast('❌ Error saving. Try again.');
+    }
+}
+
+function addToFanWallLocal(name) {
     let fans = [];
     try { fans = JSON.parse(localStorage.getItem('roksi-fanwall') || '[]'); } catch(e) {}
-    if (fans.find(f => f.name.toLowerCase() === name.toLowerCase())) {
-        r3Toast('Name already on the wall!'); return;
-    }
-    const visits = Number(localStorage.getItem('roksi-visits') || 1);
-    const badge = visits >= 15 ? 'Legend' : visits >= 8 ? 'Elite Fan' : visits >= 3 ? 'Super Fan' : 'Supporter';
-    fans.unshift({name, badge});
+    fans.unshift({name, badge: getFanBadge()});
     if (fans.length > 50) fans = fans.slice(0, 50);
     localStorage.setItem('roksi-fanwall', JSON.stringify(fans));
-    input.value = '';
-    loadFanWall();
-    unlockAchievement5('ach-fanwall');
-    addXP(15);
-    playSfx('success');
-    r3Toast('💚 Added to Fan Wall!');
+    loadFanWallLocal();
 }
 loadFanWall();
 
@@ -3182,6 +3262,164 @@ window.roksi = {
         return '⭐ Welcome to ROKSI LEGEND MODE!';
     }
 };
+
+</script>
+<style id="roksi-universe-upgrade">
+#roksi-upgrade{margin:40px auto;max-width:1200px;padding:0 18px;font-family:inherit}
+.ru-section{margin:24px 0;padding:24px;border-radius:24px;background:var(--card-bg,rgba(255,255,255,.06));border:1px solid rgba(255,255,255,.12);box-shadow:0 12px 40px rgba(0,0,0,.12)}
+.ru-title{font-size:clamp(1.5rem,3vw,2.4rem);font-weight:950;margin:0 0 8px}.ru-sub{opacity:.72;margin:0 0 18px}.ru-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}.ru-card{padding:18px;border-radius:18px;background:rgba(255,255,255,.045);border:1px solid rgba(255,255,255,.1)}.ru-card h3{margin:0 0 8px}.ru-stat{font-size:2rem;font-weight:950}.ru-row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}.ru-input,.ru-select{padding:12px 14px;border-radius:12px;border:1px solid rgba(255,255,255,.18);background:rgba(0,0,0,.12);color:inherit;min-width:150px}.ru-btn{cursor:pointer;border:0;border-radius:12px;padding:12px 16px;font-weight:900;background:var(--primary,#38ef7d);color:#07120d}.ru-btn.alt{background:rgba(255,255,255,.1);color:inherit}.ru-bar{height:12px;border-radius:99px;background:rgba(255,255,255,.1);overflow:hidden}.ru-bar span{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--primary,#38ef7d),#ffd700);transition:.5s}.ru-table{width:100%;border-collapse:collapse}.ru-table th,.ru-table td{text-align:left;padding:10px;border-bottom:1px solid rgba(255,255,255,.1)}.ru-badge{display:inline-flex;padding:5px 9px;border-radius:99px;background:rgba(255,215,0,.14);font-size:.8rem;font-weight:900}.ru-match{display:flex;justify-content:space-between;gap:15px;align-items:center}.ru-big{font-size:2.2rem;font-weight:950}.ru-game{min-height:170px;display:flex;flex-direction:column;justify-content:space-between}.ru-pitch{height:120px;border-radius:16px;border:2px solid rgba(255,255,255,.2);display:grid;place-items:center;background:linear-gradient(90deg,transparent 49.5%,rgba(255,255,255,.25) 50%,transparent 50.5%)}.ru-pitch button{font-size:2rem;border:0;background:none;cursor:pointer}.ru-gallery{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}.ru-gallery img{width:100%;aspect-ratio:1;object-fit:cover;border-radius:14px}.ru-credit{text-align:center;margin:32px 0 10px;font-weight:900;opacity:.8}.ru-notice{padding:12px 14px;border-radius:12px;background:rgba(255,215,0,.1);margin-top:12px}.ru-rank{font-weight:950}.ru-lock{filter:grayscale(1);opacity:.55}.ru-unlocked{filter:none;opacity:1}
+@media(max-width:850px){.ru-grid{grid-template-columns:1fr 1fr}.ru-gallery{grid-template-columns:repeat(2,1fr)}}@media(max-width:600px){.ru-grid{grid-template-columns:1fr}.ru-match{flex-direction:column;align-items:flex-start}.ru-section{padding:18px}}
+</style>
+<section id="roksi-upgrade">
+  <div class="ru-section" id="ru-dashboard">
+    <h2 class="ru-title">🌍 ROKSI UNIVERSE</h2><p class="ru-sub">Your complete fan journey — profile, matches, games, challenges and achievements.</p>
+    <div class="ru-grid">
+      <div class="ru-card"><h3>👤 FAN ID</h3><div id="ruFanName" class="ru-big">ROKSI FAN</div><div id="ruFanBadge" class="ru-badge">Rookie Fan</div><p><b id="ruLevel">Level 1</b> · <span id="ruXP">0 XP</span></p><div class="ru-bar"><span id="ruXPBar"></span></div><p id="ruVisitText">0 visits</p></div>
+      <div class="ru-card"><h3>🔥 DAILY STREAK</h3><div id="ruStreak" class="ru-stat">0</div><p>consecutive days</p><button class="ru-btn" onclick="RU.daily()">Claim Daily Challenge</button></div>
+      <div class="ru-card"><h3>💚 LIVE SUPPORT</h3><div id="ruSupport" class="ru-stat">0</div><p>fans supporting ROKSI</p><button class="ru-btn" onclick="RU.support()">❤️ GO ROKSI</button></div>
+    </div>
+    <div class="ru-row" style="margin-top:16px"><input id="ruName" class="ru-input" maxlength="20" placeholder="Choose your Fan ID name"><button class="ru-btn" onclick="RU.saveName()">Save Fan ID</button><button class="ru-btn alt" onclick="RU.share()">📤 Share Fan ID</button><button class="ru-btn alt" onclick="RU.reset()">Reset local progress</button></div>
+  </div>
+
+  <div class="ru-section"><h2 class="ru-title">⚽ MATCH CENTER</h2><p class="ru-sub">Fixtures, countdowns and score predictions.</p><div id="ruMatches" class="ru-grid"></div></div>
+
+  <div class="ru-section"><h2 class="ru-title">🏆 GLOBAL LEADERBOARD</h2><p class="ru-sub">Local leaderboard on this device. Connect a backend later for a true global board.</p><div class="ru-row"><input id="ruRankName" class="ru-input" maxlength="20" placeholder="Fan name"><input id="ruRankXP" class="ru-input" type="number" min="0" placeholder="XP"><button class="ru-btn" onclick="RU.addRank()">Add / Update</button></div><div style="overflow:auto;margin-top:14px"><table class="ru-table"><thead><tr><th>#</th><th>Fan</th><th>Level</th><th>XP</th><th>Badge</th></tr></thead><tbody id="ruRanks"></tbody></table></div></div>
+
+  <div class="ru-section"><h2 class="ru-title">🎮 GAME CENTER</h2><p class="ru-sub">Mini-games that feed your ROKSI XP.</p><div class="ru-grid">
+    <div class="ru-card ru-game"><div><h3>⚽ Penalty Shootout</h3><p>Choose a corner. Score to earn XP.</p></div><div class="ru-row"><button class="ru-btn" onclick="RU.penalty('left')">↖️ Left</button><button class="ru-btn" onclick="RU.penalty('center')">⬆️ Center</button><button class="ru-btn" onclick="RU.penalty('right')">↗️ Right</button></div><b id="ruPenalty">Ready!</b></div>
+    <div class="ru-card ru-game"><div><h3>🧠 Football Quiz</h3><p id="ruQuizQ">Who wears #17?</p></div><div class="ru-row"><button class="ru-btn" onclick="RU.quiz(true)">ROKSI</button><button class="ru-btn alt" onclick="RU.quiz(false)">Someone else</button></div><b id="ruQuizMsg">+30 XP for a correct answer</b></div>
+    <div class="ru-card ru-game"><div><h3>🎯 #17 Challenge</h3><p>Hit the target as fast as possible.</p></div><div class="ru-pitch"><button id="ruTarget" onclick="RU.target()">🎯</button></div><b id="ruTargetMsg">0 hits</b></div>
+  </div></div>
+
+  <div class="ru-section"><h2 class="ru-title">🔥 DAILY CHALLENGES</h2><div class="ru-grid"><div class="ru-card"><h3 id="ruChallengeTitle">Today's Challenge</h3><p id="ruChallengeText"></p><div class="ru-bar"><span id="ruChallengeBar"></span></div><button class="ru-btn" style="margin-top:12px" onclick="RU.completeChallenge()">Complete Challenge</button></div><div class="ru-card"><h3>🎁 Reward</h3><div class="ru-stat">+50 XP</div><p>Claim once per day.</p><span id="ruClaimed" class="ru-badge">Not claimed</span></div><div class="ru-card"><h3>🏅 7 DAY STREAK</h3><p>Reach 7 consecutive daily claims.</p><div id="ruStreakBadge" class="ru-badge ru-lock">🔒 Locked</div></div></div></div>
+
+  <div class="ru-section"><h2 class="ru-title">🏟️ ROKSI STADIUM</h2><p class="ru-sub">Explore the fan universe.</p><div class="ru-grid"><div class="ru-card"><h3>🟢 Pitch</h3><p>Match Center & predictions.</p><button class="ru-btn" onclick="document.getElementById('ruMatches').scrollIntoView({behavior:'smooth'})">Enter Pitch</button></div><div class="ru-card"><h3>🏆 Trophy Room</h3><p>Unlock achievements by earning XP.</p><button class="ru-btn" onclick="RU.achievement()">View Progress</button></div><div class="ru-card"><h3>👕 Locker Room</h3><p>Your Fan ID, badges and season stats.</p><button class="ru-btn" onclick="document.getElementById('ru-dashboard').scrollIntoView({behavior:'smooth'})">Open Locker</button></div><div class="ru-card"><h3>🎵 Fan Zone</h3><p>Support, cheers and community.</p><button class="ru-btn" onclick="RU.support()">Send Support</button></div></div></div>
+
+  <div class="ru-section"><h2 class="ru-title">📸 FAN PHOTO WALL</h2><p class="ru-sub">Add a photo from your device. Photos are stored locally.</p><div class="ru-row"><input id="ruPhoto" type="file" accept="image/*" class="ru-input"><button class="ru-btn" onclick="RU.addPhoto()">Add Photo</button></div><div id="ruGallery" class="ru-gallery" style="margin-top:14px"></div></div>
+
+  <div class="ru-section"><h2 class="ru-title">🔮 PREDICTION LEAGUE</h2><p class="ru-sub">Correct winner = +50 XP · Exact score = +100 XP.</p><div id="ruPredictions"></div></div>
+
+  <div class="ru-credit">تم تطوير الموقع بواسطة HEMA_SA , IBI</div>
+</section>
+<script id="roksi-universe-upgrade-js">
+(()=>{const K='roksi-universe-v1';let S={name:localStorage.getItem('roksi-fan-name')||'',xp:+localStorage.getItem('roksi-xp')||0,visits:+localStorage.getItem('roksi-visits')||0,support:+localStorage.getItem('roksi-support')||1247,streak:+localStorage.getItem('ru-streak')||0,lastDaily:localStorage.getItem('ru-lastDaily')||'',ranks:JSON.parse(localStorage.getItem('ru-ranks')||'[]'),pred:JSON.parse(localStorage.getItem('ru-pred')||'{}'),photos:JSON.parse(localStorage.getItem('ru-photos')||'[]')};
+const matches=[['2026-08-15T15:00:00','15 Aug 2026','Jajniki Grudziądz','Włocławek'],['2026-08-22T15:00:00','22 Aug 2026','Jajniki Grudziądz','Toruń'],['2026-08-29T15:00:00','29 Aug 2026','Jajniki Grudziądz','Bydgoszcz'],['2026-09-05T15:00:00','5 Sep 2026','Jajniki Grudziądz','Gdańsk']];
+const save=()=>{localStorage.setItem('roksi-xp',S.xp);localStorage.setItem('roksi-fan-name',S.name);localStorage.setItem('roksi-visits',S.visits);localStorage.setItem('roksi-support',S.support);localStorage.setItem('ru-streak',S.streak);localStorage.setItem('ru-lastDaily',S.lastDaily);localStorage.setItem('ru-ranks',JSON.stringify(S.ranks));localStorage.setItem('ru-pred',JSON.stringify(S.pred));localStorage.setItem('ru-photos',JSON.stringify(S.photos));};
+const level=()=>Math.floor(S.xp/100)+1;const badge=()=>level()>=10?'ROKSI LEGEND':level()>=7?'Elite Fan':level()>=4?'Super Fan':'Rookie Fan';const $=id=>document.getElementById(id);const today=()=>new Date().toISOString().slice(0,10);const esc=x=>String(x).replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
+function render(){if($('ruFanName')){$('ruFanName').textContent=(S.name||'ROKSI FAN').toUpperCase();$('ruFanBadge').textContent=badge();$('ruLevel').textContent='Level '+level();$('ruXP').textContent=S.xp+' XP';$('ruXPBar').style.width=(S.xp%100)+'%';$('ruVisitText').textContent=S.visits+' visits';$('ruStreak').textContent=S.streak;$('ruSupport').textContent=S.support;$('ruName').value=S.name;$('ruStreakBadge').className='ru-badge '+(S.streak>=7?'ru-unlocked':'ru-lock');$('ruStreakBadge').textContent=S.streak>=7?'🏆 7 DAY LEGEND':'🔒 Locked';}renderMatches();renderRanks();renderDaily();renderGallery();renderPredictions();save()}
+function addXP(n){S.xp+=n; if(window.addXP&&window.addXP!==addXP)try{window.addXP(n)}catch(e){} render();}
+function renderMatches(){const box=$('ruMatches');if(!box)return;box.innerHTML=matches.map((m,i)=>{let d=new Date(m[0])-new Date();let t=d<=0?'⚽ MATCH DAY!':Math.floor(d/86400000)+'d '+Math.floor(d/3600000%24)+'h '+Math.floor(d/60000%60)+'m';return `<div class="ru-card ru-match"><div><div class="ru-badge">${m[1]}</div><h3>${esc(m[2])} vs ${esc(m[3])}</h3><div id="ru-count-${i}">${t}</div></div><div><input class="ru-input" id="pr-${i}" placeholder="0-0" maxlength="5"><button class="ru-btn" onclick="RU.predict(${i})">🔮 Predict</button></div></div>`}).join('')}
+function renderPredictions(){const b=$('ruPredictions');if(!b)return;b.innerHTML=matches.map((m,i)=>`<div class="ru-card" style="margin:8px 0"><b>${m[1]}</b> — ${m[2]} vs ${m[3]}<span class="ru-badge" style="float:right">${S.pred[i]||'No prediction'}</span></div>`).join('')}
+function renderRanks(){const b=$('ruRanks');if(!b)return;let arr=[...S.ranks];if(S.name){const j=arr.findIndex(x=>x.name.toLowerCase()===S.name.toLowerCase());if(j<0)arr.push({name:S.name,xp:S.xp});else arr[j].xp=Math.max(arr[j].xp,S.xp)}arr.sort((a,b)=>b.xp-a.xp);b.innerHTML=arr.slice(0,20).map((x,i)=>`<tr><td class="ru-rank">${i+1}</td><td>${esc(x.name)}</td><td>${Math.floor(x.xp/100)+1}</td><td>${x.xp}</td><td><span class="ru-badge">${x.xp>=900?'Legend':x.xp>=600?'Elite':x.xp>=300?'Super Fan':'Supporter'}</span></td></tr>`).join('')}
+function renderDaily(){let d=today(),claimed=S.lastDaily===d;$('ruClaimed').textContent=claimed?'✅ Claimed today':'Not claimed';$('ruClaimed').style.background=claimed?'rgba(56,239,125,.16)':'';let seed=new Date().getDate()%3;let ts=[['⚽ Score a goal','Use Penalty Shootout once.'],['🧠 Answer the quiz','Get one quiz answer right.'],['💚 Send support','Press GO ROKSI once.']][seed];$('ruChallengeTitle').textContent=ts[0];$('ruChallengeText').textContent=ts[1];$('ruChallengeBar').style.width=claimed?'100%':'0%'}
+function renderGallery(){let b=$('ruGallery');if(!b)return;b.innerHTML=S.photos.map((p,i)=>`<div><img src="${p}" alt="ROKSI fan photo"><button class="ru-btn alt" style="width:100%;margin-top:4px" onclick="RU.delPhoto(${i})">Remove</button></div>`).join('')}
+window.RU={saveName(){S.name=($('ruName').value||'').trim()||'ROKSI FAN';addXP(5);},support(){S.support++;addXP(2);render();},daily(){if(S.lastDaily===today()){alert('Daily challenge already claimed today!');return}S.lastDaily=today();S.streak++;addXP(50);},completeChallenge(){this.daily()},addRank(){let n=($('ruRankName').value||'').trim();let x=Math.max(0,+$('ruRankXP').value||0);if(!n)return alert('Enter a fan name');let f=S.ranks.find(v=>v.name.toLowerCase()===n.toLowerCase());if(f)f.xp=x;else S.ranks.push({name:n,xp:x});render()},predict(i){let v=($('pr-'+i).value||'').trim();if(!/^\d+-\d+$/.test(v))return alert('Use score format like 2-1');S.pred[i]=v;render();addXP(10)},penalty(dir){let dirs=['left','center','right'];let g=dirs[Math.floor(Math.random()*3)];if(g===dir){$('ruPenalty').textContent='🧤 Saved! Try again — +5 XP';addXP(5)}else{$('ruPenalty').textContent='⚽ GOAL! +25 XP';addXP(25)}},quiz(ok){$('ruQuizMsg').textContent=ok?'✅ Correct! +30 XP':'❌ Not this time';if(ok)addXP(30)},target(){addXP(10);let e=$('ruTarget');e.style.transform='translate('+((Math.random()-.5)*100)+'px,'+((Math.random()-.5)*60)+'px)';$('ruTargetMsg').textContent='Hit! +10 XP'},achievement(){alert('Your progress: Level '+level()+', '+S.xp+' XP, '+S.streak+' day streak.')},addPhoto(){let f=$('ruPhoto').files[0];if(!f)return alert('Choose an image first');if(f.size>2*1024*1024)return alert('Please use an image under 2MB');let r=new FileReader();r.onload=()=>{S.photos.unshift(r.result);S.photos=S.photos.slice(0,12);render()};r.readAsDataURL(f)},delPhoto(i){S.photos.splice(i,1);render()},share(){let txt=`I am ${S.name||'a ROKSI FAN'} — Level ${level()}, ${S.xp} XP! ⚽💚`;if(navigator.share)navigator.share({title:'ROKSI FAN ID',text:txt}).catch(()=>{});else navigator.clipboard?.writeText(txt).then(()=>alert('Fan ID copied!'))},reset(){if(confirm('Reset ROKSI Universe progress on this device?')){['roksi-xp','roksi-fan-name','roksi-visits','roksi-support','ru-streak','ru-lastDaily','ru-ranks','ru-pred','ru-photos'].forEach(k=>localStorage.removeItem(k));location.reload()}}};
+setInterval(()=>{matches.forEach((m,i)=>{let e=$('ru-count-'+i);if(!e)return;let d=new Date(m[0])-new Date();e.textContent=d<=0?'⚽ MATCH DAY!':Math.floor(d/86400000)+'d '+Math.floor(d/3600000%24)+'h '+Math.floor(d/60000%60)+'m';})},1000);
+S.visits++;render();
+})();
+
+
+// ================= FIREBASE LEADERBOARD (Shared) =================
+async function saveToLeaderboard(name, xp) {
+    if (!window.roksiDB) return;
+    const safeId = name.toLowerCase().replace(/[^a-z0-9]/g, '-').slice(0, 30) || 'fan-' + Date.now();
+    const userRef = doc(window.roksiDB, "leaderboard", safeId);
+    const current = await getDoc(userRef);
+    const currentXP = current.exists() ? (current.data().xp || 0) : 0;
+    const newXP = Math.max(currentXP, xp);
+    await setDoc(userRef, {
+        name: name.slice(0, 20),
+        xp: newXP,
+        level: Math.floor(newXP / 100) + 1,
+        updatedAt: serverTimestamp()
+    });
+}
+
+async function loadLeaderboard() {
+    const tbody = document.getElementById('ruRanks');
+    if (!tbody || !window.roksiDB) return;
+    try {
+        const q = query(collection(window.roksiDB, "leaderboard"), orderBy("xp", "desc"), limit(20));
+        const snapshot = await getDocs(q);
+        const ranks = snapshot.docs.map(d => d.data());
+        if (ranks.length === 0) {
+            tbody.innerHTML = '<tr><td colspan="5" style="text-align:center">No fans yet. Be the first!</td></tr>';
+            return;
+        }
+        tbody.innerHTML = ranks.map((x, i) => `
+            <tr>
+                <td class="ru-rank">${i + 1}</td>
+                <td>${escapeHtml(x.name)}</td>
+                <td>${Math.floor(x.xp / 100) + 1}</td>
+                <td>${x.xp}</td>
+                <td><span class="ru-badge">${x.xp >= 900 ? 'Legend' : x.xp >= 600 ? 'Elite' : x.xp >= 300 ? 'Super Fan' : 'Supporter'}</span></td>
+            </tr>
+        `).join('');
+    } catch (e) { console.error(e); }
+}
+
+// ================= FIREBASE SUPPORT METER (Shared) =================
+function initGlobalSupport() {
+    if (!window.roksiDB) return;
+    const ref = doc(window.roksiDB, "stats", "global");
+    getDoc(ref).then(snap => {
+        if (!snap.exists()) {
+            setDoc(ref, { points: 1247, lastUpdated: serverTimestamp() });
+        }
+    });
+    onSnapshot(ref, (snap) => {
+        const data = snap.data() || { points: 1247 };
+        const el = document.getElementById('reactionPoints');
+        const fill = document.getElementById('reactionFill');
+        if (el) el.textContent = data.points.toLocaleString();
+        if (fill) fill.style.width = Math.min(100, (data.points / 5000) * 100) + '%';
+    });
+}
+
+async function sendReaction(emoji, pts) {
+    if (!window.roksiDB) {
+        reactionPoints += pts;
+        localStorage.setItem('roksi-reactions', reactionPoints);
+        updateReactionUI();
+        r3Toast(`${emoji} +${pts} (local only)`);
+        return;
+    }
+    try {
+        await updateDoc(doc(window.roksiDB, "stats", "global"), {
+            points: increment(pts),
+            lastUpdated: serverTimestamp()
+        });
+        addXP(pts);
+        playSfx('success');
+        r3Toast(`${emoji} +${pts} points!`);
+        reactionCount++;
+        localStorage.setItem('roksi-reaction-count', reactionCount);
+        if (reactionCount >= 10) unlockAchievement5('ach-reaction');
+    } catch (err) {
+        console.error(err);
+        r3Toast('❌ Network error. Saved locally.');
+    }
+}
+
+// ================= HOOKS: Auto-init Firebase features =================
+const _origCreateFanCard = window.createFanCard;
+window.createFanCard = async function() {
+    if (_origCreateFanCard) _origCreateFanCard();
+    const name = document.getElementById('fanName').value.trim() || 'ROKSI FAN';
+    const totalXP = Number(localStorage.getItem('roksi-xp') || 0) + (window.R3?.xp || 0);
+    await saveToLeaderboard(name, totalXP);
+    loadLeaderboard();
+};
+
+window.addEventListener('load', () => {
+    setTimeout(() => {
+        if (window.roksiDB) {
+            loadFanWall();
+            initGlobalSupport();
+            loadLeaderboard();
+        }
+    }, 1500);
+});
 
 </script>
 </body>
